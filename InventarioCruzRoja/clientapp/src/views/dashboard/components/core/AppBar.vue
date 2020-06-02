@@ -128,7 +128,7 @@
         <v-list-item to="/pages/user">
           <v-list-item-title>Perfil</v-list-item-title>
         </v-list-item>
-        <v-divider></v-divider>
+        <v-divider />
         <v-list-item @click="logout">
           <v-list-item-title>Salir</v-list-item-title>
         </v-list-item>

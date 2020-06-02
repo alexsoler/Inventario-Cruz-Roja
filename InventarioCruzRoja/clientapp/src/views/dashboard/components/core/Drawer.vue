@@ -114,8 +114,8 @@
         },
         {
           icon: 'mdi-account',
-          title: 'user',
-          to: '/pages/user',
+          title: 'Usuarios',
+          to: '/users',
         },
         {
           title: 'rtables',

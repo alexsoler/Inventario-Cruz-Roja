@@ -32,8 +32,8 @@
                     @submit.prevent="handleLogin"
                   >
                     <validation-provider
-                      name="Usuario"
                       v-slot="{errors}"
+                      name="Usuario"
                       rules="required"
                     >
                       <v-text-field
@@ -47,8 +47,8 @@
                     </validation-provider>
 
                     <validation-provider
-                      name="Contraseña"
                       v-slot="{errors}"
+                      name="Contraseña"
                       rules="required"
                     >
                       <v-text-field

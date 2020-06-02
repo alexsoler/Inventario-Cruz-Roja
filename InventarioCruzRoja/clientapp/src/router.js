@@ -24,6 +24,11 @@ export const router = new Router({
           component: () => import('@/views/dashboard/pages/UserProfile'),
         },
         {
+          name: 'Users',
+          path: 'users',
+          component: () => import('@/views/dashboard/pages/Users'),
+        },
+        {
           name: 'Notifications',
           path: 'components/notifications',
           component: () => import('@/views/dashboard/component/Notifications'),

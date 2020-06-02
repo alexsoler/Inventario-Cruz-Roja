@@ -12,6 +12,7 @@ import {
   min,
   numeric,
   required,
+  confirmed,
 } from 'vee-validate/dist/rules'
 
 localize('es', es)
@@ -21,6 +22,7 @@ extend('max', max)
 extend('min', min)
 extend('numeric', numeric)
 extend('required', required)
+extend('confirmed', confirmed)
 
 Vue.component('validation-provider', ValidationProvider)
 Vue.component('validation-observer', ValidationObserver)
