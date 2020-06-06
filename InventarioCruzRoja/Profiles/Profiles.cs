@@ -9,9 +9,13 @@ namespace InventarioCruzRoja.Profiles
     {
         public Profiles()
         {
-            CreateMap<UserRegisterDto, User>();
+            CreateMap<UserDto, User>();
             CreateMap<UserLoginDto, User>();
             CreateMap<User, LoginResponseDto>()
+                .ForMember(dest =>
+                dest.Roles, opt => opt.MapFrom(x =>
+                    x.UserRoles.Select(role => role.Role.Name)));
+            CreateMap<User, UserTableDto>()
                 .ForMember(dest =>
                 dest.Roles, opt => opt.MapFrom(x =>
                     x.UserRoles.Select(role => role.Role.Name)));
