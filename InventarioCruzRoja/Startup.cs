@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SpaServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,7 +36,7 @@ namespace InventarioCruzRoja
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if(Configuration.GetValue<bool>("AppSettings:UseDBInMemory"))
+            if (Configuration.GetValue<bool>("AppSettings:UseDBInMemory"))
             {
                 services.AddDbContext<DataContext>(options =>
                 {
@@ -69,7 +70,7 @@ namespace InventarioCruzRoja
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp";
+                configuration.RootPath = "clientapp/dist";
             });
         }
 
@@ -101,24 +102,18 @@ namespace InventarioCruzRoja
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-            });
 
-
-            if(Configuration.GetValue<bool>("AppSettings:UseSPA"))
-            {
-                app.UseSpa(spa =>
+                if (Configuration.GetValue<bool>("AppSettings:UseSPA"))
                 {
-                    if (env.IsDevelopment())
-                        spa.Options.SourcePath = "ClientApp";
-                    else
-                        spa.Options.SourcePath = "dist";
-
-                    if (env.IsDevelopment())
-                    {
-                        spa.UseVueCli();
-                    }
-                });
-            }
+                    endpoints.MapToVueCliProxy(
+                        "{*path}",
+                        new SpaOptions { SourcePath = "clientapp" },
+                        npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
+                        regex: "running at",
+                        forceKill: true
+                        );
+                }
+            });
         }
     }
 }
