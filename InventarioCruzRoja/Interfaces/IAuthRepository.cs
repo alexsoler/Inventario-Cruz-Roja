@@ -12,6 +12,11 @@ namespace InventarioCruzRoja.Interfaces
         Task<ServiceResponse<int>> Register(User user, string password);
         Task<ServiceResponse<LoginResponseDto>> Login(string username, string password);
         Task<bool> UserExists(string username);
-        Task<ServiceResponse<bool>> AddRoleToUser(string role, int id);
+        Task<ServiceResponse<bool>> AddRoleToUser(int idUser, params string[] roles);
+        Task<ServiceResponse<IEnumerable<UserTableDto>>> GetUsers();
+        Task<ServiceResponse<IEnumerable<string>>> GetRoles();
+        Task EditUser(int id, UserDto user);
+        Task DeleteUser(int id);
+        Task RemoveRole(int id);
     }
 }

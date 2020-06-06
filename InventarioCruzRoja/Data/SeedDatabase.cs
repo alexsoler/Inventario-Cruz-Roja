@@ -28,7 +28,7 @@ namespace InventarioCruzRoja.Data
 
             if(resultCreateUser1.Success)
             {
-                await _authRepository.AddRoleToUser("admin", resultCreateUser1.Data);
+                await _authRepository.AddRoleToUser(resultCreateUser1.Data, "admin");
             }
 
 

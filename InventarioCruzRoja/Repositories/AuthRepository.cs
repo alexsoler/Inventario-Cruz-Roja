@@ -143,47 +143,101 @@ namespace InventarioCruzRoja.Repositories
             return tokenHandler.WriteToken(token);
         }
 
-        public async Task<ServiceResponse<bool>> AddRoleToUser(string role, int idUser)
+        public async Task<ServiceResponse<bool>> AddRoleToUser(int idUser, params string[] rolesToAsign)
         {
             ServiceResponse<bool> response = new ServiceResponse<bool>();
 
-            var roleToAssign = await _context.Roles
-                .FirstOrDefaultAsync(x => x.Name.ToLower() == role.ToLower());
+            var roles = await _context.Roles.AsNoTracking().ToListAsync();
             var user = await _context.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role)
                 .FirstOrDefaultAsync(x => x.Id == idUser);
 
-            if(roleToAssign == null)
+            if (user == null)
             {
                 response.Success = false;
-                response.Message = $"El rol '{role}' no existe";
-            } else if(user == null)
-            {
-                response.Success = false;
-                response.Message = $"El usuario de Id '{idUser}' no existe";
+                response.Message = $"El usuario de Id '{idUser}' no existe.-";
+                response.Data = false;
+
+                return response;
             }
-            else
+
+            bool isRoleAssigned = false;
+
+            foreach (var role in rolesToAsign)
             {
-                if(user.UserRoles.Exists(x => x.Role.Name.ToLower() == role.ToLower()))
+                var roleToAsign = roles.FirstOrDefault(x => x.Name.ToLower() == role.ToLower());
+
+                if (roleToAsign == null)
                 {
-                    response.Success = false;
-                    response.Message = $"El usuario ya tiene asignado el rol";
+                    response.Message += $"El rol '{role}' no existe.-";
                 }
                 else
                 {
-                    user.UserRoles.Add(new UserRole
+                    if (user.UserRoles.Exists(x => x.Role.Name.ToLower() == role.ToLower()))
                     {
-                        RoleId = roleToAssign.Id,
-                        UserId = user.Id
-                    });
+                        response.Message += $"El usuario ya tiene asignado el rol '{role}'.-";
+                    }
+                    else
+                    {
+                        user.UserRoles.Add(new UserRole
+                        {
+                            RoleId = roleToAsign.Id,
+                            UserId = user.Id
+                        });
 
-                    await _context.SaveChangesAsync();
+                        response.Message += $"Se agrego el rol '{role}' con exito.-";
 
-                    response.Message = $"Se agrego el rol '{role}' con exito";
-                    response.Data = true;
+                        isRoleAssigned = true;
+                    }
                 }
             }
 
+            if (isRoleAssigned) {
+                await _context.SaveChangesAsync();
+                response.Success = true;
+            }
+
             return response;
+        }
+
+        public async Task<ServiceResponse<IEnumerable<UserTableDto>>> GetUsers()
+        {
+            var users = await _context.Users.Include(x => x.UserRoles)
+                .ThenInclude(x => x.Role).AsNoTracking().ToListAsync();
+
+            var usersDto = _mapper.Map<IEnumerable<UserTableDto>>(users);
+
+            return new ServiceResponse<IEnumerable<UserTableDto>>
+            {
+                Data = usersDto,
+                Success = true
+            };
+        }
+
+        public async Task<ServiceResponse<IEnumerable<string>>> GetRoles()
+        {
+            var roles = await _context.Roles.AsNoTracking()
+                .Select(x => x.Name).ToListAsync();
+
+            return new ServiceResponse<IEnumerable<string>>
+            {
+                Data = roles,
+                Success = true
+            };
+        }
+
+        public Task EditUser(int id, UserDto user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteUser(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveRole(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
