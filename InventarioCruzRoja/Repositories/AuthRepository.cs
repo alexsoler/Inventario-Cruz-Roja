@@ -75,6 +75,7 @@ namespace InventarioCruzRoja.Repositories
             await _context.SaveChangesAsync();
 
             response.Data = user.Id;
+            response.Message = "El usuario fue registro con exito.";
             return response;
         }
 
@@ -147,14 +148,15 @@ namespace InventarioCruzRoja.Repositories
         {
             ServiceResponse<bool> response = new ServiceResponse<bool>();
 
-            var roles = await _context.Roles.AsNoTracking().ToListAsync();
+            var roles = await _context.Roles.Where(x => rolesToAsign.Contains(x.Name))
+                .ToListAsync();
             var user = await _context.Users.Include(x => x.UserRoles).ThenInclude(x => x.Role)
                 .FirstOrDefaultAsync(x => x.Id == idUser);
 
             if (user == null)
             {
                 response.Success = false;
-                response.Message = $"El usuario de Id '{idUser}' no existe.-";
+                response.Message = $"- El usuario de Id '{idUser}' no existe.\n";
                 response.Data = false;
 
                 return response;
@@ -162,36 +164,28 @@ namespace InventarioCruzRoja.Repositories
 
             bool isRoleAssigned = false;
 
-            foreach (var role in rolesToAsign)
+            foreach (var role in roles)
             {
-                var roleToAsign = roles.FirstOrDefault(x => x.Name.ToLower() == role.ToLower());
-
-                if (roleToAsign == null)
+                if (user.UserRoles.Exists(x => x.Role == role))
                 {
-                    response.Message += $"El rol '{role}' no existe.-";
+                    response.Message += $"- El usuario ya tiene asignado el rol '{role.Name}'.\n";
                 }
                 else
                 {
-                    if (user.UserRoles.Exists(x => x.Role.Name.ToLower() == role.ToLower()))
+                    user.UserRoles.Add(new UserRole
                     {
-                        response.Message += $"El usuario ya tiene asignado el rol '{role}'.-";
-                    }
-                    else
-                    {
-                        user.UserRoles.Add(new UserRole
-                        {
-                            RoleId = roleToAsign.Id,
-                            UserId = user.Id
-                        });
+                        RoleId = role.Id,
+                        UserId = user.Id
+                    });
 
-                        response.Message += $"Se agrego el rol '{role}' con exito.-";
+                    response.Message += $"- Se agrego el rol '{role.Name}'.\n";
 
-                        isRoleAssigned = true;
-                    }
+                    isRoleAssigned = true;
                 }
             }
 
-            if (isRoleAssigned) {
+            if (isRoleAssigned)
+            {
                 await _context.SaveChangesAsync();
                 response.Success = true;
             }
@@ -225,14 +219,66 @@ namespace InventarioCruzRoja.Repositories
             };
         }
 
-        public Task EditUser(int id, UserDto user)
+        public async Task EditUser(int id, UserDto user)
         {
-            throw new NotImplementedException();
+            var userToUpdate = await _context.Users.FindAsync(id);
+
+            await _context.Entry(userToUpdate).Collection(x => x.UserRoles)
+                .Query().Include(x => x.Role).LoadAsync();
+
+            var roles = await _context.Roles.Where(x => user.Roles.Contains(x.Name))
+                .ToListAsync();
+
+            //Remover roles
+            userToUpdate.UserRoles.RemoveAll(x => !roles.Contains(x.Role));
+
+            //Agregar roles
+            foreach (var role in roles)
+            {
+                if (!userToUpdate.UserRoles.Any(x => x.Role == role))
+                {
+                    userToUpdate.UserRoles.Add(new UserRole
+                    {
+                        RoleId = role.Id,
+                        UserId = id
+                    });
+                }
+
+            }
+
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                CreatePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
+                userToUpdate.PasswordHash = passwordHash;
+                userToUpdate.PasswordSalt = passwordSalt;
+            }
+
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteUser(int id)
+        public async Task<ServiceResponse<int>> DeleteUser(int id)
         {
-            throw new NotImplementedException();
+            ServiceResponse<int> response = new ServiceResponse<int>();
+
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                response.Success = false;
+                response.Message = $"El usuario de id '{id}' ya ha sido eliminado o no existe";
+
+                return response;
+            }
+
+            _context.Users.Remove(user);
+
+            await _context.SaveChangesAsync();
+
+            response.Data = user.Id;
+            response.Message = $"El usuario '{user.Username}' fue eliminado con exito.";
+
+            return response;
         }
 
         public Task RemoveRole(int id)

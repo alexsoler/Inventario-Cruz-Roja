@@ -16,7 +16,7 @@ namespace InventarioCruzRoja.Interfaces
         Task<ServiceResponse<IEnumerable<UserTableDto>>> GetUsers();
         Task<ServiceResponse<IEnumerable<string>>> GetRoles();
         Task EditUser(int id, UserDto user);
-        Task DeleteUser(int id);
+        Task<ServiceResponse<int>> DeleteUser(int id);
         Task RemoveRole(int id);
     }
 }

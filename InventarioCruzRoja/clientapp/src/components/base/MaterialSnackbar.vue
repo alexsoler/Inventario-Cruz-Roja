@@ -7,16 +7,22 @@
       'color': 'transparent'
     }"
   >
-    <base-material-alert
-      v-model="internalValue"
-      :color="$attrs.color"
-      :dismissible="dismissible"
-      :type="type"
-      class="ma-0"
-      dark
-    >
-      <slot />
-    </base-material-alert>
+    <v-row no-gutters>
+      <v-col
+        cols="12"
+      >
+        <base-material-alert
+          v-model="internalValue"
+          :color="$attrs.color"
+          :dismissible="dismissible"
+          :type="type"
+          class="ma-0"
+          dark
+        >
+          <slot />
+        </base-material-alert>
+      </v-col>
+    </v-row>
   </v-snackbar>
 </template>
 <script>

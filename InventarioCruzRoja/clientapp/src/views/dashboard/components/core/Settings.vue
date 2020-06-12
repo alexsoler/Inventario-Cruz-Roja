@@ -8,10 +8,12 @@
       flat
       link
       min-width="100"
-      style="position: fixed; top: 115px; right: -35px; border-radius: 8px;"
+      style="position: fixed; top: 120px; right: -35px; border-radius: 8px;"
     >
-      <v-icon large>
-        mdi-settings
+      <v-icon
+        large
+      >
+        mdi-cog
       </v-icon>
     </v-card>
 
@@ -32,7 +34,7 @@
         width="300"
       >
         <v-card-text>
-          <strong class="mb-3 d-inline-block">SIDEBAR FILTERS</strong>
+          <strong class="mb-3 d-inline-block">FILTROS DE BARRA LATERAL</strong>
 
           <v-item-group v-model="color">
             <v-item
@@ -59,7 +61,7 @@
             no-gutters
           >
             <v-col cols="auto">
-              Dark Mode
+              Modo Oscuro
             </v-col>
 
             <v-spacer />
@@ -81,7 +83,7 @@
             no-gutters
           >
             <v-col cols="auto">
-              Sidebar Image
+              Imagen de Barra Lateral
             </v-col>
 
             <v-spacer />
@@ -98,7 +100,7 @@
 
           <v-divider class="my-4 secondary" />
 
-          <strong class="mb-3 d-inline-block">IMAGES</strong>
+          <strong class="mb-3 d-inline-block">IMAGENES</strong>
 
           <v-item-group
             v-model="image"
@@ -125,59 +127,6 @@
               </template>
             </v-item>
           </v-item-group>
-
-          <v-btn
-            block
-            class="mb-3"
-            color="success"
-            href="https://www.creative-tim.com/product/vuetify-material-dashboard"
-            default
-            rel="noopener"
-            target="_blank"
-          >
-            Free Download
-          </v-btn>
-
-          <v-btn
-            block
-            class="mb-3"
-            color="grey darken-1"
-            dark
-            href="https://vuetifyjs.com/components/api-explorer"
-            default
-            rel="noopener"
-            target="_blank"
-          >
-            Documentation
-          </v-btn>
-
-          <div class="my-12" />
-
-          <div>
-            <strong class="mb-3 d-inline-block">THANK YOU FOR SHARING!</strong>
-          </div>
-
-          <v-btn
-            class="ma-1"
-            color="#55acee"
-            dark
-            default
-            rounded
-          >
-            <v-icon>mdi-twitter</v-icon>
-            - 45
-          </v-btn>
-
-          <v-btn
-            class="ma-1"
-            color="#3b5998"
-            dark
-            default
-            rounded
-          >
-            <v-icon>mdi-facebook</v-icon>
-            - 50
-          </v-btn>
         </v-card-text>
       </v-card>
     </v-menu>
