@@ -17,12 +17,14 @@
             <v-toolbar flat>
               <v-toolbar-title
                 v-if="$vuetify.breakpoint.smAndUp"
-              >Usuarios</v-toolbar-title>
+              >
+                Usuarios
+              </v-toolbar-title>
               <v-divider
+                v-if="$vuetify.breakpoint.smAndUp"
                 class="mx-4"
                 inset
                 vertical
-                v-if="$vuetify.breakpoint.smAndUp"
               />
               <v-spacer />
               <v-text-field
