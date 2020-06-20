@@ -9,7 +9,8 @@ namespace InventarioCruzRoja.Profiles
     {
         public Profiles()
         {
-            CreateMap<UserDto, User>();
+            CreateMap<UserRegisterDto, User>();
+            CreateMap<UserEditDto, User>();
             CreateMap<UserLoginDto, User>();
             CreateMap<User, LoginResponseDto>()
                 .ForMember(dest =>
@@ -19,6 +20,8 @@ namespace InventarioCruzRoja.Profiles
                 .ForMember(dest =>
                 dest.Roles, opt => opt.MapFrom(x =>
                     x.UserRoles.Select(role => role.Role.Name)));
+
+            CreateMap<Role, RoleDto>().ReverseMap();
         }
     }
 }

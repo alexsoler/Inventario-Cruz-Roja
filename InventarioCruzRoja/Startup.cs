@@ -67,6 +67,7 @@ namespace InventarioCruzRoja
                 });
 
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IRolesRepository, RolesRepository>();
 
             services.AddSpaStaticFiles(configuration =>
             {
