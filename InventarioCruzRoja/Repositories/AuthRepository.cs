@@ -219,7 +219,7 @@ namespace InventarioCruzRoja.Repositories
             };
         }
 
-        public async Task EditUser(int id, UserDto user)
+        public async Task EditUser(int id, UserEditDto user)
         {
             var userToUpdate = await _context.Users.FindAsync(id);
 

@@ -29,8 +29,13 @@ namespace InventarioCruzRoja.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(UserDto request)
+        public async Task<IActionResult> Register(UserRegisterDto request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var user = _mapper.Map<User>(request);
             var response = await _authRepository.Register(user, request.Password);
 
@@ -48,8 +53,13 @@ namespace InventarioCruzRoja.Controllers
         }
 
         [HttpPut("Edit/{id}")]
-        public async Task<IActionResult> Edit(int id, UserDto request)
+        public async Task<IActionResult> Edit(int id, UserEditDto request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
             if (id != request.Id)
             {
                 return BadRequest();
