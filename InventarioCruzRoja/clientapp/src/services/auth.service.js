@@ -1,5 +1,4 @@
-import axios from 'axios'
-import authHeader from './auth-header'
+import axios from '../plugins/http'
 
 class AuthService {
   async login (user) {
@@ -20,9 +19,7 @@ class AuthService {
 
   async register (user) {
     try {
-      const { data } = await axios.post('/api/auth/register', user, {
-        headers: authHeader(),
-      })
+      const { data } = await axios.post('/api/auth/register', user)
 
       return data
     } catch (error) {
@@ -32,9 +29,7 @@ class AuthService {
 
   async edit (id, user) {
     try {
-      await axios.put(`/api/auth/edit/${id}`, user, {
-        headers: authHeader(),
-      })
+      await axios.put(`/api/auth/edit/${id}`, user)
 
       return true
     } catch (error) {
@@ -44,9 +39,7 @@ class AuthService {
 
   async delete (id) {
     try {
-      const { data } = await axios.delete(`/api/auth/delete/${id}`, {
-        headers: authHeader(),
-      })
+      const { data } = await axios.delete(`/api/auth/delete/${id}`)
 
       return data
     } catch (error) {
@@ -55,17 +48,13 @@ class AuthService {
   }
 
   async getAllRoles () {
-    const { data } = await axios.get('/api/auth/roles', {
-      headers: authHeader(),
-    })
+    const { data } = await axios.get('/api/auth/roles')
 
     return data
   }
 
   async getAllUsers () {
-    const { data } = await axios.get('/api/auth/users', {
-      headers: authHeader(),
-    })
+    const { data } = await axios.get('/api/auth/users')
 
     return data
   }
