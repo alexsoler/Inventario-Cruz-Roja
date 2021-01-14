@@ -3,41 +3,41 @@ import axios from '../plugins/http'
 class RolesService {
     async getAll () {
       try {
-        const { data } = await axios.get('/api/roles')
+        const response = await axios.get('/api/roles')
 
-        return data
+        return response
       } catch (error) {
-        return error.response.data
+        return error
       }
     }
 
     async create (role) {
       try {
-        const { data } = await axios.post('/api/roles', role)
+        const response = await axios.post('/api/roles', role)
 
-        return data
+        return response
       } catch (error) {
-        return error.response.data
+        return error
       }
     }
 
     async edit (id, role) {
       try {
-        const { data } = await axios.put(`/api/roles/${id}`, role)
+        const response = await axios.put(`/api/roles/${id}`, role)
 
-        return data
+        return response
       } catch (error) {
-        return error.response.data
+        return error
       }
     }
 
     async delete (id) {
       try {
-        const { data } = await axios.delete(`/api/roles/${id}`)
+        const response = await axios.delete(`/api/roles/${id}`)
 
-        return data
+        return response
       } catch (error) {
-        return error.response.data
+        return error
       }
     }
 }

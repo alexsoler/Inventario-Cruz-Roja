@@ -161,7 +161,7 @@
     methods: {
       async initialize () {
         const response = await RolesService.getAll()
-        if (response.success) {
+        if (response.status === 200) {
           this.roles = response.data
         }
       },
@@ -172,17 +172,17 @@
       },
       async deleteItem (item) {
         if (confirm('¿Esta seguro de que desea eliminar este registro?')) {
-          const { success, message } = await RolesService.delete(item.id)
+          const response = await RolesService.delete(item.id)
 
-          if (success) {
+          if (response.status === 200) {
             const index = this.roles.indexOf(item)
             this.roles.splice(index, 1)
             this.colorSnackbar = 'success'
+            this.messageSnackbar = 'Registro eliminado con exito'
           } else {
             this.colorSnackbar = 'error'
+            this.messageSnackbar = response.data
           }
-
-          this.messageSnackbar = message
           this.snackbar = true
         }
       },
@@ -197,25 +197,26 @@
         let message = ''
         this.isAjaxPetitionInProgress = true
         if (this.editedIndex > -1) {
-          const { success, message: messageResponse } = await RolesService.edit(this.editedItem.id, this.editedItem)
-          if (success) {
+          const response = await RolesService.edit(this.editedItem.id, this.editedItem)
+          if (response.status === 200) {
             Object.assign(this.roles[this.editedIndex], this.editedItem)
             this.colorSnackbar = 'success'
-            message = messageResponse
+            message = 'Registro editado con exito'
           } else {
             this.colorSnackbar = 'error'
-            message = messageResponse
+            message = response.data
           }
         } else {
-          const { data, success, message: messageResponse } = await RolesService.create(this.editedItem)
-          if (success) {
-            this.editedItem.id = data.id
+          const response = await RolesService.create(this.editedItem)
+          if (response.status === 200) {
+            this.editedItem.id = response.data.id
             this.roles.push(this.editedItem)
             this.colorSnackbar = 'success'
+            message = 'Registro creado con exito'
           } else {
             this.colorSnackbar = 'error'
+            message = response.data
           }
-          message = messageResponse
         }
         this.close()
         this.messageSnackbar = message

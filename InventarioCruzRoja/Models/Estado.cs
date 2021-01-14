@@ -1,8 +1,7 @@
 namespace InventarioCruzRoja.Models
 {
-    public class Estado
+    public class Estado : EntidadBase<int>
     {
-        public int Id { get; set; }
         public string Nombre { get; set; }
     }
 }
