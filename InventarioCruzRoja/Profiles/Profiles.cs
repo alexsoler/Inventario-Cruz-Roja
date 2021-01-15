@@ -22,6 +22,7 @@ namespace InventarioCruzRoja.Profiles
                     x.UserRoles.Select(role => role.Role.Name)));
 
             CreateMap<Role, RoleDto>().ReverseMap();
+            CreateMap<Fabricante, FabricanteDto>().ReverseMap();
         }
     }
 }
