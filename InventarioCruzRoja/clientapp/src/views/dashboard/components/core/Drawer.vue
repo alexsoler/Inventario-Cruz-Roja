@@ -118,6 +118,16 @@
           to: '/users',
         },
         {
+          icon: 'mdi-account-star',
+          title: 'Roles Usuario',
+          to: '/roles',
+        },
+        {
+          icon: 'mdi-tag',
+          title: 'Fabricantes',
+          to: '/fabricantes',
+        },
+        {
           title: 'rtables',
           icon: 'mdi-clipboard-outline',
           to: '/tables/regular-tables',

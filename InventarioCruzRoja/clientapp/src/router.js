@@ -34,6 +34,11 @@ export const router = new Router({
           component: () => import('@/views/dashboard/pages/Roles'),
         },
         {
+          name: 'Fabricantes',
+          path: 'fabricantes',
+          component: () => import('@/views/dashboard/pages/Fabricantes'),
+        },
+        {
           name: 'Notifications',
           path: 'components/notifications',
           component: () => import('@/views/dashboard/component/Notifications'),
