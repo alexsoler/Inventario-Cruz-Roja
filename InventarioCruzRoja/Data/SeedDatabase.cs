@@ -22,6 +22,12 @@ namespace InventarioCruzRoja.Data
                     new Role { Name = "employee" }
                 );
 
+            if (!await _db.Estados.AnyAsync())
+                _db.Estados.AddRange(
+                    new Estado { Nombre = "Activo" },
+                    new Estado { Nombre = "Inactivo" }
+                );
+
             await _db.SaveChangesAsync();
 
             var resultCreateUser1 = await _authRepository.Register(new User { Username = "demouser" }, "Password");
