@@ -208,7 +208,7 @@
           }
         } else {
           const response = await RolesService.create(this.editedItem)
-          if (response.status === 200) {
+          if (response.status === 201) {
             this.editedItem.id = response.data.id
             this.roles.push(this.editedItem)
             this.colorSnackbar = 'success'
