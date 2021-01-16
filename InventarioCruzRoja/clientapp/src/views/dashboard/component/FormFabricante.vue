@@ -22,7 +22,7 @@
             v-model="fabricante.nombre"
             label="Nombre"
             name="nombre"
-            prepend-icon="mdi-account"
+            prepend-icon="mdi-tag"
             type="text"
             :error-messages="errors"
           />
