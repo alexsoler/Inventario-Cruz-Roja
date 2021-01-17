@@ -16,6 +16,7 @@ namespace InventarioCruzRoja.Data.EntityConfigurations
             builder.Property(x => x.Nombre).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Stock).IsRequired();
             builder.Property(x => x.Presentacion).HasMaxLength(100);
+            builder.Property(x => x.Observaciones).HasMaxLength(1000);
             builder.Property(x => x.Modelo).HasMaxLength(100);
             builder.Property(x => x.ImagenUrl).HasMaxLength(200);
             builder.Property(x => x.EstadoId).IsRequired();

@@ -1,0 +1,28 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace InventarioCruzRoja.Dtos
+{
+    public class ProductoDto
+    {
+        public string Id { get; set; }
+        [Required, StringLength(200)]
+        public string Nombre { get; set; }
+        [StringLength(100)]
+        public string Modelo { get; set; }
+        [StringLength(100)]
+        public string Presentacion { get; set; }
+        [StringLength(500)]
+        public string Descripcion { get; set; }
+        [StringLength(1000)]
+        public string Observaciones { get; set; }
+        public int FabricanteId { get; set; }
+        public int SedeId { get; set; }
+        public int EstadoId { get; set; }
+        [Required]
+        public decimal Costo { get; set; }
+        [Required]
+        public int Stock { get; set; }
+        [StringLength(200)]
+        public string ImagenUrl { get; set; }
+    }
+}
