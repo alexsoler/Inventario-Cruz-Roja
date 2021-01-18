@@ -21,6 +21,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using VueCliMiddleware;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace InventarioCruzRoja
 {
@@ -94,6 +96,10 @@ namespace InventarioCruzRoja
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "Resources")),
+                RequestPath = new Microsoft.AspNetCore.Http.PathString("/Resources")
+            });
             app.UseSpaStaticFiles();
 
             app.UseRouting();
