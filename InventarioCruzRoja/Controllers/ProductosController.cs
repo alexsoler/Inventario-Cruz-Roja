@@ -30,7 +30,7 @@ namespace InventarioCruzRoja.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductoDto>>> GetProductos()
         {
-            var response = await _repository.GetAll();
+            var response = await _repository.GetAll("Estado", "Fabricante", "Sede");
             return Ok(_mapper.Map<IEnumerable<ProductoDto>>(response.Data));
         }
 
@@ -60,6 +60,16 @@ namespace InventarioCruzRoja.Controllers
             {
                 return BadRequest();
             }
+
+            var file = Request.Form.Files[0];
+
+            if (file.Length > 0)
+            {
+                var responseImagen = await _repository.GuardarImagen(file);
+                producto.ImagenUrl = responseImagen.Data;
+            }
+
+            producto.UsuarioModifica = User.Identity.Name;
             
             var response = await _repository.Update(_mapper.Map<Producto>(producto));
 
@@ -80,6 +90,7 @@ namespace InventarioCruzRoja.Controllers
             var responseImagen = await _repository.GuardarImagen(file);
 
             producto.ImagenUrl = responseImagen.Data;
+            producto.UsuarioModifica = User.Identity.Name;
 
             var response = await _repository.Add(_mapper.Map<Producto>(producto));
 

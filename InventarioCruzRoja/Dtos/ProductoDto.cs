@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace InventarioCruzRoja.Dtos
@@ -15,8 +16,11 @@ namespace InventarioCruzRoja.Dtos
         public string Descripcion { get; set; }
         [StringLength(1000)]
         public string Observaciones { get; set; }
+        public string Fabricante { get; set; }
         public int FabricanteId { get; set; }
+        public string Sede { get; set; }
         public int SedeId { get; set; }
+        public string Estado { get; set; }
         public int EstadoId { get; set; }
         [Required]
         public decimal Costo { get; set; }
@@ -24,5 +28,7 @@ namespace InventarioCruzRoja.Dtos
         public int Stock { get; set; }
         [StringLength(200)]
         public string ImagenUrl { get; set; }
+        public string UsuarioModifica { get; set; }
+        public DateTime FechaModificacion { get; set; }
     }
 }

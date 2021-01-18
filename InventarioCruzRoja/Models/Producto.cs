@@ -18,6 +18,9 @@ namespace InventarioCruzRoja.Models
         public decimal Costo { get; set; }
         public int Stock { get; set; }
         public string ImagenUrl { get; set; }
+        public DateTime FechaCreacion { get; set; }
+        public DateTime FechaModificacion { get; set; }
+        public string UsuarioModifica { get; set; }
         public Estado Estado { get; set; }
         public Fabricante Fabricante { get; set; }
         public Sede Sede { get; set; }
