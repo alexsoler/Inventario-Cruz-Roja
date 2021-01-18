@@ -13,8 +13,8 @@ namespace InventarioCruzRoja.Repositories
     public class BaseRepository<T, E> : IBaseRepository<T> 
         where T : EntidadBase<E>
     {  
-        private readonly DataContext _context;
-        private readonly ILogger<BaseRepository<T,E>> _logger;
+        protected readonly DataContext _context;
+        protected readonly ILogger<BaseRepository<T,E>> _logger;
 
         public BaseRepository(DataContext context,
             ILogger<BaseRepository<T,E>> logger)
@@ -23,7 +23,7 @@ namespace InventarioCruzRoja.Repositories
             _logger = logger;
         }
 
-        public async Task<ServiceResponse<T>> Add(T entity)
+        public virtual async Task<ServiceResponse<T>> Add(T entity)
         {
             var response = new ServiceResponse<T>();
 
@@ -47,7 +47,7 @@ namespace InventarioCruzRoja.Repositories
             }
         }
 
-        public async Task<ServiceResponse<T>> Delete(object id)
+        public virtual async Task<ServiceResponse<T>> Delete(object id)
         {
             var response = new ServiceResponse<T>();
 
@@ -80,7 +80,7 @@ namespace InventarioCruzRoja.Repositories
             }
         }
 
-        public async Task<ServiceResponse<T>> Get(object id)
+        public virtual async Task<ServiceResponse<T>> Get(object id)
         {
             var response = new ServiceResponse<T>();
 
@@ -99,13 +99,16 @@ namespace InventarioCruzRoja.Repositories
             return response;
         }
 
-        public async Task<ServiceResponse<IEnumerable<T>>> GetAll()
+        public virtual async Task<ServiceResponse<IEnumerable<T>>> GetAll(params string[] includes)
         {
             var response = new ServiceResponse<IEnumerable<T>>();
             
             try
             {
-                var entidades = await _context.Set<T>().AsNoTracking().ToListAsync();
+
+                var query = _context.Set<T>().AsNoTracking();
+                query = includes.Aggregate(query, (query, path) => query.Include(path));
+                var entidades = await query.ToListAsync();
 
                 response.Message = "Lista de registros obtenida con exito";
                 response.Data = entidades;
