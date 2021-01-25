@@ -24,8 +24,8 @@ import i18n from './i18n'
 Vue.config.productionTip = false
 
 Vue.filter('currency', function (value) {
-  return 'L. ' + parseFloat(value).toFixed(2);
-});
+  return 'L. ' + parseFloat(value).toFixed(2)
+})
 
 new Vue({
   router,

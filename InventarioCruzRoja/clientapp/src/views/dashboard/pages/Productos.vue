@@ -38,22 +38,28 @@
                 inset
                 vertical
               />
-                  <v-btn
-                    color="primary"
-                    dark
-                  >
-                    Nuevo Producto
-                    <v-icon dark>
-                      mdi-plus
-                    </v-icon>
-                  </v-btn>
+              <v-btn
+                color="primary"
+                dark
+                :to="{ name: 'AgregarProducto' }"
+              >
+                Nuevo Producto
+                <v-icon dark>
+                  mdi-plus
+                </v-icon>
+              </v-btn>
             </v-toolbar>
           </template>
           <template v-slot:item.costo="{ item }">
-              {{ item.costo | currency }}
+            {{ item.costo | currency }}
           </template>
           <template v-slot:item.imagenUrl="{ item }">
-              <img :src="item.imagenUrl" alt="Producto Imagen" class="img-rounded" width="60">
+            <img
+              :src="item.imagenUrl"
+              alt="Producto Imagen"
+              class="img-rounded"
+              width="60"
+            >
           </template>
           <template v-slot:item.estadoId="{ item }">
             <v-chip
