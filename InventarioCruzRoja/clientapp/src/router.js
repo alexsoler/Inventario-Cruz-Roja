@@ -44,6 +44,22 @@ export const router = new Router({
           component: () => import('@/views/dashboard/pages/Sedes'),
         },
         {
+          name: 'Productos',
+          path: 'productos',
+          component: () => import('@/views/dashboard/pages/Productos'),
+        },
+        {
+          name: 'AgregarProducto',
+          path: 'productos/agregar',
+          component: () => import('@/views/dashboard/pages/Producto'),
+        },
+        {
+          name: 'EditarProducto',
+          path: 'productos/editar/:id',
+          component: () => import('@/views/dashboard/pages/Producto'),
+          props: true,
+        },
+        {
           name: 'Notifications',
           path: 'components/notifications',
           component: () => import('@/views/dashboard/component/Notifications'),
