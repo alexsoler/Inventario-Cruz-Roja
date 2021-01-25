@@ -54,7 +54,7 @@ namespace InventarioCruzRoja.Repositories
 
             if (response.Success)
             {
-                var fileToDelete = Path.Combine(_environment.WebRootPath, response.Data.ImagenUrl);
+                var fileToDelete = Path.Combine(_environment.ContentRootPath, response.Data.ImagenUrl);
 
                 if (File.Exists(fileToDelete))
                     File.Delete(fileToDelete);
