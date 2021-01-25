@@ -97,7 +97,7 @@ namespace InventarioCruzRoja
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "Resources")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Resources")),
                 RequestPath = new Microsoft.AspNetCore.Http.PathString("/Resources")
             });
             app.UseSpaStaticFiles();
