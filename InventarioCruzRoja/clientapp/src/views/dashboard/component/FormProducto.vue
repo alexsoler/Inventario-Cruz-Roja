@@ -5,7 +5,7 @@
   >
     <base-material-card>
       <template v-slot:heading>
-        <div class="display-2 font-weight-light">
+        <div class="text-h3 font-weight-light">
           {{ modeEdit ? "Editar" : "Registrar" }} Producto
         </div>
       </template>
@@ -15,7 +15,7 @@
       >
         <v-container class="py-0">
           <v-row>
-            <v-col md="4">
+            <v-col md="6">
               <validation-provider
                 v-slot="{errors}"
                 name="codigo"
@@ -31,7 +31,7 @@
                 />
               </validation-provider>
             </v-col>
-            <v-col md="4">
+            <v-col md="6">
               <validation-provider
                 v-slot="{errors}"
                 name="nombre"
@@ -49,7 +49,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col md="4">
+            <v-col md="6">
               <validation-provider
                 v-slot="{errors}"
                 name="modelo"
@@ -65,7 +65,7 @@
                 />
               </validation-provider>
             </v-col>
-            <v-col md="4">
+            <v-col md="6">
               <validation-provider
                 v-slot="{errors}"
                 name="presentacion"
@@ -100,22 +100,103 @@
               </validation-provider>
             </v-col>
           </v-row>
-          <validation-provider
-            v-slot="{errors}"
-            name="estado"
-            rules="required"
-          >
-            <v-select
-              v-model="producto.estadoId"
-              :items="estados"
-              item-text="nombre"
-              item-value="id"
-              chips
-              label="Estado"
-              outlined
-              :error-messages="errors"
-            />
-          </validation-provider>
+          <v-row>
+            <v-col
+              cols="12"
+              sm="4"
+            >
+              <validation-provider
+                v-slot="{errors}"
+                name="fabricante"
+                rules="required"
+              >
+                <v-select
+                  v-model="producto.fabricanteId"
+                  :items="fabricantesGetter"
+                  item-text="nombre"
+                  item-value="id"
+                  label="Fabricante"
+                  outlined
+                  :error-messages="errors"
+                />
+              </validation-provider>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="4"
+            >
+              <validation-provider
+                v-slot="{errors}"
+                name="sede"
+                rules="required"
+              >
+                <v-select
+                  v-model="producto.sedeId"
+                  :items="sedesGetter"
+                  item-text="nombre"
+                  item-value="id"
+                  label="Sede"
+                  outlined
+                  :error-messages="errors"
+                />
+              </validation-provider>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="4"
+            >
+              <validation-provider
+                v-slot="{errors}"
+                name="estado"
+                rules="required"
+              >
+                <v-select
+                  v-model="producto.estadoId"
+                  :items="estadosGetter"
+                  item-text="nombre"
+                  item-value="id"
+                  label="Estado"
+                  outlined
+                  :error-messages="errors"
+                />
+              </validation-provider>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col md="6">
+              <validation-provider
+                v-slot="{errors}"
+                name="Costo"
+                rules="required"
+              >
+                <v-text-field
+                  v-model="producto.costo"
+                  label="Costo"
+                  name="costo"
+                  prepend-icon="mdi-cash"
+                  type="number"
+                  prefix="L."
+                  :error-messages="errors"
+                />
+              </validation-provider>
+            </v-col>
+            <v-col md="6">
+              <validation-provider
+                v-slot="{errors}"
+                name="stock"
+                rules="required"
+              >
+                <v-text-field
+                  v-model="producto.stock"
+                  label="Stock"
+                  name="stock"
+                  prepend-icon="mdi-view-grid"
+                  type="number"
+                  :error-messages="errors"
+                />
+              </validation-provider>
+            </v-col>
+          </v-row>
         </v-container>
       </v-form>
       <template v-slot:actions>
@@ -135,16 +216,7 @@
           :small="$vuetify.breakpoint.xsOnly"
           @click="reset"
         >
-          Reset
-        </v-btn>
-        <v-spacer />
-        <v-btn
-          color="success darken-1"
-          text
-          :small="$vuetify.breakpoint.xsOnly"
-          @click="close"
-        >
-          Cerrar
+          Restablecer
         </v-btn>
       </template>
     </base-material-card>
@@ -152,9 +224,15 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     props: {
       modeEdit: {
+        type: Boolean,
+        default: false,
+      },
+      ajaxInProgress: {
         type: Boolean,
         default: false,
       },
@@ -181,6 +259,17 @@
     data () {
       return {
       }
+    },
+    computed: {
+      ...mapGetters(['estadosGetter', 'fabricantesGetter', 'sedesGetter']),
+    },
+    methods: {
+      save () {
+
+      },
+      reset () {
+
+      },
     },
   }
 </script>

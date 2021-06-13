@@ -5,7 +5,7 @@
   >
     <base-material-card>
       <template v-slot:heading>
-        <div class="display-2 font-weight-light">
+        <div class="text-h3 font-weight-light">
           {{ modeEdit ? "Editar" : "Crear" }} Role
         </div>
       </template>
@@ -45,7 +45,7 @@
           :small="$vuetify.breakpoint.xsOnly"
           @click="reset"
         >
-          Reset
+          Restablecer
         </v-btn>
         <v-spacer />
         <v-btn

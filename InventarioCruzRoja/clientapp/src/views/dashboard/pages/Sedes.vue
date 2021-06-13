@@ -126,6 +126,7 @@
 <script>
   import FormSede from '../component/FormSede'
   import SedesService from '@/services/sedes.service'
+  import { mapActions } from 'vuex'
 
   export default {
     components: {
@@ -173,6 +174,7 @@
       this.initialize()
     },
     methods: {
+      ...mapActions(['obtenerSedes']),
       async initialize () {
         const response = await SedesService.getAll()
         if (response.status === 200) {
@@ -185,19 +187,36 @@
         this.dialog = true
       },
       async deleteItem (item) {
-        if (confirm('¿Esta seguro de que desea eliminar este registro?')) {
+        const result = await this.$swal({
+          title: '¿Esta seguro de que desea eliminar este registro?',
+          text: '¡No podrás revertir esto!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí',
+          cancelButtonText: 'No',
+        })
+
+        if (result.isConfirmed) {
           const response = await SedesService.delete(item.id)
 
           if (response.status === 200) {
             const index = this.sedes.indexOf(item)
             this.sedes.splice(index, 1)
-            this.colorSnackbar = 'success'
-            this.messageSnackbar = 'Registro eliminado con exito'
+            this.$swal.fire(
+              '¡Eliminado!',
+              'Su registro ha sido eliminado.',
+              'success',
+            )
+            this.obtenerSedes()
           } else {
-            this.colorSnackbar = 'error'
-            this.messageSnackbar = response.data
+            this.$swal.fire(
+              '¡Error!',
+              response.data,
+              'error',
+            )
           }
-          this.snackbar = true
         }
       },
       close () {
@@ -208,33 +227,44 @@
         })
       },
       async save () {
-        let message = ''
         this.isAjaxPetitionInProgress = true
         if (this.editedIndex > -1) {
           const response = await SedesService.edit(this.editedItem.id, this.editedItem)
           if (response.status === 200) {
             Object.assign(this.sedes[this.editedIndex], this.editedItem)
-            this.colorSnackbar = 'success'
-            message = 'Registro editado con exito'
+            this.$swal.fire(
+              '¡Exito!',
+              'Su registro ha sido editado.',
+              'success',
+            )
+            this.obtenerSedes()
           } else {
-            this.colorSnackbar = 'error'
-            message = response.data
+            this.$swal.fire(
+              '¡Error!',
+              response.data,
+              'error',
+            )
           }
         } else {
           const response = await SedesService.create(this.editedItem)
           if (response.status === 201) {
             this.editedItem.id = response.data.id
             this.sedes.push(this.editedItem)
-            this.colorSnackbar = 'success'
-            message = 'Registro creado con exito'
+            this.$swal.fire(
+              '¡Exito!',
+              'Su registro ha sido creado.',
+              'success',
+            )
+            this.obtenerSedes()
           } else {
-            this.colorSnackbar = 'error'
-            message = response.data
+            this.$swal.fire(
+              '¡Error!',
+              response.data,
+              'error',
+            )
           }
         }
         this.close()
-        this.messageSnackbar = message
-        this.snackbar = true
         this.isAjaxPetitionInProgress = false
       },
       getColor (estadoId) {

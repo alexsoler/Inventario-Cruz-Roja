@@ -171,19 +171,35 @@
         this.dialog = true
       },
       async deleteItem (item) {
-        if (confirm('¿Esta seguro de que desea eliminar este registro?')) {
+        const result = await this.$swal({
+          title: '¿Esta seguro de que desea eliminar este registro?',
+          text: '¡No podrás revertir esto!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí',
+          cancelButtonText: 'No',
+        })
+
+        if (result.isConfirmed) {
           const response = await RolesService.delete(item.id)
 
           if (response.status === 200) {
             const index = this.roles.indexOf(item)
             this.roles.splice(index, 1)
-            this.colorSnackbar = 'success'
-            this.messageSnackbar = 'Registro eliminado con exito'
+            this.$swal.fire(
+              '¡Eliminado!',
+              'Su registro ha sido eliminado.',
+              'success',
+            )
           } else {
-            this.colorSnackbar = 'error'
-            this.messageSnackbar = response.data
+            this.$swal.fire(
+              '¡Error!',
+              response.data,
+              'error',
+            )
           }
-          this.snackbar = true
         }
       },
       close () {
@@ -194,33 +210,42 @@
         })
       },
       async save () {
-        let message = ''
         this.isAjaxPetitionInProgress = true
         if (this.editedIndex > -1) {
           const response = await RolesService.edit(this.editedItem.id, this.editedItem)
           if (response.status === 200) {
             Object.assign(this.roles[this.editedIndex], this.editedItem)
-            this.colorSnackbar = 'success'
-            message = 'Registro editado con exito'
+            this.$swal.fire(
+              '¡Exito!',
+              'Su registro ha sido editado.',
+              'success',
+            )
           } else {
-            this.colorSnackbar = 'error'
-            message = response.data
+            this.$swal.fire(
+              '¡Error!',
+              response.data,
+              'error',
+            )
           }
         } else {
           const response = await RolesService.create(this.editedItem)
           if (response.status === 201) {
             this.editedItem.id = response.data.id
             this.roles.push(this.editedItem)
-            this.colorSnackbar = 'success'
-            message = 'Registro creado con exito'
+            this.$swal.fire(
+              '¡Exito!',
+              'Su registro ha sido creado.',
+              'success',
+            )
           } else {
-            this.colorSnackbar = 'error'
-            message = response.data
+            this.$swal.fire(
+              '¡Error!',
+              response.data,
+              'error',
+            )
           }
         }
         this.close()
-        this.messageSnackbar = message
-        this.snackbar = true
         this.isAjaxPetitionInProgress = false
       },
     },

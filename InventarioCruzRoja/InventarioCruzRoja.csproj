@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="clientapp\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
 
   <PropertyGroup>

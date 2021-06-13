@@ -39,7 +39,7 @@
 
         <v-list-item-content>
           <v-list-item-title
-            class="display-1"
+            class="text-h4"
             v-text="profile.title"
           />
         </v-list-item-content>
@@ -133,9 +133,9 @@
           to: '/sedes',
         },
         {
-          title: 'rtables',
-          icon: 'mdi-clipboard-outline',
-          to: '/tables/regular-tables',
+          icon: 'mdi-package-variant',
+          title: 'Productos',
+          to: '/productos',
         },
         {
           title: 'typography',

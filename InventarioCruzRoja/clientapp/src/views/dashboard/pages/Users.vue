@@ -187,19 +187,35 @@
         this.dialog = true
       },
       async deleteItem (item) {
-        if (confirm('¿Esta seguro de que desea eliminar este registro?')) {
+        const result = await this.$swal({
+          title: '¿Esta seguro de que desea eliminar este registro?',
+          text: '¡No podrás revertir esto!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí',
+          cancelButtonText: 'No',
+        })
+
+        if (result.isConfirmed) {
           const { success, message } = await AuthService.delete(item.id)
 
           if (success) {
             const index = this.users.indexOf(item)
             this.users.splice(index, 1)
-            this.colorSnackbar = 'success'
+            this.$swal.fire(
+              '¡Eliminado!',
+              'Su registro ha sido eliminado.',
+              'success',
+            )
           } else {
-            this.colorSnackbar = 'error'
+            this.$swal.fire(
+              '¡Error!',
+              message,
+              'error',
+            )
           }
-
-          this.messageSnackbar = message
-          this.snackbar = true
         }
       },
       close () {
@@ -210,31 +226,41 @@
         })
       },
       async save (password) {
-        let message = ''
         this.isAjaxPetitionInProgress = true
         if (this.editedIndex > -1) {
           if (await AuthService.edit(this.editedItem.id, { ...this.editedItem, password })) {
             Object.assign(this.users[this.editedIndex], this.editedItem)
-            this.colorSnackbar = 'success'
-            message = 'Se edito el usuario con exito.'
+            this.$swal.fire(
+              '¡Exito!',
+              'Su registro ha sido editado.',
+              'success',
+            )
           } else {
-            this.colorSnackbar = 'error'
-            message = 'No se pudo editar el usuario.'
+            this.$swal.fire(
+              '¡Error!',
+              'No se pudo editar el usuario.',
+              'error',
+            )
           }
         } else {
           const { data, success, message: messageResponse } = await AuthService.register({ ...this.editedItem, password })
           if (success) {
             this.editedItem.id = data
             this.users.push({ ...this.editedItem })
-            this.colorSnackbar = 'success'
+            this.$swal.fire(
+              '¡Exito!',
+              'Su registro ha sido creado.',
+              'success',
+            )
           } else {
-            this.colorSnackbar = 'error'
+            this.$swal.fire(
+              '¡Error!',
+              messageResponse,
+              'error',
+            )
           }
-          message = messageResponse
         }
         this.close()
-        this.messageSnackbar = message
-        this.snackbar = true
         this.isAjaxPetitionInProgress = false
       },
     },
