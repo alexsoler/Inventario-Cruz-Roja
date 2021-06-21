@@ -21,9 +21,19 @@ class ProductosService {
       }
     }
 
-    async create (producto) {
+    async create (producto, imagen) {
       try {
-        const response = await axios.post('/api/productos', producto)
+        const formData = new FormData()
+        Object.entries(producto).forEach(([key, value]) => {
+          formData.append(key, value)
+        })
+
+        formData.append('file', imagen)
+        const response = await axios.post('/api/productos', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
 
         return response
       } catch (error) {

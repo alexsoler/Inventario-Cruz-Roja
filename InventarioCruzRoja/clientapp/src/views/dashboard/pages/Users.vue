@@ -108,7 +108,7 @@
               color="primary"
               @click="initialize"
             >
-              Reset
+              Reiniciar
             </v-btn>
           </template>
         </v-data-table>

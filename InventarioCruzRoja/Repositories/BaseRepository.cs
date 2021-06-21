@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace InventarioCruzRoja.Repositories
 
                 return response;   
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 _logger.LogError("No se pudo agregar el registro", ex);
                 response.Success = false;
@@ -70,7 +71,7 @@ namespace InventarioCruzRoja.Repositories
 
                 return response;   
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 _logger.LogError("No se pudo eliminar el registro", ex);
                 response.Success = false;
@@ -115,7 +116,7 @@ namespace InventarioCruzRoja.Repositories
 
                 return response;
             }
-            catch (DbUpdateException ex)
+            catch (Exception ex)
             {
                 _logger.LogError("Ocurrio un error al momento de obtener todos los registros", ex);
                 response.Success = false;

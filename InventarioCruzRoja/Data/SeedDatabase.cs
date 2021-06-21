@@ -28,6 +28,16 @@ namespace InventarioCruzRoja.Data
                     new Estado { Nombre = "Inactivo" }
                 );
 
+            if (!await _db.Fabricantes.AnyAsync())
+                _db.Fabricantes.AddRange(
+                    new Fabricante { Nombre = "EDUP", EstadoId = 1 }
+                );
+
+            if (!await _db.Sedes.AnyAsync())
+                _db.Sedes.AddRange(
+                    new Sede { Nombre = "Comayagua", EstadoId = 1, Direccion = "Meh" }
+                );
+
             await _db.SaveChangesAsync();
 
             var resultCreateUser1 = await _authRepository.Register(new User { Username = "demouser" }, "Password");

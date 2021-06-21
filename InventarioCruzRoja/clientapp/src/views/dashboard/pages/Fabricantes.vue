@@ -103,7 +103,7 @@
               color="primary"
               @click="initialize"
             >
-              Reset
+              Reiniciar
             </v-btn>
           </template>
         </v-data-table>
@@ -174,7 +174,7 @@
       ...mapActions(['obtenerFabricantes']),
       async initialize () {
         const response = await FabricantesService.getAll()
-        if (response.status === 200) {
+        if (response.status >= 200 && response.status <= 299) {
           this.fabricantes = response.data
         }
       },
@@ -198,7 +198,7 @@
         if (result.isConfirmed) {
           const response = await FabricantesService.delete(item.id)
 
-          if (response.status === 200) {
+          if (response.status >= 200 && response.status <= 299) {
             const index = this.fabricantes.indexOf(item)
             this.fabricantes.splice(index, 1)
             this.$swal.fire(
@@ -227,7 +227,7 @@
         this.isAjaxPetitionInProgress = true
         if (this.editedIndex > -1) {
           const response = await FabricantesService.edit(this.editedItem.id, this.editedItem)
-          if (response.status === 200) {
+          if (response.status >= 200 && response.status <= 299) {
             Object.assign(this.fabricantes[this.editedIndex], this.editedItem)
             this.$swal.fire(
               '¡Exito!',

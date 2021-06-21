@@ -45,7 +45,7 @@
           :small="$vuetify.breakpoint.xsOnly"
           @click="reset"
         >
-          Restablecer
+          Reiniciar
         </v-btn>
         <v-spacer />
         <v-btn

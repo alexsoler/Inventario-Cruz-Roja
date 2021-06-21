@@ -30,9 +30,9 @@ namespace InventarioCruzRoja.Profiles
                     dest.Estado, opt => opt.MapFrom(x => x.Estado.Nombre))
                 .ForMember(dest =>
                     dest.Fabricante, opt => opt.MapFrom(x => x.Fabricante.Nombre))
-                .ForMember(dest => 
-                    dest.Sede, opt => opt.MapFrom(x => x.Sede.Nombre))
-                .ReverseMap();
+                .ForMember(dest =>
+                    dest.Sede, opt => opt.MapFrom(x => x.Sede.Nombre));
+            CreateMap<ProductoDto, Producto>();
         }
     }
 }

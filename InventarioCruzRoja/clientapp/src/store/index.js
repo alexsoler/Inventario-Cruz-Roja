@@ -43,14 +43,14 @@ export default new Vuex.Store({
       state.fabricantes = payload
     },
     SET_SEDES (state, payload) {
-      state.sede = payload
+      state.sedes = payload
     },
   },
   actions: {
     async obtenerEstados ({ commit }) {
       let estados = []
       const response = await EstadosService.getAll()
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status <= 299) {
         estados = response.data
       }
       commit('SET_ESTADOS', estados)
@@ -58,7 +58,7 @@ export default new Vuex.Store({
     async obtenerFabricantes ({ commit }) {
       let fabricantes = []
       const response = await FabricantesService.getAll()
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status <= 299) {
         fabricantes = response.data
       }
       commit('SET_FABRICANTES', fabricantes)
@@ -66,7 +66,7 @@ export default new Vuex.Store({
     async obtenerSedes ({ commit }) {
       let sedes = []
       const response = await SedesService.getAll()
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status <= 299) {
         sedes = response.data
       }
       commit('SET_SEDES', sedes)

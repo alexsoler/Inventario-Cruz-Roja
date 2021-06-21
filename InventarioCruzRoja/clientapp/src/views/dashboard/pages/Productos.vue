@@ -66,7 +66,7 @@
               :color="getColor(item.estadoId)"
               dark
             >
-              {{ getEstado(item.estado) }}
+              {{ item.estado }}
             </v-chip>
           </template>
           <template v-slot:item.actions="{ item }">
@@ -99,7 +99,7 @@
               color="primary"
               @click="initialize"
             >
-              Reset
+              Reiniciar
             </v-btn>
           </template>
         </v-data-table>
@@ -151,7 +151,7 @@
     methods: {
       async initialize () {
         const response = await ProductosService.getAll()
-        if (response.status === 200) {
+        if (response.status >= 200 && response.status <= 299) {
           this.productos = response.data
         }
       },
@@ -159,7 +159,7 @@
         if (confirm('¿Esta seguro de que desea eliminar este registro?')) {
           const response = await ProductosService.delete(item.id)
 
-          if (response.status === 200) {
+          if (response.status >= 200 && response.status <= 299) {
             const index = this.productos.indexOf(item)
             this.productos.splice(index, 1)
             this.colorSnackbar = 'success'

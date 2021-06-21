@@ -20,58 +20,58 @@ export const router = new Router({
         // Pages
         {
           name: 'User Profile',
-          path: 'pages/user',
+          path: '/pages/user',
           component: () => import('@/views/dashboard/pages/UserProfile'),
         },
         {
           name: 'Users',
-          path: 'users',
+          path: '/users',
           component: () => import('@/views/dashboard/pages/Users'),
         },
         {
           name: 'Roles',
-          path: 'roles',
+          path: '/roles',
           component: () => import('@/views/dashboard/pages/Roles'),
         },
         {
           name: 'Fabricantes',
-          path: 'fabricantes',
+          path: '/fabricantes',
           component: () => import('@/views/dashboard/pages/Fabricantes'),
         },
         {
           name: 'Sedes',
-          path: 'sedes',
+          path: '/sedes',
           component: () => import('@/views/dashboard/pages/Sedes'),
         },
         {
           name: 'Productos',
-          path: 'productos',
+          path: '/productos',
           component: () => import('@/views/dashboard/pages/Productos'),
         },
         {
           name: 'AgregarProducto',
-          path: 'productos/agregar',
+          path: '/productos/agregar',
           component: () => import('@/views/dashboard/pages/Producto'),
         },
         {
           name: 'EditarProducto',
-          path: 'productos/editar/:id',
+          path: '/productos/editar/:id',
           component: () => import('@/views/dashboard/pages/Producto'),
           props: true,
         },
         {
           name: 'Notifications',
-          path: 'components/notifications',
+          path: '/components/notifications',
           component: () => import('@/views/dashboard/component/Notifications'),
         },
         {
           name: 'Icons',
-          path: 'components/icons',
+          path: '/components/icons',
           component: () => import('@/views/dashboard/component/Icons'),
         },
         {
           name: 'Typography',
-          path: 'components/typography',
+          path: '/components/typography',
           component: () => import('@/views/dashboard/component/Typography'),
         },
         // Tables

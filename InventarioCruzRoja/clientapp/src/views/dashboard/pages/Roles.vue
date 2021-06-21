@@ -95,7 +95,7 @@
               color="primary"
               @click="initialize"
             >
-              Reset
+              Reiniciar
             </v-btn>
           </template>
         </v-data-table>
@@ -161,7 +161,7 @@
     methods: {
       async initialize () {
         const response = await RolesService.getAll()
-        if (response.status === 200) {
+        if (response.status >= 200 && response.status <= 299) {
           this.roles = response.data
         }
       },
@@ -185,7 +185,7 @@
         if (result.isConfirmed) {
           const response = await RolesService.delete(item.id)
 
-          if (response.status === 200) {
+          if (response.status >= 200 && response.status <= 299) {
             const index = this.roles.indexOf(item)
             this.roles.splice(index, 1)
             this.$swal.fire(
@@ -213,7 +213,7 @@
         this.isAjaxPetitionInProgress = true
         if (this.editedIndex > -1) {
           const response = await RolesService.edit(this.editedItem.id, this.editedItem)
-          if (response.status === 200) {
+          if (response.status >= 200 && response.status <= 299) {
             Object.assign(this.roles[this.editedIndex], this.editedItem)
             this.$swal.fire(
               '¡Exito!',

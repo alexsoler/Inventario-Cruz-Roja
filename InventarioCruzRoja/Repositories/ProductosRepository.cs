@@ -38,7 +38,7 @@ namespace InventarioCruzRoja.Repositories
 
             var response = await base.Update(entity);
 
-            var fileToDelete = Path.Combine(_environment.WebRootPath, urlImagenPrevia);
+            var fileToDelete = Path.Combine(_environment.ContentRootPath, urlImagenPrevia);
 
             if (File.Exists(fileToDelete) && response.Success && urlImagenPrevia != entity.ImagenUrl)
             {
@@ -69,7 +69,8 @@ namespace InventarioCruzRoja.Repositories
             try
             {
                 var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(_environment.WebRootPath, folderName);
+                var pathToSave = Path.Combine(_environment.ContentRootPath, folderName);
+                Directory.CreateDirectory(pathToSave);
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
@@ -90,7 +91,7 @@ namespace InventarioCruzRoja.Repositories
 
                 return response;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 response.Success = false;
                 response.Data = string.Empty;

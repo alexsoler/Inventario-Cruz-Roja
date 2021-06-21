@@ -170,7 +170,7 @@
                 rules="required"
               >
                 <v-text-field
-                  v-model="producto.costo"
+                  v-model.number="producto.costo"
                   label="Costo"
                   name="costo"
                   prepend-icon="mdi-cash"
@@ -187,7 +187,7 @@
                 rules="required"
               >
                 <v-text-field
-                  v-model="producto.stock"
+                  v-model.number="producto.stock"
                   label="Stock"
                   name="stock"
                   prepend-icon="mdi-view-grid"
@@ -216,7 +216,7 @@
           :small="$vuetify.breakpoint.xsOnly"
           @click="reset"
         >
-          Restablecer
+          Reiniciar
         </v-btn>
       </template>
     </base-material-card>
@@ -265,10 +265,11 @@
     },
     methods: {
       save () {
-
+        this.$emit('onSave', this.producto)
       },
       reset () {
-
+        this.$refs.form.reset()
+        this.$refs.observerValidate.reset()
       },
     },
   }

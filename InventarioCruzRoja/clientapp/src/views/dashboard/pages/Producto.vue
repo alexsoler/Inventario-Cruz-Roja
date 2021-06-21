@@ -7,8 +7,10 @@
     <v-row>
       <v-col md="8">
         <form-producto
+          ref="formProducto"
           :mode-edit="isModeEdit"
           :producto="producto"
+          @onSave="guardarCambios"
         />
       </v-col>
       <v-col
@@ -66,7 +68,7 @@
           estadoId: 0,
           costo: 0,
           stock: 0,
-          imagenUrl: 0,
+          imagenUrl: '',
         },
         isModeEdit: false,
         rules: [
@@ -75,6 +77,11 @@
         imageUrl: require('@/assets/box.jpg'),
         image: null,
       }
+    },
+    watch: {
+      image (newImage, oldImage) {
+        this.producto.imagenUrl = `/Resources/Images/${newImage.name}`
+      },
     },
     beforeRouteEnter (to, from, next) {
       if (to.params.id) {
@@ -102,15 +109,49 @@
     },
     methods: {
       async obtenerProducto (id) {
-        var response = await ProductosService.get(id)
+        const response = await ProductosService.get(id)
 
-        if (response.status === 200) { this.producto = response.data }
+        if (response.status >= 200 && response.status <= 299) { this.producto = response.data }
       },
       previewImage () {
         if (this.image) {
           this.imageUrl = URL.createObjectURL(this.image)
         } else {
           this.imageUrl = require('@/assets/box.jpg')
+        }
+      },
+      async guardarCambios (data) {
+        if (this.isModeEdit) {
+
+        } else {
+          const response = await ProductosService.create(data, this.image)
+
+          if (response.status >= 200 && response.status <= 299) {
+            const result = await this.$swal.fire({
+              title: '¡Exito!',
+              text: 'Su registro ha sido creado ¿Desea crear otro?',
+              icon: 'success',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Sí',
+              cancelButtonText: 'No',
+            })
+
+            if (result.isConfirmed) {
+              this.$refs.formProducto.reset()
+              this.imageUrl = require('@/assets/box.jpg')
+              this.image = null
+            } else {
+              this.$router.push({ name: 'Productos' })
+            }
+          } else {
+            this.$swal.fire(
+              '¡Error!',
+              response.data,
+              'error',
+            )
+          }
         }
       },
     },

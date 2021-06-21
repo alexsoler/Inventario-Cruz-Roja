@@ -83,13 +83,14 @@ namespace InventarioCruzRoja.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<ProductoDto>> PostProducto(ProductoDto producto)
+        public async Task<ActionResult<ProductoDto>> PostProducto([FromForm]ProductoDto producto)
         {
-            var file = Request.Form.Files[0];
+            if (Request.Form.Files.Count > 0)
+            {
+                var file = Request.Form.Files[0];
 
-            var responseImagen = await _repository.GuardarImagen(file);
-
-            producto.ImagenUrl = responseImagen.Data;
+                await _repository.GuardarImagen(file);
+            }
             producto.UsuarioModifica = User.Identity.Name;
 
             var response = await _repository.Add(_mapper.Map<Producto>(producto));

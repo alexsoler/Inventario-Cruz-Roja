@@ -103,7 +103,7 @@
               color="primary"
               @click="initialize"
             >
-              Reset
+              Reiniciar
             </v-btn>
           </template>
         </v-data-table>
@@ -177,7 +177,7 @@
       ...mapActions(['obtenerSedes']),
       async initialize () {
         const response = await SedesService.getAll()
-        if (response.status === 200) {
+        if (response.status >= 200 && response.status <= 299) {
           this.sedes = response.data
         }
       },
@@ -201,7 +201,7 @@
         if (result.isConfirmed) {
           const response = await SedesService.delete(item.id)
 
-          if (response.status === 200) {
+          if (response.status >= 200 && response.status <= 299) {
             const index = this.sedes.indexOf(item)
             this.sedes.splice(index, 1)
             this.$swal.fire(
@@ -230,7 +230,7 @@
         this.isAjaxPetitionInProgress = true
         if (this.editedIndex > -1) {
           const response = await SedesService.edit(this.editedItem.id, this.editedItem)
-          if (response.status === 200) {
+          if (response.status >= 200 && response.status <= 299) {
             Object.assign(this.sedes[this.editedIndex], this.editedItem)
             this.$swal.fire(
               '¡Exito!',
