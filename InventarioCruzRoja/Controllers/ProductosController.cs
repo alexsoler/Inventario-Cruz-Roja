@@ -54,19 +54,21 @@ namespace InventarioCruzRoja.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<ActionResult<string>> PutProducto(string id, ProductoDto producto)
+        public async Task<ActionResult<string>> PutProducto(string id, [FromForm]ProductoDto producto)
         {
             if (id != producto.Id)
             {
                 return BadRequest();
             }
 
-            var file = Request.Form.Files[0];
-
-            if (file.Length > 0)
+            if (Request.Form.Files.Count > 0)
             {
-                var responseImagen = await _repository.GuardarImagen(file);
-                producto.ImagenUrl = responseImagen.Data;
+                var file = Request.Form.Files[0];
+
+                if (file.Length > 0)
+                {
+                    await _repository.GuardarImagen(file);
+                }
             }
 
             producto.UsuarioModifica = User.Identity.Name;

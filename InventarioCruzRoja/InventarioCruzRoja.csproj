@@ -23,6 +23,7 @@
   <ItemGroup>
     <Folder Include="clientapp\" />
     <Folder Include="Resources\" />
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
   <PropertyGroup>

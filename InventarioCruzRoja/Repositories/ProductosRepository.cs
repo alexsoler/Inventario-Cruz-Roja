@@ -32,15 +32,15 @@ namespace InventarioCruzRoja.Repositories
             return await base.Add(entity);
         }
 
-        public override async Task<ServiceResponse<Producto>> Update(Producto entity)
+        public override async Task<ServiceResponse<Producto>> Update(Producto entidad)
         {
-            var urlImagenPrevia = _context.Productos.FirstOrDefault(x => x.Id == entity.Id).ImagenUrl;
+            var urlImagenPrevia = _context.Productos.FirstOrDefault(x => x.Id == entidad.Id).ImagenUrl;
 
-            var response = await base.Update(entity);
+            var response = await base.Update(entidad);
 
-            var fileToDelete = Path.Combine(_environment.ContentRootPath, urlImagenPrevia);
+            var fileToDelete = Path.Combine(_environment.ContentRootPath, urlImagenPrevia.Remove(0,1).Replace("/", "\\"));
 
-            if (File.Exists(fileToDelete) && response.Success && urlImagenPrevia != entity.ImagenUrl)
+            if (File.Exists(fileToDelete) && response.Success && urlImagenPrevia != entidad.ImagenUrl)
             {
                 File.Delete(fileToDelete);
             }
@@ -54,7 +54,7 @@ namespace InventarioCruzRoja.Repositories
 
             if (response.Success)
             {
-                var fileToDelete = Path.Combine(_environment.ContentRootPath, response.Data.ImagenUrl);
+                var fileToDelete = Path.Combine(_environment.ContentRootPath, response.Data.ImagenUrl.Remove(0, 1).Replace("/", "\\"));
 
                 if (File.Exists(fileToDelete))
                     File.Delete(fileToDelete);

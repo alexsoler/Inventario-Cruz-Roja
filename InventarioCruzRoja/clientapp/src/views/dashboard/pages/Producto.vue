@@ -85,9 +85,10 @@
     },
     beforeRouteEnter (to, from, next) {
       if (to.params.id) {
-        this.obtenerProducto(to.params.id).then(x => {
-          this.isModeEdit = true
-          next()
+        next(vm => {
+          vm.obtenerProducto(to.params.id).then(x => {
+            vm.isModeEdit = true
+          })
         })
       } else {
         next()
@@ -111,7 +112,12 @@
       async obtenerProducto (id) {
         const response = await ProductosService.get(id)
 
-        if (response.status >= 200 && response.status <= 299) { this.producto = response.data }
+        if (response.status >= 200 && response.status <= 299) {
+          this.producto = response.data
+          if (response.data.imagenUrl) {
+            this.imageUrl = response.data.imagenUrl
+          }
+        }
       },
       previewImage () {
         if (this.image) {
@@ -122,7 +128,17 @@
       },
       async guardarCambios (data) {
         if (this.isModeEdit) {
+          const response = await ProductosService.edit(this.producto.id, this.producto, this.image)
 
+          if (response.status >= 200 && response.status <= 299) {
+            this.$swal.fire(
+              '¡Exito!',
+              'Su registro ha sido editado.',
+              'success',
+            )
+
+            this.$router.push({ name: 'Productos' })
+          }
         } else {
           const response = await ProductosService.create(data, this.image)
 

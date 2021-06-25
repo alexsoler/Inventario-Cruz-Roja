@@ -41,9 +41,19 @@ class ProductosService {
       }
     }
 
-    async edit (id, producto) {
+    async edit (id, producto, imagen) {
       try {
-        const response = await axios.put(`/api/productos/${id}`, producto)
+        const formData = new FormData()
+        Object.entries(producto).forEach(([key, value]) => {
+          formData.append(key, value)
+        })
+
+        formData.append('file', imagen)
+        const response = await axios.put(`/api/productos/${id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
 
         return response
       } catch (error) {

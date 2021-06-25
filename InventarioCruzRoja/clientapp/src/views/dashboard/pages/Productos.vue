@@ -76,6 +76,7 @@
               dark
               x-small
               color="secondary"
+              :to="{ name: 'EditarProducto', params: { id: item.id }}"
             >
               <v-icon>
                 mdi-pencil

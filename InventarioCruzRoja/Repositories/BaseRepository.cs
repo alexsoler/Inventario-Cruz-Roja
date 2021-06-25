@@ -141,7 +141,7 @@ namespace InventarioCruzRoja.Repositories
 
                 return response;
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (Exception ex)
             {
                 if (!RegisterExists(entidad.Id))
                 {
