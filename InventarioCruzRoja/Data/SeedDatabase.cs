@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Data
 {
-    public class SeedDatabase
+    public static class SeedDatabase
     {
         public static async Task Seed(IServiceProvider services)
         {

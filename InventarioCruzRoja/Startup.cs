@@ -42,7 +42,7 @@ namespace InventarioCruzRoja
             {
                 services.AddDbContext<DataContext>(options =>
                 {
-                    options.UseInMemoryDatabase("InventarioCruzRoja").UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                    options.UseInMemoryDatabase("InventarioCruzRoja");
                 });
             }
             else
