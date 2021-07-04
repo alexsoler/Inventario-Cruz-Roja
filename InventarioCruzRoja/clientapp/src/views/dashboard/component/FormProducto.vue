@@ -22,7 +22,7 @@
                 rules="required|min:1|max:20"
               >
                 <v-text-field
-                  v-model="producto.id"
+                  v-model="producto.codigo"
                   label="Código"
                   name="codigo"
                   prepend-icon="mdi-barcode"
@@ -240,7 +240,8 @@
         type: Object,
         default: function () {
           return {
-            id: '',
+            id: 0,
+            codigo: '',
             nombre: '',
             modelo: '',
             presentacion: '',

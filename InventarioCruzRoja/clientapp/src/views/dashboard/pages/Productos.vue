@@ -55,7 +55,7 @@
           </template>
           <template v-slot:item.imagenUrl="{ item }">
             <img
-              :src="item.imagenUrl"
+              :src="item.imagenUrl ? item.imagenUrl : defaultImage"
               alt="Producto Imagen"
               class="img-rounded"
               width="60"
@@ -145,6 +145,7 @@
       snackbar: false,
       colorSnackbar: 'success',
       messageSnackbar: '',
+      defaultImage: require('@/assets/box.jpg'),
     }),
     created () {
       this.initialize()

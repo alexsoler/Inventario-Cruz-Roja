@@ -36,7 +36,7 @@ namespace InventarioCruzRoja.Controllers
 
         // GET: api/Productos/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductoDto>> GetProducto(string id)
+        public async Task<ActionResult<ProductoDto>> GetProducto(int id)
         {
             var response = await _repository.Get(id);
 
@@ -54,7 +54,7 @@ namespace InventarioCruzRoja.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<ActionResult<string>> PutProducto(string id, [FromForm]ProductoDto producto)
+        public async Task<ActionResult<int>> PutProducto(int id, [FromForm]ProductoDto producto)
         {
             if (id != producto.Id)
             {

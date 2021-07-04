@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Models
 {
-    public class Producto : EntidadBase<string>
+    public class Producto : EntidadBase<int>
     {
+        public string Codigo { get; set; }
         public string Nombre { get; set; }
         public string Modelo { get; set; }
         public string Presentacion { get; set; }

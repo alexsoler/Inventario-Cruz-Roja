@@ -57,7 +57,8 @@
     data () {
       return {
         producto: {
-          id: '',
+          id: 0,
+          codigo: '',
           nombre: '',
           modelo: '',
           presentacion: '',

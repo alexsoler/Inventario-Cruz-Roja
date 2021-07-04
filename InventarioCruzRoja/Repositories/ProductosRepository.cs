@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace InventarioCruzRoja.Repositories
 {
-    public class ProductosRepository : BaseRepository<Producto, string>, IProductosRepository
+    public class ProductosRepository : BaseRepository<Producto, int>, IProductosRepository
     {
         private readonly IWebHostEnvironment _environment;
 
