@@ -35,6 +35,13 @@
             />
           </v-card-actions>
         </v-card>
+        <v-card v-if="producto.codigo">
+          <div class="text-center">
+            <vue-barcode
+              v-model="producto.codigo"
+            />
+          </div>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -43,10 +50,12 @@
 <script>
   import FormProducto from '../component/FormProducto'
   import ProductosService from '@/services/productos.service'
+  import VueBarcode from 'vue-barcode'
 
   export default {
     components: {
       FormProducto,
+      VueBarcode,
     },
     props: {
       id: {

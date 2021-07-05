@@ -70,6 +70,29 @@
             </v-chip>
           </template>
           <template v-slot:item.actions="{ item }">
+            <v-dialog
+              v-model="dialog"
+              max-width="400px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  class="mx-2"
+                  fab
+                  dark
+                  x-small
+                  color="indigo"
+                  v-on="on"
+                >
+                  <v-icon>
+                    mdi-barcode
+                  </v-icon>
+                </v-btn>
+              </template>
+              <barcode-generate
+                :codigo="item.codigo"
+                @close="closeDialogBarcode"
+              />
+            </v-dialog>
             <v-btn
               class="mx-2"
               fab
@@ -122,14 +145,18 @@
 
 <script>
   import ProductosService from '@/services/productos.service'
+  import BarcodeGenerate from '../component/BarcodeGenerate'
 
   export default {
+    components: {
+      BarcodeGenerate,
+    },
     data: () => ({
       headers: [
         {
           text: 'Código',
           align: 'start',
-          value: 'id',
+          value: 'codigo',
         },
         { text: 'Imagen', value: 'imagenUrl' },
         { text: 'Modelo', value: 'modelo' },
@@ -146,6 +173,7 @@
       colorSnackbar: 'success',
       messageSnackbar: '',
       defaultImage: require('@/assets/box.jpg'),
+      dialog: false,
     }),
     created () {
       this.initialize()
@@ -158,25 +186,44 @@
         }
       },
       async deleteItem (item) {
-        if (confirm('¿Esta seguro de que desea eliminar este registro?')) {
+        const result = await this.$swal({
+          title: '¿Esta seguro de que desea eliminar este registro?',
+          text: '¡No podrás revertir esto!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí',
+          cancelButtonText: 'No',
+        })
+
+        if (result.isConfirmed) {
           const response = await ProductosService.delete(item.id)
 
           if (response.status >= 200 && response.status <= 299) {
             const index = this.productos.indexOf(item)
             this.productos.splice(index, 1)
-            this.colorSnackbar = 'success'
-            this.messageSnackbar = 'Registro eliminado con exito'
+            this.$swal.fire(
+              '¡Eliminado!',
+              'Su registro ha sido eliminado.',
+              'success',
+            )
           } else {
-            this.colorSnackbar = 'error'
-            this.messageSnackbar = response.data
+            this.$swal.fire(
+              '¡Error!',
+              response.data,
+              'error',
+            )
           }
-          this.snackbar = true
         }
       },
       getColor (estadoId) {
         if (estadoId === 1) return 'green'
         else if (estadoId === 2) return 'red'
         else return 'black'
+      },
+      closeDialogBarcode () {
+        this.dialog = false
       },
     },
   }
