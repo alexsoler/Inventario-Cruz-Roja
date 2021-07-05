@@ -45,10 +45,13 @@ class ProductosService {
       try {
         const formData = new FormData()
         Object.entries(producto).forEach(([key, value]) => {
-          formData.append(key, value)
+          if (value) { formData.append(key, value) }
         })
 
-        formData.append('file', imagen)
+        if (imagen) {
+          formData.append('file', imagen)
+        }
+
         const response = await axios.put(`/api/productos/${id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
