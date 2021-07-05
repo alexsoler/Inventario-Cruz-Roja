@@ -8,6 +8,7 @@ using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace InventarioCruzRoja.Repositories
@@ -34,15 +35,18 @@ namespace InventarioCruzRoja.Repositories
 
         public override async Task<ServiceResponse<Producto>> Update(Producto entidad)
         {
-            var urlImagenPrevia = _context.Productos.FirstOrDefault(x => x.Id == entidad.Id).ImagenUrl;
+            var urlImagenPrevia = _context.Productos.AsNoTracking().FirstOrDefault(x => x.Id == entidad.Id).ImagenUrl;
 
             var response = await base.Update(entidad);
 
-            var fileToDelete = Path.Combine(_environment.ContentRootPath, urlImagenPrevia.Remove(0,1).Replace("/", "\\"));
-
-            if (File.Exists(fileToDelete) && response.Success && urlImagenPrevia != entidad.ImagenUrl)
+            if (!string.IsNullOrEmpty(urlImagenPrevia))
             {
-                File.Delete(fileToDelete);
+                var fileToDelete = Path.Combine(_environment.ContentRootPath, urlImagenPrevia.Remove(0,1).Replace("/", "\\"));
+
+                if (File.Exists(fileToDelete) && response.Success && urlImagenPrevia != entidad.ImagenUrl)
+                {
+                    File.Delete(fileToDelete);
+                }
             }
 
             return response;
