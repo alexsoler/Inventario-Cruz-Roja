@@ -8,6 +8,11 @@ const generateAndDownloadBarcodeInPDF = (orderNo, count, configJsBarcode) => {
     const doc = new JsPDF('p', 'mm', 'a4')
 
     for (let index = 0, y = 10; index < count; index++, y += 50) {
+      if (index > 0 && index % 5 === 0) {
+        doc.addPage()
+        y = 10
+      }
+      
       doc.addImage(realImage, 'PNG', 10, y)
     }
 
