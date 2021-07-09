@@ -72,7 +72,7 @@
           <template v-slot:item.actions="{ item }">
             <v-dialog
               v-model="dialog"
-              max-width="400px"
+              max-width="600px"
             >
               <template v-slot:activator="{ on }">
                 <v-btn
