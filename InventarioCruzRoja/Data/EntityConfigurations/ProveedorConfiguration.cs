@@ -20,6 +20,7 @@ namespace InventarioCruzRoja.Data.EntityConfigurations
             builder.Property(x => x.TelefonoFijo2).HasMaxLength(15);
             builder.Property(x => x.SitioWeb).HasMaxLength(300);
             builder.Property(x => x.Email).HasMaxLength(100);
+            builder.Property(x => x.EstadoId).IsRequired();
         }
     }
 }

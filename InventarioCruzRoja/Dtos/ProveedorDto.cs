@@ -21,5 +21,7 @@ namespace InventarioCruzRoja.Dtos
         public string SitioWeb { get; set; }
         [EmailAddress, StringLength(100)]
         public string Email { get; set; }
+        [Required]
+        public int EstadoId { get; set; }
     }
 }

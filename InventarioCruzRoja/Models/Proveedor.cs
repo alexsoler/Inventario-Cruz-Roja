@@ -13,5 +13,7 @@ namespace InventarioCruzRoja.Models
         public string TelefonoFijo2 { get; set; }
         public string SitioWeb { get; set; }
         public string Email { get; set; }
+        public int EstadoId { get; set; }
+        public Estado Estado { get; set; }
     }
 }
