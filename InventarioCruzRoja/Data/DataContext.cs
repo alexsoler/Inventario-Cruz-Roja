@@ -27,6 +27,7 @@ namespace InventarioCruzRoja.Data
             modelBuilder.ApplyConfiguration(new FabricanteConfiguration());
             modelBuilder.ApplyConfiguration(new EstadoConfiguration());
             modelBuilder.ApplyConfiguration(new SedeConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoriaConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }
