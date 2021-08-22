@@ -103,7 +103,7 @@
           <v-row>
             <v-col
               cols="12"
-              sm="4"
+              sm="3"
             >
               <validation-provider
                 v-slot="{errors}"
@@ -123,7 +123,27 @@
             </v-col>
             <v-col
               cols="12"
-              sm="4"
+              sm="3"
+            >
+              <validation-provider
+                v-slot="{errors}"
+                name="categoria"
+                rules="required"
+              >
+                <v-select
+                  v-model="producto.categoriaId"
+                  :items="categoriasGetter"
+                  item-text="nombre"
+                  item-value="id"
+                  label="Categoria"
+                  outlined
+                  :error-messages="errors"
+                />
+              </validation-provider>
+            </v-col>
+            <v-col
+              cols="12"
+              sm="3"
             >
               <validation-provider
                 v-slot="{errors}"
@@ -143,7 +163,7 @@
             </v-col>
             <v-col
               cols="12"
-              sm="4"
+              sm="3"
             >
               <validation-provider
                 v-slot="{errors}"
@@ -248,6 +268,7 @@
             descripcion: '',
             observaciones: '',
             fabricanteId: 0,
+            categoriaId: 0,
             sedeId: 0,
             estadoId: 0,
             costo: 0,
@@ -262,7 +283,7 @@
       }
     },
     computed: {
-      ...mapGetters(['estadosGetter', 'fabricantesGetter', 'sedesGetter']),
+      ...mapGetters(['estadosGetter', 'fabricantesGetter', 'sedesGetter', 'categoriasGetter']),
     },
     methods: {
       save () {

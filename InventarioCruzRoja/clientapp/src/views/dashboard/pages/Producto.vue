@@ -74,6 +74,7 @@
           descripcion: '',
           observaciones: '',
           fabricanteId: 0,
+          categoriaId: 0,
           sedeId: 0,
           estadoId: 0,
           costo: 0,
