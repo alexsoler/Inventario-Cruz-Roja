@@ -9,6 +9,7 @@ namespace InventarioCruzRoja.Data.EntityConfigurations
         public void Configure(EntityTypeBuilder<Sede> builder)
         {
             builder.ToTable("Sedes");
+            builder.HasKey(x => x.Id);
             builder.Property(x => x.Nombre).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Direccion).HasMaxLength(500);
             builder.Property(x => x.EstadoId).IsRequired();
