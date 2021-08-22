@@ -20,6 +20,8 @@ namespace InventarioCruzRoja.Dtos
         public string Observaciones { get; set; }
         public string Fabricante { get; set; }
         public int FabricanteId { get; set; }
+        public string Categoria { get; set; }
+        public int CategoriaId { get; set; }
         public string Sede { get; set; }
         public int SedeId { get; set; }
         public string Estado { get; set; }
