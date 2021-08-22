@@ -39,6 +39,11 @@ export const router = new Router({
           component: () => import('@/views/dashboard/pages/Fabricantes'),
         },
         {
+          name: 'Categorias',
+          path: '/categorias',
+          component: () => import('@/views/dashboard/pages/Categorias'),
+        },
+        {
           name: 'Sedes',
           path: '/sedes',
           component: () => import('@/views/dashboard/pages/Sedes'),

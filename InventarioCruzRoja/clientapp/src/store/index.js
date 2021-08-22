@@ -6,6 +6,7 @@ import { auth } from './auth.module'
 import EstadosService from '../services/estados.service'
 import FabricantesService from '../services/fabricantes.service'
 import SedesService from '../services/sedes.service'
+import CategoriasService from '../services/categorias.service'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     estados: [],
     fabricantes: [],
     sedes: [],
+    categorias: [],
   },
   getters: {
     estadosGetter (state) {
@@ -27,6 +29,9 @@ export default new Vuex.Store({
     },
     sedesGetter (state) {
       return state.sedes
+    },
+    categoriasGetter (state) {
+      return state.categorias
     },
   },
   mutations: {
@@ -44,6 +49,9 @@ export default new Vuex.Store({
     },
     SET_SEDES (state, payload) {
       state.sedes = payload
+    },
+    SET_CATEGORIAS (state, payload) {
+      state.categorias = payload
     },
   },
   actions: {
@@ -70,6 +78,14 @@ export default new Vuex.Store({
         sedes = response.data
       }
       commit('SET_SEDES', sedes)
+    },
+    async obtenerCategorias ({ commit }) {
+      let categorias = []
+      const response = await CategoriasService.getAll()
+      if (response.status >= 200 && response.status <= 299) {
+        categorias = response.data
+      }
+      commit('SET_CATEGORIAS', categorias)
     },
   },
   modules: {

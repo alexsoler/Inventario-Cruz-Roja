@@ -128,6 +128,11 @@
           to: '/fabricantes',
         },
         {
+          icon: 'mdi-shape',
+          title: 'Categorias',
+          to: '/categorias',
+        },
+        {
           icon: 'mdi-home-plus',
           title: 'Sedes',
           to: '/sedes',

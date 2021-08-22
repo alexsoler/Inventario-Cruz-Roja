@@ -12,7 +12,7 @@ const generateAndDownloadBarcodeInPDF = (orderNo, count, configJsBarcode) => {
         doc.addPage()
         y = 10
       }
-      
+
       doc.addImage(realImage, 'PNG', 10, y)
     }
 

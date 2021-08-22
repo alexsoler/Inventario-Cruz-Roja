@@ -6,7 +6,7 @@
         :format="config.format"
         :width="config.width"
         :height="config.height"
-        :lineColor="config.lineColor"
+        :line-color="config.lineColor"
       />
     </div>
 

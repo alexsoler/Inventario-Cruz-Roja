@@ -30,9 +30,10 @@
       await this.obtenerEstados()
       await this.obtenerFabricantes()
       await this.obtenerSedes()
+      await this.obtenerCategorias()
     },
     methods: {
-      ...mapActions(['obtenerEstados', 'obtenerFabricantes', 'obtenerSedes']),
+      ...mapActions(['obtenerEstados', 'obtenerFabricantes', 'obtenerSedes', 'obtenerCategorias']),
     },
   }
 </script>
