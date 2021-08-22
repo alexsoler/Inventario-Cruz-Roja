@@ -23,6 +23,7 @@ namespace InventarioCruzRoja.Profiles
 
             CreateMap<Role, RoleDto>().ReverseMap();
             CreateMap<Fabricante, FabricanteDto>().ReverseMap();
+            CreateMap<Categoria, CategoriaDto>().ReverseMap();
             CreateMap<Sede, SedeDto>().ReverseMap();
             CreateMap<Estado, EstadoDto>().ReverseMap();
             CreateMap<Producto, ProductoDto>()

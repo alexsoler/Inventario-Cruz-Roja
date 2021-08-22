@@ -18,6 +18,7 @@ namespace InventarioCruzRoja.Data
         public DbSet<Fabricante> Fabricantes { get; set; }
         public DbSet<Estado> Estados { get; set; }
         public DbSet<Sede> Sedes { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
