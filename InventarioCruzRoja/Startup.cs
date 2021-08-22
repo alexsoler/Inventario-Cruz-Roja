@@ -77,6 +77,7 @@ namespace InventarioCruzRoja
             services.AddScoped<IEstadosRepository, EstadosRepository>();
             services.AddScoped<ICategoriasRepository, CategoriasRepository>();
             services.AddScoped<IProveedoresRepository, ProveedoresRepository>();
+            services.AddScoped<IContactosRepository, ContactosRepository>();
 
             services.AddSpaStaticFiles(configuration =>
             {

@@ -23,5 +23,6 @@ namespace InventarioCruzRoja.Dtos
         public string Email { get; set; }
         [Required]
         public int EstadoId { get; set; }
+        public ICollection<ContactoDto> Contactos { get; set; }
     }
 }

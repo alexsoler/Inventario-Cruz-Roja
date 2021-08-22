@@ -27,6 +27,7 @@ namespace InventarioCruzRoja.Profiles
             CreateMap<Sede, SedeDto>().ReverseMap();
             CreateMap<Estado, EstadoDto>().ReverseMap();
             CreateMap<Proveedor, ProveedorDto>().ReverseMap();
+            CreateMap<Contacto, ContactoDto>().ReverseMap();
             CreateMap<Producto, ProductoDto>()
                 .ForMember(dest =>
                     dest.Estado, opt => opt.MapFrom(x => x.Estado.Nombre))

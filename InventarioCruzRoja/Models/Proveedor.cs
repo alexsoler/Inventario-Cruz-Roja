@@ -15,5 +15,6 @@ namespace InventarioCruzRoja.Models
         public string Email { get; set; }
         public int EstadoId { get; set; }
         public Estado Estado { get; set; }
+        public ICollection<Contacto> Contactos { get; set; }
     }
 }
