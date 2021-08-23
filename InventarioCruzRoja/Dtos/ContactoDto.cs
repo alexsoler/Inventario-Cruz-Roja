@@ -15,7 +15,7 @@ namespace InventarioCruzRoja.Dtos
         public string Telefono { get; set; }
         [EmailAddress, StringLength(100)]
         public string Email { get; set; }
-        [required]
+        [Required]
         public int ProveedorId { get; set; }
     }
 }
