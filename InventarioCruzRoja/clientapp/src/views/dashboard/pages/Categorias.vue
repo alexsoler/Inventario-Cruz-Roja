@@ -151,11 +151,13 @@
       editedItem: {
         id: 0,
         nombre: '',
+        descripcion: '',
         estadoId: 1,
       },
       defaultItem: {
         id: 0,
         nombre: '',
+        descripcion: '',
         estadoId: 1,
       },
       snackbar: false,
