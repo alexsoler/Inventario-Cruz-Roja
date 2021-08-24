@@ -46,26 +46,26 @@
           name="telefonoFijo1"
           rules="phone|max:15"
         >
-          <vue-tel-input-vuetify 
+          <vue-tel-input-vuetify
             v-model="proveedor.telefonoFijo1"
             label="Teléfono #1"
             name="telefonoFijo1"
+            placeholder="Introduzca un número de teléfono"
             :error-messages="errors"
-          >
-          </vue-tel-input-vuetify>
+          />
         </validation-provider>
         <validation-provider
           v-slot="{errors}"
           name="telefonoFijo2"
           rules="phone|max:15"
         >
-          <vue-tel-input-vuetify 
+          <vue-tel-input-vuetify
             v-model="proveedor.telefonoFijo2"
             label="Teléfono #2"
             name="telefonoFijo2"
+            placeholder="Introduzca un número de teléfono"
             :error-messages="errors"
-          >
-          </vue-tel-input-vuetify>
+          />
         </validation-provider>
         <validation-provider
           v-slot="{errors}"
@@ -160,15 +160,15 @@
         type: Object,
         default: function () {
           return {
-           id: 0,
-           nombre: '',
-           direccion: '',
-           telefonoFijo1: '',
-           telefonoFijo2: '',
-           sitioWeb: '',
-           email: '',
-           contactos: [],
-           estadoId: 1,
+            id: 0,
+            nombre: '',
+            direccion: '',
+            telefonoFijo1: '',
+            telefonoFijo2: '',
+            sitioWeb: '',
+            email: '',
+            contactos: [],
+            estadoId: 1,
           }
         },
       },

@@ -20,11 +20,15 @@ import './plugins/chartist'
 import './plugins/vee-validate'
 import vuetify from './plugins/vuetify'
 import i18n from './i18n'
+import VueTelInputVuetify from 'vue-tel-input-vuetify/lib'
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import './assets/css/main.css'
 
 Vue.use(VueSweetalert2)
+Vue.use(VueTelInputVuetify, {
+  vuetify,
+})
 
 Vue.config.productionTip = false
 

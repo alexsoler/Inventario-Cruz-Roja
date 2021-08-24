@@ -65,13 +65,13 @@
             </v-toolbar>
           </template>
           <template v-slot:item.telefonoFijo1="{ item }">
-              <a :href="'tel:'+item.telefonoFijo1">{{ item.telefonoFijo1 }}</a>
+            <a :href="'tel:'+item.telefonoFijo1">{{ item.telefonoFijo1 }}</a>
           </template>
           <template v-slot:item.telefonoFijo2="{ item }">
-              <a :href="'tel:'+item.telefonoFijo2">{{ item.telefonoFijo2 }}</a>
+            <a :href="'tel:'+item.telefonoFijo2">{{ item.telefonoFijo2 }}</a>
           </template>
           <template v-slot:item.email="{ item }">
-              <a :href="'mailto:'+item.mail">{{ item.email }}</a>
+            <a :href="'mailto:'+item.mail">{{ item.email }}</a>
           </template>
           <template v-slot:item.estadoId="{ item }">
             <v-chip
