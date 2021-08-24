@@ -54,6 +54,11 @@ export const router = new Router({
           component: () => import('@/views/dashboard/pages/Productos'),
         },
         {
+          name: 'Proveedores',
+          path: '/proveedores',
+          component: () => import('@/views/dashboard/pages/Proveedores'),
+        },
+        {
           name: 'AgregarProducto',
           path: '/productos/agregar',
           component: () => import('@/views/dashboard/pages/Producto'),
