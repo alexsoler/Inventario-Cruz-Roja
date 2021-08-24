@@ -128,6 +128,11 @@
           to: '/fabricantes',
         },
         {
+          icon: 'mdi-truck',
+          title: 'Proveedores',
+          to: '/proveedores',
+        },
+        {
           icon: 'mdi-shape',
           title: 'Categorias',
           to: '/categorias',
