@@ -95,6 +95,9 @@
             :error-messages="errors"
           />
         </validation-provider>
+        <v-col>
+          <contactos-tabla />
+        </v-col>
         <validation-provider
           v-slot="{errors}"
           name="estado"
@@ -146,7 +149,12 @@
 </template>
 
 <script>
+  import ContactosTabla from './ContactosTabla.vue'
+
   export default {
+    components: {
+      ContactosTabla,
+    },
     props: {
       modeEdit: {
         type: Boolean,
