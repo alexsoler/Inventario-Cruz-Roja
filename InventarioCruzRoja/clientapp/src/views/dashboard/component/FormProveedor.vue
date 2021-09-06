@@ -96,7 +96,7 @@
           />
         </validation-provider>
         <v-col>
-          <contactos-tabla />
+          <contactos-tabla v-model="proveedor.contactos" />
         </v-col>
         <validation-provider
           v-slot="{errors}"

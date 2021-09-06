@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="contactos"
+    :items="contactosLocal"
     sort-by="Nombre"
     class="elevation-1"
     dense
@@ -127,6 +127,12 @@
         </v-dialog>
       </v-toolbar>
     </template>
+    <template v-slot:item.telefono="{ item }">
+      <a :href="'tel:'+item.telefono">{{ item.telefono }}</a>
+    </template>
+    <template v-slot:item.email="{ item }">
+      <a :href="'mailto:'+item.mail">{{ item.email }}</a>
+    </template>
     <template v-slot:item.actions="{ item }">
       <v-icon
         small
@@ -158,6 +164,18 @@
   import ContactosService from '@/services/contactos.service'
 
   export default {
+    props: {
+      contactos: {
+        type: Array,
+        default: function () {
+          return []
+        },
+      },
+    },
+    model: {
+      prop: 'contactos',
+      event: 'contactoschange',
+    },
     data: () => ({
       dialog: false,
       dialogDelete: false,
@@ -167,7 +185,6 @@
         { text: 'Email', value: 'email' },
         { text: 'Acción', value: 'actions', sortable: false },
       ],
-      contactos: [],
       editedIndex: -1,
       editedItem: {
         id: 0,
@@ -189,6 +206,14 @@
       formTitle () {
         return this.editedIndex === -1 ? 'Nuevo' : 'Editar'
       },
+      contactosLocal: {
+        get: function () {
+          return this.contactos
+        },
+        set: function (value) {
+          this.$emit('contactoschange', value)
+        },
+      },
     },
 
     watch: {
@@ -200,32 +225,21 @@
       },
     },
 
-    created () {
-      this.initialize()
-    },
-
     methods: {
-      async initialize () {
-        const response = await ContactosService.getAll()
-        if (response.status >= 200 && response.status <= 299) {
-          this.contactos = response.data
-        }
-      },
-
       editItem (item) {
-        this.editedIndex = this.contactos.indexOf(item)
+        this.editedIndex = this.contactosLocal.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
 
       deleteItem (item) {
-        this.editedIndex = this.contactos.indexOf(item)
+        this.editedIndex = this.contactosLocal.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
       deleteItemConfirm () {
-        this.contactos.splice(this.editedIndex, 1)
+        this.contactosLocal.splice(this.editedIndex, 1)
         this.closeDelete()
       },
 
@@ -247,9 +261,9 @@
 
       save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.contactos[this.editedIndex], this.editedItem)
+          Object.assign(this.contactosLocal[this.editedIndex], this.editedItem)
         } else {
-          this.contactos.push(this.editedItem)
+          this.contactosLocal.push(this.editedItem)
         }
         this.close()
       },
