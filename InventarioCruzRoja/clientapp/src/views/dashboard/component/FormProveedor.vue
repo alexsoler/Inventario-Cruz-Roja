@@ -44,7 +44,7 @@
         <validation-provider
           v-slot="{errors}"
           name="telefonoFijo1"
-          rules="phone|max:15"
+          rules="max:15"
         >
           <vue-tel-input-vuetify
             v-model="proveedor.telefonoFijo1"
@@ -57,7 +57,7 @@
         <validation-provider
           v-slot="{errors}"
           name="telefonoFijo2"
-          rules="phone|max:15"
+          rules="max:15"
         >
           <vue-tel-input-vuetify
             v-model="proveedor.telefonoFijo2"
@@ -70,7 +70,7 @@
         <validation-provider
           v-slot="{errors}"
           name="sitioWeb"
-          rules="url|max:300"
+          rules="url:{ require_protocol: true }|max:300"
         >
           <v-text-field
             v-model="proveedor.sitioWeb"

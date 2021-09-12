@@ -71,7 +71,10 @@
             <a :href="'tel:'+item.telefonoFijo2">{{ item.telefonoFijo2 }}</a>
           </template>
           <template v-slot:item.sitioWeb="{ item }">
-            <a :href="item.sitioWeb" target="_blank">{{item.sitioWeb}}</a>
+            <a
+              :href="item.sitioWeb"
+              target="_blank"
+            >{{ item.sitioWeb }}</a>
           </template>
           <template v-slot:item.email="{ item }">
             <a :href="'mailto:'+item.mail">{{ item.email }}</a>
