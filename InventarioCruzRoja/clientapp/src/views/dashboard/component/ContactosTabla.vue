@@ -164,6 +164,10 @@
   import ContactosService from '@/services/contactos.service'
 
   export default {
+    model: {
+      prop: 'contactos',
+      event: 'contactoschange',
+    },
     props: {
       contactos: {
         type: Array,
@@ -171,10 +175,10 @@
           return []
         },
       },
-    },
-    model: {
-      prop: 'contactos',
-      event: 'contactoschange',
+      proveedorId: {
+        type: Number,
+        default: 0,
+      },
     },
     data: () => ({
       dialog: false,
@@ -238,9 +242,29 @@
         this.dialogDelete = true
       },
 
-      deleteItemConfirm () {
-        this.contactosLocal.splice(this.editedIndex, 1)
-        this.closeDelete()
+      async deleteItemConfirm () {
+        if (this.editedItem.proveedorId) {
+          const response = await ContactosService.delete(this.editedItem.id)
+
+          if (response.status >= 200 && response.status <= 299) {
+            this.contactosLocal.splice(this.editedIndex, 1)
+            this.closeDelete()
+            this.$swal.fire(
+              '¡Eliminado!',
+              'Su registro ha sido eliminado.',
+              'success',
+            )
+          } else {
+            this.$swal.fire(
+              '¡Error!',
+              response.data,
+              'error',
+            )
+          }
+        } else {
+          this.contactosLocal.splice(this.editedIndex, 1)
+          this.closeDelete()
+        }
       },
 
       close () {
@@ -259,11 +283,49 @@
         })
       },
 
-      save () {
+      async save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.contactosLocal[this.editedIndex], this.editedItem)
+          if (this.editedItem.proveedorId) {
+            const response = await ContactosService.edit(this.editedItem.id, this.editedItem)
+            if (response.status >= 200 && response.status <= 299) {
+              Object.assign(this.contactosLocal[this.editedIndex], this.editedItem)
+              this.$swal.fire(
+                '¡Exito!',
+                'Su registro ha sido editado.',
+                'success',
+              )
+            } else {
+              this.$swal.fire(
+                '¡Error!',
+                response.data,
+                'error',
+              )
+            }
+          } else {
+            Object.assign(this.contactosLocal[this.editedIndex], this.editedItem)
+          }
         } else {
-          this.contactosLocal.push(this.editedItem)
+          if (this.proveedorId) {
+            this.editedItem.proveedorId = this.proveedorId
+            const response = await ContactosService.create(this.editedItem)
+            if (response.status === 201) {
+              this.editedItem.id = response.data.id
+              this.contactosLocal.push(this.editedItem)
+              this.$swal.fire(
+                '¡Exito!',
+                'Su registro ha sido creado.',
+                'success',
+              )
+            } else {
+              this.$swal.fire(
+                '¡Error!',
+                response.data,
+                'error',
+              )
+            }
+          } else {
+            this.contactosLocal.push(this.editedItem)
+          }
         }
         this.close()
       },

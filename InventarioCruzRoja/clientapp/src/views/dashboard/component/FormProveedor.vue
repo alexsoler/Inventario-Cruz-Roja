@@ -70,7 +70,7 @@
         <validation-provider
           v-slot="{errors}"
           name="sitioWeb"
-          rules="max:300"
+          rules="url|max:300"
         >
           <v-text-field
             v-model="proveedor.sitioWeb"
@@ -96,7 +96,10 @@
           />
         </validation-provider>
         <v-col>
-          <contactos-tabla v-model="proveedor.contactos" />
+          <contactos-tabla
+            v-model="proveedor.contactos"
+            :proveedor-id="proveedor.id"
+          />
         </v-col>
         <validation-provider
           v-slot="{errors}"

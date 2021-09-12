@@ -13,9 +13,9 @@ namespace InventarioCruzRoja.Dtos
         public string Nombre { get; set; }
         [Required, StringLength(300)]
         public string Direccion { get; set; }
-        [Phone, StringLength(15)]
+        [StringLength(15)]
         public string TelefonoFijo1 { get; set; }
-        [Phone, StringLength(15)]
+        [StringLength(15)]
         public string TelefonoFijo2 { get; set; }
         [StringLength(300)]
         public string SitioWeb { get; set; }
