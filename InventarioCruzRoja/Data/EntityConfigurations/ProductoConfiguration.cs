@@ -14,7 +14,6 @@ namespace InventarioCruzRoja.Data.EntityConfigurations
             builder.Property(x => x.Costo).HasColumnType("money").IsRequired();
             builder.Property(x => x.Descripcion).HasMaxLength(500);
             builder.Property(x => x.Nombre).IsRequired().HasMaxLength(200);
-            builder.Property(x => x.Stock).IsRequired();
             builder.Property(x => x.Presentacion).HasMaxLength(100);
             builder.Property(x => x.Observaciones).HasMaxLength(1000);
             builder.Property(x => x.Modelo).HasMaxLength(100);

@@ -30,7 +30,7 @@ namespace InventarioCruzRoja.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductoDto>>> GetProductos()
         {
-            var response = await _repository.GetAll("Estado", "Fabricante", "Sede", "Categoria");
+            var response = await _repository.GetAll("Estado", "Fabricante", "Categoria");
             return Ok(_mapper.Map<IEnumerable<ProductoDto>>(response.Data));
         }
 
@@ -38,7 +38,7 @@ namespace InventarioCruzRoja.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductoDto>> GetProducto(int id)
         {
-            var response = await _repository.Get(id);
+            var response = await _repository.Get(id, "Sedes");
 
             if (response.Data == null)
                 return NotFound(response.Message);

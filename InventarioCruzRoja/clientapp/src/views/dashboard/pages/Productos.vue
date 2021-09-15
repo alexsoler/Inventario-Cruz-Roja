@@ -164,7 +164,6 @@
         { text: 'Fabricante', value: 'fabricante' },
         { text: 'Categoria', value: 'categoria' },
         { text: 'Estado', value: 'estadoId' },
-        { text: 'Stock', value: 'stock' },
         { text: 'Precio', value: 'costo' },
         { text: 'Acción', value: 'actions', sortable: false },
       ],

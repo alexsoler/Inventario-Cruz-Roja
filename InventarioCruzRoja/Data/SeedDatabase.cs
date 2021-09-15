@@ -35,7 +35,14 @@ namespace InventarioCruzRoja.Data
 
             if (!await _db.Sedes.AnyAsync())
                 _db.Sedes.AddRange(
-                    new Sede { Nombre = "Comayagua", EstadoId = 1, Direccion = "Meh" }
+                    new Sede { Nombre = "Comayagua", EstadoId = 1, Direccion = "Meh" },
+                    new Sede { Nombre = "Tegucigalpa", EstadoId = 1, Direccion = "Meh" },
+                    new Sede { Nombre = "SPS", EstadoId = 1, Direccion = "Meh" }
+                );
+
+            if (!await _db.Categorias.AnyAsync())
+                _db.Categorias.AddRange(
+                    new Categoria { Nombre = "Medicamentos", Descripcion = "", EstadoId = 1 }
                 );
 
             await _db.SaveChangesAsync();

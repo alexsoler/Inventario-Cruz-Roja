@@ -81,11 +81,13 @@ namespace InventarioCruzRoja.Repositories
             }
         }
 
-        public virtual async Task<ServiceResponse<T>> Get(object id)
+        public virtual async Task<ServiceResponse<T>> Get(object id, params string[] includes)
         {
             var response = new ServiceResponse<T>();
 
-            var entidad = await _context.Set<T>().FindAsync(id);
+            var query = _context.Set<T>().AsNoTracking();
+            query = includes.Aggregate(query, (query, path) => query.Include(path));
+            var entidad = await query.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
             if (entidad == null)
             {
@@ -130,10 +132,9 @@ namespace InventarioCruzRoja.Repositories
         {
             var response = new ServiceResponse<T>();
 
-            _context.Entry(entidad).State = EntityState.Modified;
-
             try
             {
+                _context.Entry(entidad).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
 
                 response.Data = entidad;

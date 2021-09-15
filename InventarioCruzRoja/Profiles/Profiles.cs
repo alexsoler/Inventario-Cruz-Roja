@@ -34,16 +34,12 @@ namespace InventarioCruzRoja.Profiles
                 .ForMember(dest =>
                     dest.Fabricante, opt => opt.MapFrom(x => x.Fabricante.Nombre))
                 .ForMember(dest =>
-                    dest.Sede, opt => opt.MapFrom(x => x.Sede.Nombre))
-                .ForMember(dest =>
                     dest.Categoria, opt => opt.MapFrom(x => x.Categoria.Nombre));
             CreateMap<ProductoDto, Producto>()
                 .ForMember(dest =>
                     dest.Estado, opt => opt.Ignore())
                 .ForMember(dest =>
                     dest.Fabricante, opt => opt.Ignore())
-                .ForMember(dest =>
-                    dest.Sede, opt => opt.Ignore())
                 .ForMember(dest =>
                     dest.Categoria, opt => opt.Ignore());
             CreateMap<Ingreso, IngresoDto>()

@@ -19,7 +19,7 @@
         :class="{
           'pa-7': !$slots.image
         }"
-        :color="color"
+        :color="colorData"
         :max-height="icon ? 90 : undefined"
         :width="icon ? 'auto' : '100%'"
         elevation="6"
@@ -97,7 +97,7 @@
       },
       color: {
         type: String,
-        default: 'success',
+        default: '',
       },
       icon: {
         type: String,
@@ -122,6 +122,16 @@
         return {
           'v-card--material--has-heading': this.hasHeading,
         }
+      },
+      colorData () {
+        if (this.color) {
+          return this.color
+        } else {
+          return this.$vuetify.theme.themes[this.theme].primary
+        }
+      },
+      theme () {
+        return this.$vuetify.theme.dark ? 'dark' : 'light'
       },
       hasHeading () {
         return Boolean(this.$slots.heading || this.title || this.icon)

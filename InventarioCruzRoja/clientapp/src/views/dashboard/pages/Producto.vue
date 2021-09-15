@@ -59,8 +59,8 @@
     },
     props: {
       id: {
-        type: String,
-        default: '',
+        type: Number,
+        default: 0,
       },
     },
     data () {
@@ -75,10 +75,9 @@
           observaciones: '',
           fabricanteId: 0,
           categoriaId: 0,
-          sedeId: 0,
+          sedes: [],
           estadoId: 0,
           costo: 0,
-          stock: 0,
           imagenUrl: '',
         },
         isModeEdit: false,

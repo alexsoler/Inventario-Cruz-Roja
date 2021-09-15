@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace InventarioCruzRoja.Models
 {
     public class Sede : EntidadBase<int>
@@ -6,5 +8,6 @@ namespace InventarioCruzRoja.Models
         public string Direccion { get; set; }
         public int EstadoId { get; set; }
         public Estado Estado { get; set; }
+        public ICollection<Producto> Productos { get; set; }
     }
 }

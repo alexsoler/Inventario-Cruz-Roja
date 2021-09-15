@@ -30,14 +30,28 @@ namespace InventarioCruzRoja.Repositories
             entity.FechaCreacion = DateTime.Now;
             entity.FechaModificacion = DateTime.Now;
 
+            if (entity.Sedes != null && entity.Sedes.Count > 0)
+            {
+                _context.AttachRange(entity.Sedes);
+            }
+
             return await base.Add(entity);
         }
 
         public override async Task<ServiceResponse<Producto>> Update(Producto entidad)
         {
-            var urlImagenPrevia = _context.Productos.AsNoTracking().FirstOrDefault(x => x.Id == entidad.Id).ImagenUrl;
+            var producto = await _context.Productos.Include(x => x.Sedes).FirstOrDefaultAsync(x => x.Id == entidad.Id);
+            var urlImagenPrevia = producto.ImagenUrl;
+            _context.Entry(producto).CurrentValues.SetValues(entidad);
 
-            var response = await base.Update(entidad);
+            var sedesToDelete = producto.Sedes.Where(s => !entidad.Sedes.Any(x => x.Id == s.Id)).ToList();
+            sedesToDelete.ForEach(x => producto.Sedes.Remove(x));
+
+            var sedesToAdd = entidad.Sedes.Where(s => !producto.Sedes.Any(x => x.Id == s.Id)).ToList();
+            _context.AttachRange(sedesToAdd);
+            sedesToAdd.ForEach(x => producto.Sedes.Add(x));
+
+            var response = await base.Update(producto);
 
             if (!string.IsNullOrEmpty(urlImagenPrevia))
             {
@@ -56,7 +70,7 @@ namespace InventarioCruzRoja.Repositories
         {
             var response = await base.Delete(id);
 
-            if (response.Success)
+            if (response.Success && !string.IsNullOrEmpty(response.Data.ImagenUrl))
             {
                 var fileToDelete = Path.Combine(_environment.ContentRootPath, response.Data.ImagenUrl.Remove(0, 1).Replace("/", "\\"));
 
@@ -97,6 +111,7 @@ namespace InventarioCruzRoja.Repositories
             }
             catch (System.Exception ex)
             {
+                _logger.LogError(ex.Message, ex);
                 response.Success = false;
                 response.Data = string.Empty;
                 

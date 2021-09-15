@@ -103,7 +103,7 @@
           <v-row>
             <v-col
               cols="12"
-              sm="3"
+              sm="4"
             >
               <validation-provider
                 v-slot="{errors}"
@@ -123,7 +123,7 @@
             </v-col>
             <v-col
               cols="12"
-              sm="3"
+              sm="4"
             >
               <validation-provider
                 v-slot="{errors}"
@@ -143,27 +143,7 @@
             </v-col>
             <v-col
               cols="12"
-              sm="3"
-            >
-              <validation-provider
-                v-slot="{errors}"
-                name="sede"
-                rules="required"
-              >
-                <v-select
-                  v-model="producto.sedeId"
-                  :items="sedesGetter"
-                  item-text="nombre"
-                  item-value="id"
-                  label="Sede"
-                  outlined
-                  :error-messages="errors"
-                />
-              </validation-provider>
-            </v-col>
-            <v-col
-              cols="12"
-              sm="3"
+              sm="4"
             >
               <validation-provider
                 v-slot="{errors}"
@@ -186,6 +166,54 @@
             <v-col md="6">
               <validation-provider
                 v-slot="{errors}"
+                name="sede"
+                rules="required"
+              >
+                <v-select
+                  v-model="producto.sedes"
+                  :items="sedesGetter"
+                  item-text="nombre"
+                  label="Sedes"
+                  return-object
+                  multiple
+                  outlined
+                  :error-messages="errors"
+                >
+                  <template v-slot:selection="{ item, index }">
+                    <v-chip v-if="index === 0">
+                      <span>{{ item.nombre }}</span>
+                    </v-chip>
+                    <span
+                      v-if="index === 1"
+                      class="grey--text text-caption"
+                    >
+                      (+{{ producto.sedes.length - 1 }} otros)
+                    </span>
+                  </template>
+                  <template v-slot:prepend-item>
+                    <v-list-item
+                      ripple
+                      @click="toggle"
+                    >
+                      <v-list-item-action>
+                        <v-icon :color="producto.sedes.length > 0 ? $vuetify.theme.themes.light.primary : ''">
+                          {{ icon }}
+                        </v-icon>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          Seleccionar todos
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider class="mt-2" />
+                  </template>
+                </v-select>
+              </validation-provider>
+            </v-col>
+            <v-col md="6">
+              <validation-provider
+                v-slot="{errors}"
                 name="Costo"
                 rules="required"
               >
@@ -196,22 +224,6 @@
                   prepend-icon="mdi-cash"
                   type="number"
                   prefix="L."
-                  :error-messages="errors"
-                />
-              </validation-provider>
-            </v-col>
-            <v-col md="6">
-              <validation-provider
-                v-slot="{errors}"
-                name="stock"
-                rules="required"
-              >
-                <v-text-field
-                  v-model.number="producto.stock"
-                  label="Stock"
-                  name="stock"
-                  prepend-icon="mdi-view-grid"
-                  type="number"
                   :error-messages="errors"
                 />
               </validation-provider>
@@ -269,10 +281,9 @@
             observaciones: '',
             fabricanteId: 0,
             categoriaId: 0,
-            sedeId: 0,
+            sedes: [],
             estadoId: 0,
             costo: 0,
-            stock: 0,
             imagenUrl: 0,
           }
         },
@@ -284,6 +295,17 @@
     },
     computed: {
       ...mapGetters(['estadosGetter', 'fabricantesGetter', 'sedesGetter', 'categoriasGetter']),
+      selectAllSedes () {
+        return this.producto.sedes.length === this.sedesGetter.length
+      },
+      selectSomeSedes () {
+        return this.producto.sedes.length > 0 && !this.selectAllSedes
+      },
+      icon () {
+        if (this.selectAllSedes) return 'mdi-close-box'
+        if (this.selectSomeSedes) return 'mdi-minus-box'
+        return 'mdi-checkbox-blank-outline'
+      },
     },
     methods: {
       save () {
@@ -292,6 +314,15 @@
       reset () {
         this.$refs.form.reset()
         this.$refs.observerValidate.reset()
+      },
+      toggle () {
+        this.$nextTick(() => {
+          if (this.selectAllSedes) {
+            this.producto.sedes = []
+          } else {
+            this.producto.sedes = this.sedesGetter.slice()
+          }
+        })
       },
     },
   }

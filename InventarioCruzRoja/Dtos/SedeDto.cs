@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace InventarioCruzRoja.Dtos
 {
     public class SedeDto
@@ -6,5 +8,6 @@ namespace InventarioCruzRoja.Dtos
         public string Nombre { get; set; }
         public string Direccion { get; set; }
         public int EstadoId { get; set; }
+        public IEnumerable<ProductoDto> Productos { get; set; }
     }
 }

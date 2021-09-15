@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace InventarioCruzRoja.Dtos
@@ -22,14 +23,11 @@ namespace InventarioCruzRoja.Dtos
         public int FabricanteId { get; set; }
         public string Categoria { get; set; }
         public int CategoriaId { get; set; }
-        public string Sede { get; set; }
-        public int SedeId { get; set; }
+        public IEnumerable<SedeDto> Sedes { get; set; }
         public string Estado { get; set; }
         public int EstadoId { get; set; }
         [Required]
         public decimal Costo { get; set; }
-        [Required]
-        public int Stock { get; set; }
         [StringLength(200)]
         public string ImagenUrl { get; set; }
         public string UsuarioModifica { get; set; }

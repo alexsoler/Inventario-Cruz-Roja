@@ -1,4 +1,5 @@
 import axios from '../plugins/http'
+import FuncionesService from './funciones.service'
 
 class ProductosService {
     async getAll () {
@@ -23,10 +24,7 @@ class ProductosService {
 
     async create (producto, imagen) {
       try {
-        const formData = new FormData()
-        Object.entries(producto).forEach(([key, value]) => {
-          formData.append(key, value)
-        })
+        const formData = FuncionesService.jsonToFormData(producto)
 
         formData.append('file', imagen)
         const response = await axios.post('/api/productos', formData, {
@@ -43,10 +41,7 @@ class ProductosService {
 
     async edit (id, producto, imagen) {
       try {
-        const formData = new FormData()
-        Object.entries(producto).forEach(([key, value]) => {
-          if (value) { formData.append(key, value) }
-        })
+        const formData = FuncionesService.jsonToFormData(producto)
 
         if (imagen) {
           formData.append('file', imagen)

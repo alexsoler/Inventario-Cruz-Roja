@@ -171,7 +171,7 @@
 
     watch: {
       color (val) {
-        this.$vuetify.theme.themes[this.isDark ? 'dark' : 'light'].primary = val
+        this.$vuetify.theme.themes[this.$vuetify.theme.dark ? 'dark' : 'light'].primary = val
       },
       showImg (val) {
         if (!val) {
