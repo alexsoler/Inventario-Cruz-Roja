@@ -10,6 +10,9 @@
           :headers="headers"
           :items="proveedores"
           :search="search"
+          :expanded.sync="expanded"
+          :single-expand="true"
+          show-expand
           sort-by="Id"
           class="elevation-1"
         >
@@ -77,7 +80,7 @@
             >{{ item.sitioWeb }}</a>
           </template>
           <template v-slot:item.email="{ item }">
-            <a :href="'mailto:'+item.mail">{{ item.email }}</a>
+            <a :href="'mailto:'+item.email">{{ item.email }}</a>
           </template>
           <template v-slot:item.estadoId="{ item }">
             <v-chip
@@ -86,6 +89,54 @@
             >
               {{ getEstado(item.estadoId) }}
             </v-chip>
+          </template>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length">
+              <v-container fluid>
+                <v-data-iterator
+                  :items="item.contactos"
+                  :items-per-page="3"
+                  hide-default-footer
+                >
+                  <template v-slot:default="props">
+                    <v-row>
+                      <v-col
+                        v-for="item in props.items"
+                        :key="item.id"
+                        cols="12"
+                        sm="6"
+                        md="4"
+                        lg="4"
+                      >
+                        <v-card>
+                          <v-card-title class="subheading font-weight-bold">
+                            {{ item.nombre }}
+                          </v-card-title>
+
+                          <v-divider />
+
+                          <v-list dense>
+                            <v-list-item>
+                              <v-list-item-content>Teléfono:</v-list-item-content>
+                              <v-list-item-content class="align-end">
+                                <a :href="'tel:'+item.telefonoFijo1">{{ item.telefono }}</a>
+                              </v-list-item-content>
+                            </v-list-item>
+
+                            <v-list-item>
+                              <v-list-item-content>Correo:</v-list-item-content>
+                              <v-list-item-content class="align-end">
+                                <a :href="'mailto:'+item.email">{{ item.email }}</a>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </v-list>
+                        </v-card>
+                      </v-col>
+                    </v-row>
+                  </template>
+                </v-data-iterator>
+              </v-container>
+            </td>
           </template>
           <template v-slot:item.actions="{ item }">
             <v-btn
@@ -162,7 +213,9 @@
         { text: 'Email', value: 'email' },
         { text: 'Estado', value: 'estadoId' },
         { text: 'Acción', value: 'actions', sortable: false },
+        { text: '', value: 'data-table-expand' },
       ],
+      expanded: [],
       search: '',
       proveedores: [],
       editedIndex: -1,
