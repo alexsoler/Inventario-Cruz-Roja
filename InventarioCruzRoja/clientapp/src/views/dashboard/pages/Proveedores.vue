@@ -95,8 +95,7 @@
               <v-container fluid>
                 <v-data-iterator
                   :items="item.contactos"
-                  :items-per-page="3"
-                  hide-default-footer
+                  :items-per-page="5"
                 >
                   <template v-slot:default="props">
                     <v-row>

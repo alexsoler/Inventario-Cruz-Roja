@@ -36,66 +36,84 @@
               Nuevo
             </v-btn>
           </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
+          <validation-observer
+            ref="observerValidate"
+            v-slot="{ invalid }"
+          >
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">{{ formTitle }}</span>
+              </v-card-title>
 
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.nombre"
-                      label="Nombre"
-                    />
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.telefono"
-                      label="Telefono"
-                    />
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.email"
-                      label="Email"
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col
+                      cols="12"
+                    >
+                      <validation-provider
+                        v-slot="{errors}"
+                        name="nombre"
+                        rules="required|min:2|max:50"
+                      >
+                        <v-text-field
+                          v-model="editedItem.nombre"
+                          label="Nombre"
+                          :error-messages="errors"
+                        />
+                      </validation-provider>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                    >
+                      <vue-tel-input-vuetify
+                        v-model="editedItem.telefono"
+                        label="Teléfono"
+                        name="telefono"
+                        placeholder="Teléfono"
+                      />
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                    >
+                      <validation-provider
+                        v-slot="{errors}"
+                        name="email"
+                        rules="email|max:100"
+                      >
+                        <v-text-field
+                          v-model="editedItem.email"
+                          label="Email"
+                          :error-messages="errors"
+                        />
+                      </validation-provider>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
 
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="close"
-              >
-                Cancelar
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="save"
-              >
-                Guardar
-              </v-btn>
-            </v-card-actions>
-          </v-card>
+              <v-card-actions>
+                <v-spacer />
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="close"
+                >
+                  Cancelar
+                </v-btn>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  :disabled="invalid"
+                  @click="save"
+                >
+                  Guardar
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </validation-observer>
         </v-dialog>
         <v-dialog
           v-model="dialogDelete"
@@ -147,15 +165,6 @@
       >
         mdi-delete
       </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn
-        small
-        color="primary"
-        @click="initialize"
-      >
-        Restablecer
-      </v-btn>
     </template>
   </v-data-table>
 </template>
