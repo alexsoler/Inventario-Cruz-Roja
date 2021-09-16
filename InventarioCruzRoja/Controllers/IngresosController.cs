@@ -31,7 +31,7 @@ namespace InventarioCruzRoja.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<IngresoDto>>> GetIngresos()
         {
-            var response = await _repository.GetAll("Proveedor", "Producto", "User");
+            var response = await _repository.GetAll("Proveedor", "Sede", "Producto", "User");
             return Ok(_mapper.Map<IEnumerable<IngresoDto>>(response.Data));
         }
 

@@ -14,6 +14,8 @@ namespace InventarioCruzRoja.Data.EntityConfigurations
         {
             builder.ToTable("Ingresos");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Observaciones).HasMaxLength(300);
+            builder.Property(x => x.Fecha).IsRequired();
         }
     }
 }

@@ -8,11 +8,13 @@ namespace InventarioCruzRoja.Models
     public class Ingreso : EntidadBase<int>
     {
         public int ProveedorId { get; set; }
+        public int SedeId { get; set; }
         public int ProductoId { get; set; }
         public int UserId { get; set; }
         public DateTime Fecha { get; set; }
         public int Cantidad { get; set; }
         public Proveedor Proveedor { get; set; }
+        public Sede Sede { get; set; }
         public Producto Producto { get; set; }
         public User User { get; set; }
     }
