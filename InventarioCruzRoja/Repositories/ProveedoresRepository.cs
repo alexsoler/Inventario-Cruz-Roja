@@ -1,6 +1,7 @@
 ﻿using InventarioCruzRoja.Data;
 using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,31 @@ namespace InventarioCruzRoja.Repositories
             ILogger<ProveedoresRepository> logger) : base(context, logger)
         {
 
+        }
+
+        public async Task<ServiceResponse<IEnumerable<Proveedor>>> GetSearch(string filter, params string[] includes)
+        {
+            var response = new ServiceResponse<IEnumerable<Proveedor>>();
+
+            try
+            {
+                var proveedores = await _context.Proveedores.Where(x =>
+                        EF.Functions.Like(x.Nombre, $"%{filter}%")
+                    ).AsNoTracking().ToListAsync();
+
+                response.Message = "Lista de registros obtenida con exito";
+                response.Data = proveedores;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Ocurrio un error al momento de buscar el proveedor.", ex);
+                response.Success = false;
+                response.Message = "Ocurrio un error al momento de buscar el proveedor.";
+
+                return response;
+            }
         }
     }
 }

@@ -28,9 +28,19 @@ namespace InventarioCruzRoja.Controllers
 
         // GET: api/Productos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductoDto>>> GetProductos()
+        public async Task<ActionResult<IEnumerable<ProductoDto>>> GetProductos([FromQuery] string filter)
         {
-            var response = await _repository.GetAll("Estado", "Fabricante", "Categoria");
+            var response = new ServiceResponse<IEnumerable<Producto>>();
+
+            if (string.IsNullOrEmpty(filter))
+            {
+                response = await _repository.GetAll("Estado", "Fabricante", "Categoria");
+            }
+            else
+            {
+                response = await _repository.GetSearch(filter);
+            }
+
             return Ok(_mapper.Map<IEnumerable<ProductoDto>>(response.Data));
         }
 

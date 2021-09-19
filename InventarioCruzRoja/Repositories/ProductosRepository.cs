@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -115,6 +116,34 @@ namespace InventarioCruzRoja.Repositories
                 response.Success = false;
                 response.Data = string.Empty;
                 
+                return response;
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<Producto>>> GetSearch(string filter, params string[] includes)
+        {
+            var response = new ServiceResponse<IEnumerable<Producto>>();
+
+            try
+            {
+                var query = _context.Productos.AsNoTracking();
+                query = includes.Aggregate(query, (query, path) => query.Include(path));
+                var productos = await query.Where(x =>
+                        EF.Functions.Like(x.Descripcion, $"%{filter}%") ||
+                        EF.Functions.Like(x.Codigo, $"%{filter}%")
+                    ).AsNoTracking().ToListAsync();
+
+                response.Message = "Lista de registros obtenida con exito";
+                response.Data = productos;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Ocurrio un error al momento de buscar el producto.", ex);
+                response.Success = false;
+                response.Message = "Ocurrio un error al momento de buscar el producto.";
+
                 return response;
             }
         }
