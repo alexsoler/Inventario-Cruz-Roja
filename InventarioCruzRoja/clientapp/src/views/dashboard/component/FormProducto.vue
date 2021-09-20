@@ -86,6 +86,24 @@
             <v-col>
               <validation-provider
                 v-slot="{errors}"
+                name="descripcion"
+                rules="max:1000"
+              >
+                <v-text-field
+                  v-model="producto.descripcion"
+                  label="Descripción"
+                  name="descripcion"
+                  prepend-icon="mdi-form-textbox"
+                  type="text"
+                  :error-messages="errors"
+                />
+              </validation-provider>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <validation-provider
+                v-slot="{errors}"
                 name="observaciones"
                 rules="max:1000"
               >
