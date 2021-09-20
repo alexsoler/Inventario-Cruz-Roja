@@ -24,7 +24,9 @@ namespace InventarioCruzRoja.Repositories
 
             try
             {
-                var proveedores = await _context.Proveedores.Where(x =>
+                var query = _context.Proveedores.AsNoTracking();
+                query = includes.Aggregate(query, (query, path) => query.Include(path));
+                var proveedores = await query.Where(x =>
                         EF.Functions.Like(x.Nombre, $"%{filter}%")
                     ).AsNoTracking().ToListAsync();
 

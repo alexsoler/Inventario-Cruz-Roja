@@ -22,6 +22,16 @@ class ProductosService {
       }
     }
 
+    async search (filter) {
+      try {
+        const response = await axios.get(`/api/productos?filter=${filter}`)
+
+        return response
+      } catch (error) {
+        return error
+      }
+    }
+
     async create (producto, imagen) {
       try {
         const formData = FuncionesService.jsonToFormData(producto)

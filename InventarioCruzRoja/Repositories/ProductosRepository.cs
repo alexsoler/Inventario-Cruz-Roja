@@ -129,7 +129,7 @@ namespace InventarioCruzRoja.Repositories
                 var query = _context.Productos.AsNoTracking();
                 query = includes.Aggregate(query, (query, path) => query.Include(path));
                 var productos = await query.Where(x =>
-                        EF.Functions.Like(x.Descripcion, $"%{filter}%") ||
+                        EF.Functions.Like(x.Nombre, $"%{filter}%") ||
                         EF.Functions.Like(x.Codigo, $"%{filter}%")
                     ).AsNoTracking().ToListAsync();
 

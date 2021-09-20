@@ -16,7 +16,6 @@ namespace InventarioCruzRoja.Dtos
         public string Usuario { get; set; }
         public string Observaciones { get; set; }
         public bool Anulado { get; set; }
-        [Required]
         public DateTime Fecha { get; set; }
         [Required]
         public int Cantidad { get; set; }

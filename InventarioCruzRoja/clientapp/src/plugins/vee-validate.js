@@ -10,6 +10,7 @@ import {
   email,
   max,
   min,
+  min_value as minValue,
   numeric,
   required,
   confirmed,
@@ -20,6 +21,7 @@ localize('es', es)
 extend('email', email)
 extend('max', max)
 extend('min', min)
+extend('min_value', minValue)
 extend('numeric', numeric)
 extend('required', required)
 extend('confirmed', confirmed)

@@ -29,9 +29,18 @@ namespace InventarioCruzRoja.Controllers
 
         // GET: api/Proveedores
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProveedorDto>>> GetProveedores()
+        public async Task<ActionResult<IEnumerable<ProveedorDto>>> GetProveedores([FromQuery] string filter)
         {
-            var response = await _repository.GetAll("Contactos");
+            var response = new ServiceResponse<IEnumerable<Proveedor>>();
+
+            if (string.IsNullOrEmpty(filter))
+            {
+                response = await _repository.GetAll("Contactos");
+            } else
+            {
+                response = await _repository.GetSearch(filter);
+            }
+                
             return Ok(_mapper.Map<IEnumerable<ProveedorDto>>(response.Data));
         }
 

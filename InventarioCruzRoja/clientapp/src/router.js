@@ -70,6 +70,11 @@ export const router = new Router({
           props: true,
         },
         {
+          name: 'Ingresos',
+          path: '/ingresos',
+          component: () => import('@/views/dashboard/pages/Ingresos'),
+        },
+        {
           name: 'Notifications',
           path: '/components/notifications',
           component: () => import('@/views/dashboard/component/Notifications'),

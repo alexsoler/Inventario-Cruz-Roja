@@ -11,6 +11,16 @@ class ProveedoresService {
       }
     }
 
+    async search (filter) {
+      try {
+        const response = await axios.get(`/api/proveedores?filter=${filter}`)
+
+        return response
+      } catch (error) {
+        return error
+      }
+    }
+
     async create (proveedor) {
       try {
         const response = await axios.post('/api/proveedores', proveedor)

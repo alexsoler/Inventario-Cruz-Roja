@@ -148,6 +148,11 @@
           to: '/productos',
         },
         {
+          icon: 'mdi-import',
+          title: 'Ingresos',
+          to: '/ingresos',
+        },
+        {
           title: 'typography',
           icon: 'mdi-format-font',
           to: '/components/typography',
