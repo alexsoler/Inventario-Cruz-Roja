@@ -37,8 +37,9 @@
             </v-btn>
           </template>
           <validation-observer
-            ref="observerValidate"
+            ref="observerValidateContactos"
             v-slot="{ invalid }"
+            :disabled="!dialog || !dialogDelete"
           >
             <v-card>
               <v-card-title>
@@ -281,6 +282,7 @@
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
+          this.$refs.observerValidateContactos.reset()
         })
       },
 
@@ -289,6 +291,7 @@
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
+          this.$refs.observerValidateContactos.reset()
         })
       },
 

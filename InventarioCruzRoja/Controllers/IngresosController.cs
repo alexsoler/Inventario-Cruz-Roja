@@ -39,7 +39,7 @@ namespace InventarioCruzRoja.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IngresoDto>> GetIngreso(int id)
         {
-            var response = await _repository.Get(id);
+            var response = await _repository.Get(id, "Proveedor", "Sede", "Producto", "User");
 
             if (response.Data == null)
                 return NotFound(response.Message);

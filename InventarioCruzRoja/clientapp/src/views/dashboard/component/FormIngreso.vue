@@ -243,6 +243,7 @@
             userId: 0,
             usuario: '',
             observaciones: '',
+            motivoAnula: null,
             anulado: false,
             cantidad: 0,
             fecha: '',
@@ -290,6 +291,7 @@
       },
       save () {
         this.ingreso.fecha = new Date()
+        this.ingreso.userId = this.userGetter.id
         this.$emit('save')
       },
       reset () {

@@ -5,17 +5,25 @@ namespace InventarioCruzRoja.Dtos
 {
     public class IngresoDto
     {
+        [Required]
         public int Id { get; set; }
+        [Required]
         public int ProveedorId { get; set; }
         public string Proveedor { get; set; }
+        [Required]
         public int SedeId { get; set; }
         public string Sede { get; set; }
+        [Required]
         public int ProductoId { get; set; }
         public string Producto { get; set; }
+        [Required]
         public int UserId { get; set; }
         public string Usuario { get; set; }
+        [StringLength(300)]
         public string Observaciones { get; set; }
         public bool Anulado { get; set; }
+        [StringLength(300)]
+        public string MotivoAnula { get; set; }
         public DateTime Fecha { get; set; }
         [Required]
         public int Cantidad { get; set; }

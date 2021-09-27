@@ -177,7 +177,7 @@
             telefonoFijo1: '',
             telefonoFijo2: '',
             sitioWeb: '',
-            email: '',
+            email: null,
             contactos: [],
             estadoId: 1,
           }

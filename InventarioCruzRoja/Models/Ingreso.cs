@@ -12,6 +12,7 @@ namespace InventarioCruzRoja.Models
         public int ProductoId { get; set; }
         public int UserId { get; set; }
         public string Observaciones { get; set; }
+        public string MotivoAnula { get; set; }
         public bool Anulado { get; set; }
         public DateTime Fecha { get; set; }
         public int Cantidad { get; set; }

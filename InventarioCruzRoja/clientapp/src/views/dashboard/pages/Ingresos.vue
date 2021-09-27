@@ -62,7 +62,73 @@
                   @close="close"
                 />
               </v-dialog>
+              <v-dialog
+                v-model="dialogAnulacion"
+                max-width="500px"
+              >
+                <validation-observer
+                  ref="observerValidateAnulacion"
+                  v-slot="{ invalid }"
+                >
+                  <v-card>
+                    <v-card-title class="text-h5">
+                      ¿Está seguro de que desea anular este ingreso?
+                    </v-card-title>
+                    <v-spacer />
+                    <v-card-text>
+                      <v-form
+                        id="formIngreso"
+                        ref="formIngreso"
+                      >
+                        <validation-provider
+                          v-slot="{errors}"
+                          name="motivaAnula"
+                          rules="required|min:10|max:300"
+                        >
+                          <v-textarea
+                            v-model="editedItem.motivoAnula"
+                            filled
+                            label="Motivo de Anulación"
+                            name="motivaAnula"
+                            prepend-icon="mdi-comment-text"
+                            auto-grow
+                            :error-messages="errors"
+                          />
+                        </validation-provider>
+                      </v-form>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer />
+                      <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="closeAnulacion"
+                      >
+                        Cancelar
+                      </v-btn>
+                      <v-btn
+                        color="blue darken-1"
+                        text
+                        :disabled="invalid || isAjaxPetitionInProgress"
+                        @click="anulacionItemConfirm"
+                      >
+                        OK
+                      </v-btn>
+                      <v-spacer />
+                    </v-card-actions>
+                  </v-card>
+                </validation-observer>
+              </v-dialog>
             </v-toolbar>
+          </template>
+          <template v-slot:item.anulado="{ item }">
+            <v-simple-checkbox
+              v-model="item.anulado"
+              disabled
+            />
+          </template>
+          <template v-slot:item.fecha="{ item }">
+            <span>{{ new Date(item.fecha).toLocaleString() }}</span>
           </template>
           <template v-slot:item.actions="{ item }">
             <v-btn
@@ -70,23 +136,24 @@
               fab
               dark
               x-small
-              color="secondary"
+              color="indigo"
               @click="editItem(item)"
             >
               <v-icon>
-                mdi-pencil
+                mdi-printer
               </v-icon>
             </v-btn>
             <v-btn
+              v-if="!item.anulado"
               class="mx-2"
               fab
               dark
               x-small
-              color="error"
-              @click="deleteItem(item)"
+              color="orange darken-4"
+              @click="anularItem(item)"
             >
               <v-icon>
-                mdi-delete
+                mdi-cancel
               </v-icon>
             </v-btn>
           </template>
@@ -125,6 +192,7 @@
     },
     data: () => ({
       dialog: false,
+      dialogAnulacion: false,
       headers: [
         {
           text: 'Id',
@@ -155,6 +223,7 @@
         userId: 0,
         usuario: '',
         observaciones: '',
+        motivoAnula: null,
         anulado: false,
         cantidad: 0,
         fecha: '',
@@ -170,6 +239,7 @@
         userId: 0,
         usuario: '',
         observaciones: '',
+        motivoAnula: null,
         anulado: false,
         cantidad: 0,
         fecha: '',
@@ -222,7 +292,6 @@
               'Su registro ha sido eliminado.',
               'success',
             )
-            this.obtenerIngresos()
           } else {
             this.$swal.fire(
               '¡Error!',
@@ -239,6 +308,39 @@
           this.editedIndex = -1
         })
       },
+      anularItem (item) {
+        this.editedIndex = this.ingresos.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialogAnulacion = true
+      },
+      async anulacionItemConfirm () {
+        this.isAjaxPetitionInProgress = true
+        this.editedItem.anulado = true
+        const response = await IngresosService.edit(this.editedItem.id, this.editedItem)
+        if (response.status >= 200 && response.status <= 299) {
+          Object.assign(this.ingresos[this.editedIndex], this.editedItem)
+          this.$swal.fire(
+            '¡Exito!',
+            'Se anulo el ingreso.',
+            'success',
+          )
+        } else {
+          this.$swal.fire(
+            '¡Error!',
+            response.data,
+            'error',
+          )
+        }
+        this.closeAnulacion()
+        this.isAjaxPetitionInProgress = false
+      },
+      closeAnulacion () {
+        this.dialogAnulacion = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
       async save () {
         this.isAjaxPetitionInProgress = true
         if (this.editedIndex > -1) {
@@ -250,7 +352,6 @@
               'Su registro ha sido editado.',
               'success',
             )
-            this.obtenerIngresos()
           } else {
             this.$swal.fire(
               '¡Error!',
@@ -262,13 +363,13 @@
           const response = await IngresosService.create(this.editedItem)
           if (response.status === 201) {
             this.editedItem.id = response.data.id
-            this.ingresos.push(this.editedItem)
+            const nuevoIngresoResponse = await IngresosService.get(response.data.id)
+            this.ingresos.push(nuevoIngresoResponse.data)
             this.$swal.fire(
               '¡Exito!',
               'Su registro ha sido creado.',
               'success',
             )
-            this.obtenerIngresos()
           } else {
             this.$swal.fire(
               '¡Error!',

@@ -11,6 +11,16 @@ class IngresosService {
       }
     }
 
+    async get (id) {
+      try {
+        const response = await axios.get(`/api/ingresos/${id}`)
+
+        return response
+      } catch (error) {
+        return error
+      }
+    }
+
     async create (ingreso) {
       try {
         const response = await axios.post('/api/ingresos', ingreso)
