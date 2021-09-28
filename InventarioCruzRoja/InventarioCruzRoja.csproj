@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="FastReport.OpenSource" Version="2021.4.3" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2021.4.0" />
     <PackageReference Include="FastReport.OpenSource.Web" Version="2021.4.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.10" />
@@ -25,8 +26,8 @@
 
   <ItemGroup>
     <Folder Include="clientapp\" />
-    <Folder Include="Resources\" />
     <Folder Include="Resources\Images\" />
+    <Folder Include="Resources\Reports\" />
   </ItemGroup>
 
   <PropertyGroup>
