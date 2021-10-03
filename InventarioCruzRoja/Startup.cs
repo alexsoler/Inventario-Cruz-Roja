@@ -23,6 +23,7 @@ using Microsoft.IdentityModel.Tokens;
 using VueCliMiddleware;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using InventarioCruzRoja.Services;
 
 namespace InventarioCruzRoja
 {
@@ -79,6 +80,7 @@ namespace InventarioCruzRoja
             services.AddScoped<IProveedoresRepository, ProveedoresRepository>();
             services.AddScoped<IContactosRepository, ContactosRepository>();
             services.AddScoped<IIngresosRepository, IngresosRepository>();
+            services.AddScoped<IReportesService, ReportesService>();
 
             services.AddSpaStaticFiles(configuration =>
             {

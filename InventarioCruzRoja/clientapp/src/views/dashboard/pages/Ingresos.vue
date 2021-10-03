@@ -119,6 +119,30 @@
                   </v-card>
                 </validation-observer>
               </v-dialog>
+              <v-dialog
+                v-model="dialogReporte"
+                max-width="900px"
+              >
+                <v-card>
+                  <v-card-text>
+                    <iframe
+                      :src="'/api/reports/ingresos/'+editedItem.id+'?format=pdf'"
+                      style="width: 100%;height: 500px;border: none;"
+                    />
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="closeReporte"
+                    >
+                      Cerrar
+                    </v-btn>
+                    <v-spacer />
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-toolbar>
           </template>
           <template v-slot:item.anulado="{ item }">
@@ -137,7 +161,7 @@
               dark
               x-small
               color="indigo"
-              @click="editItem(item)"
+              @click="reportItem(item)"
             >
               <v-icon>
                 mdi-printer
@@ -193,6 +217,7 @@
     data: () => ({
       dialog: false,
       dialogAnulacion: false,
+      dialogReporte: false,
       headers: [
         {
           text: 'Id',
@@ -264,10 +289,10 @@
           this.ingresos = response.data
         }
       },
-      editItem (item) {
+      reportItem (item) {
         this.editedIndex = this.ingresos.indexOf(item)
         this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.dialogReporte = true
       },
       async deleteItem (item) {
         const result = await this.$swal({
@@ -336,6 +361,13 @@
       },
       closeAnulacion () {
         this.dialogAnulacion = false
+        this.$nextTick(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+      closeReporte () {
+        this.dialogReporte = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
