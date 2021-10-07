@@ -42,8 +42,35 @@ namespace InventarioCruzRoja.Data
 
             if (!await _db.Categorias.AnyAsync())
                 _db.Categorias.AddRange(
+                    new Categoria { Nombre = "Cómputo", Descripcion = "", EstadoId = 1 },
                     new Categoria { Nombre = "Medicamentos", Descripcion = "", EstadoId = 1 }
                 );
+
+            await _db.SaveChangesAsync();
+
+            if (!await _db.Productos.AnyAsync())
+                _db.Productos.AddRange(new Producto
+                {
+                    Codigo = "X0012T4ZKF",
+                    Nombre = "WIFI Adapter",
+                    Modelo = "EP-DB1607,",
+                    Presentacion = "UNIDAD",
+                    Descripcion = "Ejemplo de descripción",
+                    Observaciones = "Ejemplo de Observaciones",
+                    Costo = 650.99M,
+                    Fabricante = await _db.Fabricantes.FirstOrDefaultAsync(),
+                    Categoria = await _db.Categorias.FirstOrDefaultAsync(),
+                    Estado = await _db.Estados.FirstOrDefaultAsync(),
+                    Sedes = await _db.Sedes.ToListAsync(),
+                    FechaCreacion = DateTime.Now
+                });
+
+            if (!await _db.Proveedores.AnyAsync())
+                _db.Proveedores.AddRange(new Proveedor
+                {
+                    Nombre = "Proveedor de Ejemplo",
+                    Direccion = "Dirección de ejemplo"
+                });
 
             await _db.SaveChangesAsync();
 

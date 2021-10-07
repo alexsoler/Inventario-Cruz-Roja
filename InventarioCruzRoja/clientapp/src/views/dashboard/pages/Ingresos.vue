@@ -11,6 +11,10 @@
           :items="ingresos"
           :search="search"
           sort-by="Id"
+          :expanded.sync="expanded"
+          :single-expand="true"
+          item-key="Id"
+          show-expand
           class="elevation-1"
         >
           <template v-slot:top>
@@ -154,6 +158,43 @@
           <template v-slot:item.fecha="{ item }">
             <span>{{ new Date(item.fecha).toLocaleString() }}</span>
           </template>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length">
+              <v-container>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    md="6"
+                  >
+                    <v-alert
+                      text
+                      color="info"
+                    >
+                      <h3 class="text-h5">
+                        Observaciones
+                      </h3>
+                      <div>{{ item.observaciones }}</div>
+                    </v-alert>
+                  </v-col>
+                  <v-col
+                    v-if="item.anulado"
+                    cols="12"
+                    md="6"
+                  >
+                    <v-alert
+                      text
+                      color="error"
+                    >
+                      <h3 class="text-h5">
+                        Motivo de anulación
+                      </h3>
+                      <div>{{ item.motivoAnula }}</div>
+                    </v-alert>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </td>
+          </template>
           <template v-slot:item.actions="{ item }">
             <v-btn
               class="mx-2"
@@ -229,11 +270,12 @@
         { text: 'Proveedor', value: 'proveedor' },
         { text: 'Sede', value: 'sede' },
         { text: 'Usuario', value: 'usuario' },
-        { text: 'Observaciones', value: 'observaciones' },
         { text: 'Fecha', value: 'fecha' },
         { text: 'Anulado', value: 'anulado' },
         { text: 'Acción', value: 'actions', sortable: false },
+        { text: '', value: 'data-table-expand' },
       ],
+      expanded: [],
       search: '',
       ingresos: [],
       editedIndex: -1,

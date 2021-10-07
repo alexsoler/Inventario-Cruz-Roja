@@ -15,7 +15,6 @@ namespace InventarioCruzRoja.Models
         public string Observaciones { get; set; }
         public int FabricanteId { get; set; }
         public int CategoriaId { get; set; }
-        public int SedeId { get; set; }
         public int EstadoId { get; set; }
         public decimal Costo { get; set; }
         public string ImagenUrl { get; set; }
