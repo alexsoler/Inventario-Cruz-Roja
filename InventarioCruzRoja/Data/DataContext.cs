@@ -21,6 +21,8 @@ namespace InventarioCruzRoja.Data
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<Contacto> Contactos { get; set; }
+        public DbSet<Ingreso> Ingresos { get; set; }
+        public DbSet<Egreso> Egresos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +35,7 @@ namespace InventarioCruzRoja.Data
             modelBuilder.ApplyConfiguration(new ProveedorConfiguration());
             modelBuilder.ApplyConfiguration(new ContactoConfiguration());
             modelBuilder.ApplyConfiguration(new IngresoConfiguration());
+            modelBuilder.ApplyConfiguration(new EgresoConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }
