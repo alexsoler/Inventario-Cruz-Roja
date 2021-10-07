@@ -18,5 +18,11 @@ namespace InventarioCruzRoja.Repositories
             entity.Fecha = DateTime.Now;
             return base.Add(entity);
         }
+
+        public override Task<ServiceResponse<Ingreso>> Update(Ingreso entidad)
+        {
+            entidad.FechaAnula = DateTime.Now;
+            return base.Update(entidad);
+        }
     }
 }

@@ -50,7 +50,9 @@ namespace InventarioCruzRoja.Profiles
                 .ForMember(dest =>
                     dest.Sede, opt => opt.MapFrom(x => x.Sede.Nombre))
                 .ForMember(dest =>
-                    dest.Usuario, opt => opt.MapFrom(x => x.User.Username));
+                    dest.Usuario, opt => opt.MapFrom(x => x.User.Username))
+                .ForMember(dest =>
+                    dest.UsuarioAnula, opt => opt.MapFrom(x => x.User.Username)); ;
             CreateMap<IngresoDto, Ingreso>()
                 .ForMember(dest =>
                     dest.Proveedor, opt => opt.Ignore())
@@ -59,21 +61,27 @@ namespace InventarioCruzRoja.Profiles
                 .ForMember(dest =>
                     dest.Producto, opt => opt.Ignore())
                 .ForMember(dest =>
-                    dest.User, opt => opt.Ignore());
+                    dest.User, opt => opt.Ignore())
+                .ForMember(dest =>
+                    dest.UserAnula, opt => opt.Ignore());
             CreateMap<Egreso, EgresoDto>()
                 .ForMember(dest =>
                     dest.Producto, opt => opt.MapFrom(x => x.Producto.Nombre))
                 .ForMember(dest =>
                     dest.Sede, opt => opt.MapFrom(x => x.Sede.Nombre))
                 .ForMember(dest =>
-                    dest.Usuario, opt => opt.MapFrom(x => x.User.Username));
+                    dest.Usuario, opt => opt.MapFrom(x => x.User.Username))
+                .ForMember(dest =>
+                    dest.UsuarioAnula, opt => opt.MapFrom(x => x.User.Username));
             CreateMap<EgresoDto, Egreso>()
                 .ForMember(dest =>
                     dest.Sede, opt => opt.Ignore())
                 .ForMember(dest =>
                     dest.Producto, opt => opt.Ignore())
                 .ForMember(dest =>
-                    dest.User, opt => opt.Ignore());
+                    dest.User, opt => opt.Ignore())
+                .ForMember(dest =>
+                    dest.UserAnula, opt => opt.Ignore());
         }
     }
 }

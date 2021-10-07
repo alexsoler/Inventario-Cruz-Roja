@@ -189,6 +189,27 @@
                         Motivo de anulación
                       </h3>
                       <div>{{ item.motivoAnula }}</div>
+                      <v-divider
+                        class="my-4 info"
+                        style="opacity: 0.22"
+                      />
+                      <v-row
+                        align="center"
+                        no-gutters
+                      >
+                        <v-col>
+                          <h4 class="text-center">Anulado por:</h4>
+                        </v-col>
+                        <v-col>
+                          <div>{{ item.usuarioAnula }}</div>
+                        </v-col>
+                        <v-col>
+                          <h4 class="text-center">Fecha:</h4>
+                        </v-col>
+                        <v-col>
+                          <div>{{ new Date(item.fechaAnula).toLocaleString() }}</div>
+                        </v-col>
+                      </v-row>
                     </v-alert>
                   </v-col>
                 </v-row>
@@ -250,6 +271,7 @@
 <script>
   import FormIngreso from '../component/FormIngreso'
   import IngresosService from '@/services/ingresos.service'
+  import { mapGetters } from 'vuex'
 
   export default {
     components: {
@@ -288,12 +310,15 @@
         sedeId: 0,
         sede: '',
         userId: 0,
+        userAnulaId: 0,
         usuario: '',
+        usuarioAnula: '',
         observaciones: '',
         motivoAnula: null,
         anulado: false,
         cantidad: 0,
         fecha: '',
+        fechaAnula: '',
       },
       defaultItem: {
         id: 0,
@@ -304,18 +329,26 @@
         sedeId: 0,
         sede: '',
         userId: 0,
+        userAnulaId: 0,
         usuario: '',
+        usuarioAnulaId: '',
         observaciones: '',
         motivoAnula: null,
         anulado: false,
         cantidad: 0,
         fecha: '',
+        fechaAnula: '',
       },
       snackbar: false,
       colorSnackbar: 'success',
       messageSnackbar: '',
       isAjaxPetitionInProgress: false,
     }),
+    computed: {
+      ...mapGetters({
+        userGetter: 'auth/user',
+      }),
+    },
     watch: {
       dialog (val) {
         val || this.close()
@@ -383,6 +416,8 @@
       async anulacionItemConfirm () {
         this.isAjaxPetitionInProgress = true
         this.editedItem.anulado = true
+        this.editedItem.userAnulaId = this.userGetter.id
+        this.editedItem.fechaAnula = new Date()
         const response = await IngresosService.edit(this.editedItem.id, this.editedItem)
         if (response.status >= 200 && response.status <= 299) {
           Object.assign(this.ingresos[this.editedIndex], this.editedItem)

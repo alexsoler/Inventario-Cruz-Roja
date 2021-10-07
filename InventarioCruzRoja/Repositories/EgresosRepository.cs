@@ -22,8 +22,8 @@ namespace InventarioCruzRoja.Repositories
             var inventario = await  _context.Productos.Include(x => x.Ingresos).Include(x => x.Egresos)
                 .Where(x => x.Id == entity.ProductoId).Select(x => new 
                 {
-                    Ingresos = x.Ingresos.Where(i => i.SedeId == entity.SedeId).Sum(i => i.Cantidad),
-                    Egresos = x.Egresos.Where(e => e.SedeId == entity.SedeId).Sum(e => e.Cantidad)
+                    Ingresos = x.Ingresos.Where(i => i.SedeId == entity.SedeId && !i.Anulado).Sum(i => i.Cantidad),
+                    Egresos = x.Egresos.Where(e => e.SedeId == entity.SedeId && !e.Anulado).Sum(e => e.Cantidad)
                 }).FirstOrDefaultAsync();
 
 
@@ -37,6 +37,12 @@ namespace InventarioCruzRoja.Repositories
             }
 
             return await base.Add(entity);
+        }
+
+        public override Task<ServiceResponse<Egreso>> Update(Egreso entidad)
+        {
+            entidad.FechaAnula = DateTime.Now;
+            return base.Update(entidad);
         }
     }
 }
