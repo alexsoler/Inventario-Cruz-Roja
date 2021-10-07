@@ -36,6 +36,7 @@
             name="producto"
             prepend-icon="mdi-clipboard-search"
             :error-messages="errors"
+            @change="mostrarImagenProducto"
           >
             <template v-slot:no-data>
               <v-list-item>
@@ -75,6 +76,17 @@
             </template>
           </v-autocomplete>
         </validation-provider>
+        <div class="d-flex flex-column justify-space-between align-center">
+          <v-expand-transition>
+            <v-img
+              v-show="imagenProducto"
+              class="mt-2"
+              :aspect-ratio="4/3"
+              :width="200"
+              :src="imagenProducto"
+            />
+          </v-expand-transition>
+        </div>
         <validation-provider
           v-slot="{errors}"
           name="proveedor"
@@ -259,6 +271,7 @@
         isLoadingProveedores: false,
         proveedores: [],
         proveedorSearch: '',
+        imagenProducto: '',
       }
     },
     computed: {
@@ -297,6 +310,10 @@
       reset () {
         this.$refs.form.reset()
         this.$refs.observerValidate.reset()
+      },
+      mostrarImagenProducto (id) {
+        const producto = this.productos.find(x => x.id === id)
+        if (producto) { this.imagenProducto = producto.imagenUrl } else { this.imagenProducto = null }
       },
       customFilterProducto (item, queryText, itemText) {
         const textOne = item.nombre.toLowerCase()
