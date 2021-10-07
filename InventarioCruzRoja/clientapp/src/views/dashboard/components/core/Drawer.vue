@@ -148,9 +148,14 @@
           to: '/productos',
         },
         {
-          icon: 'mdi-import',
+          icon: 'mdi-tray-arrow-down',
           title: 'Ingresos',
           to: '/ingresos',
+        },
+        {
+          icon: 'mdi-tray-arrow-up',
+          title: 'Egresos',
+          to: '/Egresos',
         },
         {
           title: 'typography',

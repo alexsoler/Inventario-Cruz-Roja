@@ -31,7 +31,7 @@ namespace InventarioCruzRoja.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EgresoDto>>> GetEgresos()
         {
-            var response = await _repository.GetAll("Proveedor", "Sede", "Producto", "User");
+            var response = await _repository.GetAll("Sede", "Producto", "User");
             return Ok(_mapper.Map<IEnumerable<EgresoDto>>(response.Data));
         }
 
@@ -39,7 +39,7 @@ namespace InventarioCruzRoja.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<EgresoDto>> GetEgreso(int id)
         {
-            var response = await _repository.Get(id, "Proveedor", "Sede", "Producto", "User");
+            var response = await _repository.Get(id, "Sede", "Producto", "User");
 
             if (response.Data == null)
                 return NotFound(response.Message);

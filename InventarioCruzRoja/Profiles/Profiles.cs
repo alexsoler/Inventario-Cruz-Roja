@@ -62,16 +62,12 @@ namespace InventarioCruzRoja.Profiles
                     dest.User, opt => opt.Ignore());
             CreateMap<Egreso, EgresoDto>()
                 .ForMember(dest =>
-                    dest.Proveedor, opt => opt.MapFrom(x => x.Proveedor.Nombre))
-                .ForMember(dest =>
                     dest.Producto, opt => opt.MapFrom(x => x.Producto.Nombre))
                 .ForMember(dest =>
                     dest.Sede, opt => opt.MapFrom(x => x.Sede.Nombre))
                 .ForMember(dest =>
                     dest.Usuario, opt => opt.MapFrom(x => x.User.Username));
             CreateMap<EgresoDto, Egreso>()
-                .ForMember(dest =>
-                    dest.Proveedor, opt => opt.Ignore())
                 .ForMember(dest =>
                     dest.Sede, opt => opt.Ignore())
                 .ForMember(dest =>

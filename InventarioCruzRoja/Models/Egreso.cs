@@ -5,7 +5,18 @@ using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Models
 {
-    public class Egreso : Ingreso
+    public class Egreso : EntidadBase<int>
     {
+        public int SedeId { get; set; }
+        public int ProductoId { get; set; }
+        public int UserId { get; set; }
+        public string Observaciones { get; set; }
+        public string MotivoAnula { get; set; }
+        public bool Anulado { get; set; }
+        public DateTime Fecha { get; set; }
+        public int Cantidad { get; set; }
+        public Sede Sede { get; set; }
+        public Producto Producto { get; set; }
+        public User User { get; set; }
     }
 }

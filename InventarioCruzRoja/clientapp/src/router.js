@@ -75,6 +75,11 @@ export const router = new Router({
           component: () => import('@/views/dashboard/pages/Ingresos'),
         },
         {
+          name: 'Egresos',
+          path: '/Egresos',
+          component: () => import('@/views/dashboard/pages/Egresos'),
+        },
+        {
           name: 'Notifications',
           path: '/components/notifications',
           component: () => import('@/views/dashboard/component/Notifications'),

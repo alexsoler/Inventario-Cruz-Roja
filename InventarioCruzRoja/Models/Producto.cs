@@ -25,6 +25,8 @@ namespace InventarioCruzRoja.Models
         public Fabricante Fabricante { get; set; }
         public ICollection<Sede> Sedes { get; set; }
         public Categoria Categoria { get; set; }
+        public ICollection<Ingreso> Ingresos { get; set; }
+        public ICollection<Egreso> Egresos { get; set; }
 
     }
 }

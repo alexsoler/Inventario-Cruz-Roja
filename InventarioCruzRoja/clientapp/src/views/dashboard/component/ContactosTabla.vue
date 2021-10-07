@@ -267,7 +267,7 @@
           } else {
             this.$swal.fire(
               '¡Error!',
-              response.data,
+              response.response.data,
               'error',
             )
           }
