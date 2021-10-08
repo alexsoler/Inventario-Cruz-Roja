@@ -82,6 +82,28 @@ namespace InventarioCruzRoja.Profiles
                     dest.User, opt => opt.Ignore())
                 .ForMember(dest =>
                     dest.UserAnula, opt => opt.Ignore());
+            CreateMap<Traslado, TrasladoDto>()
+                .ForMember(dest =>
+                    dest.Producto, opt => opt.MapFrom(x => x.Producto.Nombre))
+                .ForMember(dest =>
+                    dest.SedeOrigen, opt => opt.MapFrom(x => x.EgresoOrigen.Sede.Nombre))
+                .ForMember(dest =>
+                    dest.SedeDestino, opt => opt.MapFrom(x => x.IngresoDestino.Sede.Nombre))
+                .ForMember(dest =>
+                    dest.Usuario, opt => opt.MapFrom(x => x.User.Username))
+                .ForMember(dest =>
+                    dest.UsuarioAnula, opt => opt.MapFrom(x => x.User.Username));
+            CreateMap<TrasladoDto, Traslado>()
+                .ForMember(dest =>
+                    dest.IngresoDestino, opt => opt.Ignore())
+                .ForMember(dest =>
+                    dest.EgresoOrigen, opt => opt.Ignore())
+                .ForMember(dest =>
+                    dest.Producto, opt => opt.Ignore())
+                .ForMember(dest =>
+                    dest.User, opt => opt.Ignore())
+                .ForMember(dest =>
+                    dest.UserAnula, opt => opt.Ignore());
         }
     }
 }

@@ -1,25 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Dtos
 {
-    public class IngresoDto
+    public class TrasladoDto
     {
         [Required]
         public int Id { get; set; }
         [Required]
-        public int? ProveedorId { get; set; }
-        public string Proveedor { get; set; }
+        public int SedeOrigenId { get; set; }
+        public string SedeOrigen { get; set; }
         [Required]
-        public int SedeId { get; set; }
-        public string Sede { get; set; }
+        public int SedeDestinoId { get; set; }
+        public string SedeDestino { get; set; }
         [Required]
         public int ProductoId { get; set; }
         public string Producto { get; set; }
         [Required]
         public int UserId { get; set; }
         public string Usuario { get; set; }
-        public int UserAnulaId { get; set; }
+        public int? UserAnulaId { get; set; }
         public string UsuarioAnula { get; set; }
         [StringLength(300)]
         public string Observaciones { get; set; }
@@ -30,6 +33,5 @@ namespace InventarioCruzRoja.Dtos
         public DateTime? FechaAnula { get; set; }
         [Required]
         public int Cantidad { get; set; }
-
     }
 }
