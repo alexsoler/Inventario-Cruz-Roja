@@ -158,6 +158,11 @@
           to: '/Egresos',
         },
         {
+          icon: 'mdi-swap-horizontal-bold',
+          title: 'Traslados',
+          to: '/Traslados',
+        },
+        {
           title: 'typography',
           icon: 'mdi-format-font',
           to: '/components/typography',

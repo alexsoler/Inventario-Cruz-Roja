@@ -198,13 +198,17 @@
                         no-gutters
                       >
                         <v-col>
-                          <h4 class="text-center">Anulado por:</h4>
+                          <h4 class="text-center">
+                            Anulado por:
+                          </h4>
                         </v-col>
                         <v-col>
                           <div>{{ item.usuarioAnula }}</div>
                         </v-col>
                         <v-col>
-                          <h4 class="text-center">Fecha:</h4>
+                          <h4 class="text-center">
+                            Fecha:
+                          </h4>
                         </v-col>
                         <v-col>
                           <div>{{ new Date(item.fechaAnula).toLocaleString() }}</div>

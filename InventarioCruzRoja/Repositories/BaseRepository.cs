@@ -85,7 +85,7 @@ namespace InventarioCruzRoja.Repositories
         {
             var response = new ServiceResponse<T>();
 
-            var query = _context.Set<T>().AsNoTracking();
+            var query = _context.Set<T>().AsQueryable();
             query = includes.Aggregate(query, (query, path) => query.Include(path));
             var entidad = await query.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
@@ -109,7 +109,7 @@ namespace InventarioCruzRoja.Repositories
             try
             {
 
-                var query = _context.Set<T>().AsNoTracking();
+                var query = _context.Set<T>().AsQueryable();
                 query = includes.Aggregate(query, (query, path) => query.Include(path));
                 var entidades = await query.ToListAsync();
 

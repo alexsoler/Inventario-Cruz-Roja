@@ -80,6 +80,11 @@ export const router = new Router({
           component: () => import('@/views/dashboard/pages/Egresos'),
         },
         {
+          name: 'Traslados',
+          path: '/Traslados',
+          component: () => import('@/views/dashboard/pages/Traslados'),
+        },
+        {
           name: 'Notifications',
           path: '/components/notifications',
           component: () => import('@/views/dashboard/component/Notifications'),

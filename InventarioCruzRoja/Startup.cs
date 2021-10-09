@@ -24,6 +24,7 @@ using VueCliMiddleware;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using InventarioCruzRoja.Services;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace InventarioCruzRoja
 {
@@ -44,6 +45,7 @@ namespace InventarioCruzRoja
                 services.AddDbContext<DataContext>(options =>
                 {
                     options.UseInMemoryDatabase("InventarioCruzRoja");
+                    options.ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
                 });
             }
             else
@@ -82,6 +84,7 @@ namespace InventarioCruzRoja
             services.AddScoped<IIngresosRepository, IngresosRepository>();
             services.AddScoped<IReportesService, ReportesService>();
             services.AddScoped<IEgresosRepository, EgresosRepository>();
+            services.AddScoped<ITrasladosRepository, TrasladosRepository>();
 
             services.AddSpaStaticFiles(configuration =>
             {

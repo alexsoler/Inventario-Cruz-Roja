@@ -37,6 +37,13 @@ extend('url', {
   },
   message: 'El campo no es una URL válida.',
 })
+extend('sede_traslado', {
+  params: ['target'],
+  validate (value, { target }) {
+    return value !== target
+  },
+  message: 'La sede destino debe ser diferente a la sede origen.',
+})
 
 Vue.component('validation-provider', ValidationProvider)
 Vue.component('validation-observer', ValidationObserver)

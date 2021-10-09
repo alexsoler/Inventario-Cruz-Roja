@@ -15,31 +15,31 @@ namespace InventarioCruzRoja.Controllers
     [Route("api/[controller]")]
     [Authorize(Roles = "admin")]
     [ApiController]
-    public class EgresosController : ControllerBase
+    public class TrasladosController : ControllerBase
     {
-        private readonly IEgresosRepository _repository;
+        private readonly ITrasladosRepository _repository;
         private readonly IMapper _mapper;
 
-        public EgresosController(IEgresosRepository repository,
+        public TrasladosController(ITrasladosRepository repository,
             IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        // GET: api/Egresos
+        // GET: api/Traslados
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EgresoDto>>> GetEgresos()
+        public async Task<ActionResult<IEnumerable<TrasladoDto>>> GetTraslados()
         {
-            var response = await _repository.GetAll("Sede", "Producto", "User", "UserAnula");
-            return Ok(_mapper.Map<IEnumerable<EgresoDto>>(response.Data));
+            var response = await _repository.GetAll("IngresoDestino", "EgresoOrigen", "Producto", "User", "UserAnula");
+            return Ok(_mapper.Map<IEnumerable<TrasladoDto>>(response.Data));
         }
 
-        // GET: api/Egresos/5
+        // GET: api/Traslados/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<EgresoDto>> GetEgreso(int id)
+        public async Task<ActionResult<TrasladoDto>> GetTraslado(int id)
         {
-            var response = await _repository.Get(id, "Sede", "Producto", "User");
+            var response = await _repository.Get(id, "IngresoDestino", "EgresoOrigen", "Producto", "User", "UserAnula");
 
             if (response.Data == null)
                 return NotFound(response.Message);
@@ -48,21 +48,21 @@ namespace InventarioCruzRoja.Controllers
             if (!response.Success)
                 return Conflict(response.Message);
 
-            return _mapper.Map<EgresoDto>(response.Data);
+            return _mapper.Map<TrasladoDto>(response.Data);
         }
 
-        // PUT: api/Egresos/5
+        // PUT: api/Traslados/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<ActionResult<int>> PutEgreso(int id, EgresoDto egreso)
+        public async Task<ActionResult<int>> PutTraslado(int id, TrasladoDto traslado)
         {
-            if (id != egreso.Id)
+            if (id != traslado.Id)
             {
                 return BadRequest();
             }
 
-            var response = await _repository.Update(_mapper.Map<Egreso>(egreso));
+            var response = await _repository.Update(_mapper.Map<Traslado>(traslado));
 
             if (!response.Success)
                 return Conflict(response.Message);
@@ -70,23 +70,23 @@ namespace InventarioCruzRoja.Controllers
             return response.Data.Id;
         }
 
-        // POST: api/Egresos
+        // POST: api/Traslados
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<EgresoDto>> PostEgreso(EgresoDto egreso)
+        public async Task<ActionResult<TrasladoDto>> PostTraslado(TrasladoDto traslado)
         {
-            var response = await _repository.Add(_mapper.Map<Egreso>(egreso));
+            var response = await _repository.AddFromDto(traslado);
 
             if (!response.Success)
                 return Conflict(response.Message);
 
-            return CreatedAtAction("GetEgreso", new { id = egreso.Id }, response.Data);
+            return CreatedAtAction("GetTraslado", new { id = traslado.Id }, _mapper.Map<TrasladoDto>(response.Data));
         }
 
-        // DELETE: api/Egresos/5
+        // DELETE: api/Traslados/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<EgresoDto>> DeleteEgreso(int id)
+        public async Task<ActionResult<TrasladoDto>> DeleteTraslado(int id)
         {
             var response = await _repository.Delete(id);
 
@@ -98,7 +98,7 @@ namespace InventarioCruzRoja.Controllers
             if (!response.Success)
                 return Conflict(response.Message);
 
-            return _mapper.Map<EgresoDto>(response.Data);
+            return _mapper.Map<TrasladoDto>(response.Data);
         }
     }
 }

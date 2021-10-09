@@ -1,6 +1,6 @@
 <template>
   <v-container
-    id="egresos"
+    id="traslados"
     fluid
     tag="section"
   >
@@ -8,7 +8,7 @@
       <v-col cols="12">
         <v-data-table
           :headers="headers"
-          :items="egresos"
+          :items="traslados"
           :search="search"
           sort-by="Id"
           :expanded.sync="expanded"
@@ -20,7 +20,7 @@
           <template v-slot:top>
             <v-toolbar flat>
               <v-toolbar-title v-if="$vuetify.breakpoint.smAndUp">
-                Egresos
+                Traslados
               </v-toolbar-title>
               <v-divider
                 v-if="$vuetify.breakpoint.smAndUp"
@@ -52,15 +52,15 @@
                     dark
                     v-on="on"
                   >
-                    Nuevo Egreso
+                    Nuevo Traslado
                     <v-icon dark>
                       mdi-plus
                     </v-icon>
                   </v-btn>
                 </template>
-                <form-egreso
+                <form-traslado
                   :mode-edit="editedIndex !== -1"
-                  :egreso="editedItem"
+                  :traslado="editedItem"
                   :ajax-in-progress="isAjaxPetitionInProgress"
                   @save="save"
                   @close="close"
@@ -76,13 +76,13 @@
                 >
                   <v-card>
                     <v-card-title class="text-h5">
-                      ¿Está seguro de que desea anular este egreso?
+                      ¿Está seguro de que desea anular este traslado?
                     </v-card-title>
                     <v-spacer />
                     <v-card-text>
                       <v-form
-                        id="formEgreso"
-                        ref="formEgreso"
+                        id="formTraslado"
+                        ref="formTraslado"
                       >
                         <validation-provider
                           v-slot="{errors}"
@@ -130,7 +130,7 @@
                 <v-card>
                   <v-card-text>
                     <iframe
-                      :src="'/api/reports/egresos/'+editedItem.id+'?format=pdf'"
+                      :src="'/api/reports/traslados/'+editedItem.id+'?format=pdf'"
                       style="width: 100%;height: 500px;border: none;"
                     />
                   </v-card-text>
@@ -273,13 +273,13 @@
 </template>
 
 <script>
-  import FormEgreso from '../component/FormEgreso'
-  import EgresosService from '@/services/egresos.service'
+  import FormTraslado from '../component/FormTraslado'
+  import TrasladosService from '@/services/traslados.service'
   import { mapGetters } from 'vuex'
 
   export default {
     components: {
-      FormEgreso,
+      FormTraslado,
     },
     data: () => ({
       dialog: false,
@@ -293,7 +293,8 @@
         },
         { text: 'Cantidad', value: 'cantidad' },
         { text: 'Producto', value: 'producto' },
-        { text: 'Sede', value: 'sede' },
+        { text: 'Sede Origen', value: 'sedeOrigen' },
+        { text: 'Sede Destino', value: 'sedeDestino' },
         { text: 'Usuario', value: 'usuario' },
         { text: 'Fecha', value: 'fecha' },
         { text: 'Anulado', value: 'anulado' },
@@ -302,14 +303,16 @@
       ],
       expanded: [],
       search: '',
-      egresos: [],
+      traslados: [],
       editedIndex: -1,
       editedItem: {
         id: 0,
+        sedeOrigenId: 0,
+        sedeOrigen: '',
+        sedeDestinoId: 0,
+        sedeDestino: '',
         productoId: 0,
         producto: '',
-        sedeId: 0,
-        sede: '',
         userId: 0,
         userAnulaId: 0,
         usuario: '',
@@ -323,10 +326,12 @@
       },
       defaultItem: {
         id: 0,
+        sedeOrigenId: 0,
+        sedeOrigen: '',
+        sedeDestinoId: 0,
+        sedeDestino: '',
         productoId: 0,
         producto: '',
-        sedeId: 0,
-        sede: '',
         userId: 0,
         userAnulaId: 0,
         usuario: '',
@@ -358,13 +363,13 @@
     },
     methods: {
       async initialize () {
-        const response = await EgresosService.getAll()
+        const response = await TrasladosService.getAll()
         if (response.status >= 200 && response.status <= 299) {
-          this.egresos = response.data
+          this.traslados = response.data
         }
       },
       reportItem (item) {
-        this.editedIndex = this.egresos.indexOf(item)
+        this.editedIndex = this.traslados.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogReporte = true
       },
@@ -381,11 +386,11 @@
         })
 
         if (result.isConfirmed) {
-          const response = await EgresosService.delete(item.id)
+          const response = await TrasladosService.delete(item.id)
 
           if (response.status >= 200 && response.status <= 299) {
-            const index = this.egresos.indexOf(item)
-            this.egresos.splice(index, 1)
+            const index = this.traslados.indexOf(item)
+            this.traslados.splice(index, 1)
             this.$swal.fire(
               '¡Eliminado!',
               'Su registro ha sido eliminado.',
@@ -408,7 +413,7 @@
         })
       },
       anularItem (item) {
-        this.editedIndex = this.egresos.indexOf(item)
+        this.editedIndex = this.traslados.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogAnulacion = true
       },
@@ -417,12 +422,12 @@
         this.editedItem.anulado = true
         this.editedItem.userAnulaId = this.userGetter.id
         this.editedItem.fechaAnula = new Date()
-        const response = await EgresosService.edit(this.editedItem.id, this.editedItem)
+        const response = await TrasladosService.edit(this.editedItem.id, this.editedItem)
         if (response.status >= 200 && response.status <= 299) {
-          Object.assign(this.egresos[this.editedIndex], this.editedItem)
+          Object.assign(this.traslados[this.editedIndex], this.editedItem)
           this.$swal.fire(
             '¡Exito!',
-            'Se anulo el egreso.',
+            'Se anulo el traslado.',
             'success',
           )
         } else {
@@ -452,9 +457,9 @@
       async save () {
         this.isAjaxPetitionInProgress = true
         if (this.editedIndex > -1) {
-          const response = await EgresosService.edit(this.editedItem.id, this.editedItem)
+          const response = await TrasladosService.edit(this.editedItem.id, this.editedItem)
           if (response.status >= 200 && response.status <= 299) {
-            Object.assign(this.egresos[this.editedIndex], this.editedItem)
+            Object.assign(this.traslados[this.editedIndex], this.editedItem)
             this.$swal.fire(
               '¡Exito!',
               'Su registro ha sido editado.',
@@ -468,11 +473,11 @@
             )
           }
         } else {
-          const response = await EgresosService.create(this.editedItem)
+          const response = await TrasladosService.create(this.editedItem)
           if (response.status === 201) {
             this.editedItem.id = response.data.id
-            const nuevoEgresoResponse = await EgresosService.get(response.data.id)
-            this.egresos.push(nuevoEgresoResponse.data)
+            const nuevoTrasladoResponse = await TrasladosService.get(response.data.id)
+            this.traslados.push(nuevoTrasladoResponse.data)
             this.$swal.fire(
               '¡Exito!',
               'Su registro ha sido creado.',
