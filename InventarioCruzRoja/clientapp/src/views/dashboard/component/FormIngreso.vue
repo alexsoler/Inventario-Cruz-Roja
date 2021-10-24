@@ -253,7 +253,7 @@
             sedeId: 0,
             sede: '',
             userId: 0,
-            userAnulaId: 0,
+            userAnulaId: null,
             usuario: '',
             usuarioAnulaId: '',
             observaciones: '',

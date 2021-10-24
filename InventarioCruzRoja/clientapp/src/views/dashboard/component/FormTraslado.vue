@@ -206,7 +206,7 @@
             productoId: 0,
             producto: '',
             userId: 0,
-            userAnulaId: 0,
+            userAnulaId: null,
             usuario: '',
             usuarioAnula: '',
             observaciones: '',

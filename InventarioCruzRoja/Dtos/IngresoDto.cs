@@ -19,7 +19,7 @@ namespace InventarioCruzRoja.Dtos
         [Required]
         public int UserId { get; set; }
         public string Usuario { get; set; }
-        public int UserAnulaId { get; set; }
+        public int? UserAnulaId { get; set; }
         public string UsuarioAnula { get; set; }
         [StringLength(300)]
         public string Observaciones { get; set; }

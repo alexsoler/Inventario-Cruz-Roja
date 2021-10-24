@@ -50,9 +50,20 @@ namespace InventarioCruzRoja
             }
             else
             {
-                services.AddDbContext<DataContext>(options =>
+                var provider = Configuration.GetValue("AppSettings:Provider", "MySql");
+                services.AddDbContext<DataContext>(options => _ = provider switch
                 {
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                    "MySql" => options.UseMySql(Configuration.GetConnectionString("MySqlConnection"), ServerVersion.AutoDetect(Configuration.GetConnectionString("MySqlConnection")))
+                                        .LogTo(Console.WriteLine, LogLevel.Information)
+                                        .EnableSensitiveDataLogging()
+                                        .EnableDetailedErrors(),
+
+                    "SqlServer" => options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"))
+                                          .LogTo(Console.WriteLine, LogLevel.Information)
+                                          .EnableSensitiveDataLogging()
+                                          .EnableDetailedErrors(),
+
+                    _ => throw new Exception($"Unsupported provider: {provider}")
                 });
             }
 

@@ -28,6 +28,8 @@ namespace InventarioCruzRoja.Data
                     new Estado { Nombre = "Inactivo" }
                 );
 
+            await _db.SaveChangesAsync();
+
             if (!await _db.Fabricantes.AnyAsync())
                 _db.Fabricantes.AddRange(
                     new Fabricante { Nombre = "EDUP", EstadoId = 1 }
@@ -69,7 +71,8 @@ namespace InventarioCruzRoja.Data
                 _db.Proveedores.AddRange(new Proveedor
                 {
                     Nombre = "Proveedor de Ejemplo",
-                    Direccion = "Dirección de ejemplo"
+                    Direccion = "Dirección de ejemplo",
+                    Estado = await _db.Estados.FirstOrDefaultAsync()
                 });
 
             await _db.SaveChangesAsync();
