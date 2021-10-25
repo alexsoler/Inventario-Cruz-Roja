@@ -85,9 +85,9 @@ export const router = new Router({
           component: () => import('@/views/dashboard/pages/Traslados'),
         },
         {
-          name: 'Notifications',
-          path: '/components/notifications',
-          component: () => import('@/views/dashboard/component/Notifications'),
+          name: 'Inventario',
+          path: '/Inventario',
+          component: () => import('@/views/dashboard/pages/Inventarios'),
         },
         {
           name: 'Icons',

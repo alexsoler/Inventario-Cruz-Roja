@@ -30,7 +30,7 @@ namespace InventarioCruzRoja.Repositories
                 if (sedeId is null || !sedeId.HasValue)
                 {
                     inventario = await _context.Productos.Include(x => x.Sedes)
-                        .Include(x => x.Egresos.Where(e => !e.Anulado))
+                        .Include(x => x.Egresos)
                         .Include(x => x.Ingresos.Where(i => !i.Anulado))
                         .Select(p => new InventarioDto
                         {
@@ -41,15 +41,15 @@ namespace InventarioCruzRoja.Repositories
                             Sede = "Todas",
                             ImagenUrl = p.ImagenUrl,
                             Precio = p.Costo,
-                            Stock = p.Ingresos.Sum(x => x.Cantidad) - p.Egresos.Sum(x => x.Cantidad)
+                            Stock = p.Ingresos.Where(i => !i.Anulado).Sum(x => x.Cantidad) - p.Egresos.Where(e => !e.Anulado).Sum(x => x.Cantidad)
                         }).ToListAsync();
                 }
                 else
                 {
                     inventario = await _context.Sedes
                         .Include(x => x.Productos).ThenInclude(x => x.Estado)
-                        .Include(x => x.Productos).ThenInclude(x => x.Egresos.Where(e => e.SedeId == sedeId.Value && !e.Anulado))
-                        .Include(x => x.Productos).ThenInclude(x => x.Ingresos.Where(i => i.SedeId == sedeId.Value && !i.Anulado)).Where(x => x.Id == sedeId.Value)
+                        .Include(x => x.Productos).ThenInclude(x => x.Egresos)
+                        .Include(x => x.Productos).ThenInclude(x => x.Ingresos).Where(x => x.Id == sedeId.Value)
                         .SelectMany(x => x.Productos, (x, p) => new InventarioDto
                         {
                             Codigo = p.Codigo,
@@ -59,7 +59,7 @@ namespace InventarioCruzRoja.Repositories
                             Sede = x.Nombre,
                             ImagenUrl = p.ImagenUrl,
                             Precio = p.Costo,
-                            Stock = p.Ingresos.Sum(x => x.Cantidad) - p.Egresos.Sum(x => x.Cantidad)
+                            Stock = p.Ingresos.Where(i => i.SedeId == sedeId.Value && !i.Anulado).Sum(x => x.Cantidad) - p.Egresos.Where(e => e.SedeId == sedeId.Value && !e.Anulado).Sum(x => x.Cantidad)
                         }).ToListAsync();
                 }
 

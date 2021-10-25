@@ -165,7 +165,7 @@
         {
           title: 'Inventario',
           icon: 'mdi-clipboard-list',
-          to: '/components/typography',
+          to: '/Inventario',
         },
         {
           title: 'google',
