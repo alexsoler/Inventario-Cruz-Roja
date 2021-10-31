@@ -86,6 +86,19 @@
               </v-icon>
             </v-btn>
             <v-btn
+              v-if="Boolean(item.latitud) && Boolean(item.longitud)"
+              class="mx-2"
+              fab
+              dark
+              x-small
+              color="blue-grey"
+              @click="showInMap(item)"
+            >
+              <v-icon>
+                mdi-map-search
+              </v-icon>
+            </v-btn>
+            <v-btn
               class="mx-2"
               fab
               dark
@@ -120,17 +133,51 @@
         {{ messageSnackbar }}
       </base-material-snackbar>
     </v-row>
+    <v-row justify="center">
+      <v-col cols="12">
+        <base-material-card
+          color="success"
+          title="Mapa"
+          class="px-5 py-3"
+        >
+          <v-card-text class="px-0 pb-0">
+            <v-sheet>
+              <google-map-loader
+                :map-config="mapConfig"
+                api-key="AIzaSyCnunxwrdIKqUtVT8d3OetrCAVwe9Uk14o"
+                style="height: 600px"
+              >
+                <template slot-scope="{ google, map }">
+                  <google-map-marker
+                    v-for="marker in markers"
+                    :key="marker.id"
+                    :marker="marker"
+                    :google="google"
+                    :map="map"
+                  />
+                </template>
+              </google-map-loader>
+            </v-sheet>
+          </v-card-text>
+        </base-material-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
   import FormSede from '../component/FormSede'
   import SedesService from '@/services/sedes.service'
+  import GoogleMapLoader from '@/views/dashboard/maps/GoogleMapLoader'
+  import GoogleMapMarker from '@/views/dashboard/maps/GoogleMapMarker'
+  import { mapSettings } from '@/constants/mapSettings'
   import { mapActions } from 'vuex'
 
   export default {
     components: {
       FormSede,
+      GoogleMapLoader,
+      GoogleMapMarker,
     },
     data: () => ({
       dialog: false,
@@ -152,19 +199,33 @@
         id: 0,
         nombre: '',
         direccion: '',
+        latitud: null,
+        longitud: null,
         estadoId: 1,
       },
       defaultItem: {
         id: 0,
         nombre: '',
         direccion: '',
+        latitud: null,
+        longitud: null,
         estadoId: 1,
       },
       snackbar: false,
+      markers: [],
+      mapCenter: { lat: 14.546982, lng: -86.346275 },
       colorSnackbar: 'success',
       messageSnackbar: '',
       isAjaxPetitionInProgress: false,
     }),
+    computed: {
+      mapConfig () {
+        return {
+          ...mapSettings,
+          center: this.mapCenter,
+        }
+      },
+    },
     watch: {
       dialog (val) {
         val || this.close()
@@ -179,7 +240,23 @@
         const response = await SedesService.getAll()
         if (response.status >= 200 && response.status <= 299) {
           this.sedes = response.data
+          this.markers = this.sedes.filter(x => x.latitud && x.longitud).map(item => ({
+            id: item.id,
+            position: { lat: item.latitud, lng: item.longitud },
+          }))
         }
+      },
+      showInMap (item) {
+        const markerSearch = this.markers.find(x => x.id === item.id)
+
+        if (!markerSearch) {
+          this.markers.push({
+            id: item.id,
+            position: { lat: item.latitud, lng: item.longitud },
+          })
+        }
+
+        this.mapCenter = { lat: item.latitud, lng: item.longitud }
       },
       editItem (item) {
         this.editedIndex = this.sedes.indexOf(item)

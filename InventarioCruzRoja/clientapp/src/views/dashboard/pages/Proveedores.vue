@@ -100,8 +100,8 @@
                   <template v-slot:default="props">
                     <v-row>
                       <v-col
-                        v-for="item in props.items"
-                        :key="item.id"
+                        v-for="contacto in props.items"
+                        :key="contacto.id"
                         cols="12"
                         sm="6"
                         md="4"
@@ -109,7 +109,7 @@
                       >
                         <v-card>
                           <v-card-title class="subheading font-weight-bold">
-                            {{ item.nombre }}
+                            {{ contacto.nombre }}
                           </v-card-title>
 
                           <v-divider />
@@ -118,14 +118,14 @@
                             <v-list-item>
                               <v-list-item-content>Teléfono:</v-list-item-content>
                               <v-list-item-content class="align-end">
-                                <a :href="'tel:'+item.telefonoFijo1">{{ item.telefono }}</a>
+                                <a :href="'tel:'+contacto.telefonoFijo1">{{ contacto.telefono }}</a>
                               </v-list-item-content>
                             </v-list-item>
 
                             <v-list-item>
                               <v-list-item-content>Correo:</v-list-item-content>
                               <v-list-item-content class="align-end">
-                                <a :href="'mailto:'+item.email">{{ item.email }}</a>
+                                <a :href="'mailto:'+contacto.email">{{ contacto.email }}</a>
                               </v-list-item-content>
                             </v-list-item>
                           </v-list>

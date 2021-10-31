@@ -36,6 +36,34 @@
             v-model="sede.direccion"
             label="Dirección"
             name="direccion"
+            prepend-icon="mdi-home-map-marker"
+            type="text"
+            :error-messages="errors"
+          />
+        </validation-provider>
+        <validation-provider
+          v-slot="{errors}"
+          name="latitud"
+          rules="decimal"
+        >
+          <v-text-field
+            v-model="sede.latitud"
+            label="Latitud"
+            name="latitud"
+            prepend-icon="mdi-map-marker-radius"
+            type="text"
+            :error-messages="errors"
+          />
+        </validation-provider>
+        <validation-provider
+          v-slot="{errors}"
+          name="longitud"
+          rules="decimal"
+        >
+          <v-text-field
+            v-model="sede.longitud"
+            label="Longitud"
+            name="longitud"
             prepend-icon="mdi-map-marker-radius"
             type="text"
             :error-messages="errors"
@@ -109,6 +137,8 @@
             id: 0,
             nombre: '',
             direccion: '',
+            latitud: null,
+            longitud: null,
             estadoId: 1,
           }
         },

@@ -37,9 +37,9 @@ namespace InventarioCruzRoja.Data
 
             if (!await _db.Sedes.AnyAsync())
                 _db.Sedes.AddRange(
-                    new Sede { Nombre = "Comayagua", EstadoId = 1, Direccion = "Meh" },
-                    new Sede { Nombre = "Tegucigalpa", EstadoId = 1, Direccion = "Meh" },
-                    new Sede { Nombre = "SPS", EstadoId = 1, Direccion = "Meh" }
+                    new Sede { Nombre = "Comayagua", EstadoId = 1, Direccion = "Meh", Latitud = 14.450453905319334, Longitud = -87.64308882541238 },
+                    new Sede { Nombre = "Tegucigalpa", EstadoId = 1, Direccion = "Meh", Latitud = 14.090445738332303, Longitud = -87.22336054676272 },
+                    new Sede { Nombre = "SPS", EstadoId = 1, Direccion = "Meh", Latitud = 15.499901502837202, Longitud = -88.0297447643924 }
                 );
 
             if (!await _db.Categorias.AnyAsync())
