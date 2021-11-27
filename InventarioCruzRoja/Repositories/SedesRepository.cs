@@ -2,11 +2,6 @@ using InventarioCruzRoja.Data;
 using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Repositories
 {
@@ -15,7 +10,7 @@ namespace InventarioCruzRoja.Repositories
         public SedesRepository(DataContext dataContext,
             ILogger<SedesRepository> logger) : base(dataContext, logger)
         {
-            
+
         }
 
         public async Task<ServiceResponse<IEnumerable<Sede>>> GetSearch(string filter, params string[] includes)

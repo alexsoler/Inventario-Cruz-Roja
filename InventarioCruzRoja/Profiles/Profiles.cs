@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using InventarioCruzRoja.Dtos;
 using InventarioCruzRoja.Models;
-using System.Linq;
 
 namespace InventarioCruzRoja.Profiles
 {

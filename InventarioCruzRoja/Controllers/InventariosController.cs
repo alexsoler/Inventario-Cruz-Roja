@@ -1,12 +1,7 @@
 ﻿using InventarioCruzRoja.Dtos;
 using InventarioCruzRoja.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Controllers
 {
@@ -23,7 +18,7 @@ namespace InventarioCruzRoja.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InventarioDto>>> Get([FromQuery]int? sedeId)
+        public async Task<ActionResult<IEnumerable<InventarioDto>>> Get([FromQuery] int? sedeId)
         {
             var response = await _inventariosRepository.GetInventario(sedeId);
 

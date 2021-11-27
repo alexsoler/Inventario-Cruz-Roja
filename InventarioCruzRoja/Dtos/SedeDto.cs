@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace InventarioCruzRoja.Dtos
 {
     public class SedeDto

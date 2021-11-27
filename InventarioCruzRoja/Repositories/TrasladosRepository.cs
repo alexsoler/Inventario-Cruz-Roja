@@ -4,11 +4,6 @@ using InventarioCruzRoja.Dtos;
 using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Repositories
 {
@@ -18,8 +13,8 @@ namespace InventarioCruzRoja.Repositories
         private readonly IEgresosRepository _egresosRepository;
         private readonly IIngresosRepository _ingresosRepository;
 
-        public TrasladosRepository(DataContext context, 
-            ILogger<TrasladosRepository> logger, 
+        public TrasladosRepository(DataContext context,
+            ILogger<TrasladosRepository> logger,
             IMapper mapper,
             IEgresosRepository egresosRepository,
             IIngresosRepository ingresosRepository) : base(context, logger)

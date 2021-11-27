@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using InventarioCruzRoja.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace InventarioCruzRoja.Interfaces
 {

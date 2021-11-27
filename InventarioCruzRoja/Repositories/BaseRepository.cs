@@ -1,24 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
 using InventarioCruzRoja.Data;
 using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace InventarioCruzRoja.Repositories
 {
-    public class BaseRepository<T, E> : IBaseRepository<T> 
+    public class BaseRepository<T, E> : IBaseRepository<T>
         where T : EntidadBase<E>
-    {  
+    {
         protected readonly DataContext _context;
-        protected readonly ILogger<BaseRepository<T,E>> _logger;
+        protected readonly ILogger<BaseRepository<T, E>> _logger;
 
         public BaseRepository(DataContext context,
-            ILogger<BaseRepository<T,E>> logger)
+            ILogger<BaseRepository<T, E>> logger)
         {
             _context = context;
             _logger = logger;
@@ -36,7 +30,7 @@ namespace InventarioCruzRoja.Repositories
                 response.Data = entity;
                 response.Message = "Registro agregado con exito";
 
-                return response;   
+                return response;
             }
             catch (Exception ex)
             {
@@ -54,7 +48,7 @@ namespace InventarioCruzRoja.Repositories
 
             var entity = await _context.Set<T>().FindAsync(id);
 
-            if (entity == null) 
+            if (entity == null)
             {
                 response.Success = false;
                 response.Message = "El registro a eliminar no fue encontrado";
@@ -69,7 +63,7 @@ namespace InventarioCruzRoja.Repositories
                 response.Data = entity;
                 response.Message = "Registro eliminado con exito";
 
-                return response;   
+                return response;
             }
             catch (Exception ex)
             {
@@ -105,7 +99,7 @@ namespace InventarioCruzRoja.Repositories
         public virtual async Task<ServiceResponse<IEnumerable<T>>> GetAll(params string[] includes)
         {
             var response = new ServiceResponse<IEnumerable<T>>();
-            
+
             try
             {
 

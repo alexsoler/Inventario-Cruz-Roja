@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace InventarioCruzRoja.Models
 {
     public class Sede : EntidadBase<int>

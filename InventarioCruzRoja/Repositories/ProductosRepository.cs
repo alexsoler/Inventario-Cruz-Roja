@@ -1,16 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using InventarioCruzRoja.Data;
 using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using System.Net.Http.Headers;
 
 namespace InventarioCruzRoja.Repositories
 {
@@ -56,7 +48,7 @@ namespace InventarioCruzRoja.Repositories
 
             if (!string.IsNullOrEmpty(urlImagenPrevia))
             {
-                var fileToDelete = Path.Combine(_environment.ContentRootPath, urlImagenPrevia.Remove(0,1).Replace("/", "\\"));
+                var fileToDelete = Path.Combine(_environment.ContentRootPath, urlImagenPrevia.Remove(0, 1).Replace("/", "\\"));
 
                 if (File.Exists(fileToDelete) && response.Success && urlImagenPrevia != entidad.ImagenUrl)
                 {
@@ -80,7 +72,7 @@ namespace InventarioCruzRoja.Repositories
             }
 
             return response;
-        }        
+        }
 
         public async Task<ServiceResponse<string>> GuardarImagen(IFormFile file)
         {
@@ -115,7 +107,7 @@ namespace InventarioCruzRoja.Repositories
                 _logger.LogError(ex.Message, ex);
                 response.Success = false;
                 response.Data = string.Empty;
-                
+
                 return response;
             }
         }

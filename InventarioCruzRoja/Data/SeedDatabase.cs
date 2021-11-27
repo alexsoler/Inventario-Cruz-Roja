@@ -1,11 +1,6 @@
 ﻿using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Data
 {
@@ -79,7 +74,7 @@ namespace InventarioCruzRoja.Data
 
             var resultCreateUser1 = await _authRepository.Register(new User { Username = "demouser" }, "Password");
 
-            if(resultCreateUser1.Success)
+            if (resultCreateUser1.Success)
             {
                 await _authRepository.AddRoleToUser(resultCreateUser1.Data, "admin");
             }

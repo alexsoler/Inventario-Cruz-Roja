@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using InventarioCruzRoja.Dtos;
 using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -59,7 +54,7 @@ namespace InventarioCruzRoja.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
             if (id != request.Id)
             {
                 return BadRequest();
@@ -82,7 +77,8 @@ namespace InventarioCruzRoja.Controllers
         {
             var response = await _authRepository.DeleteUser(id);
 
-            if (!response.Success) {
+            if (!response.Success)
+            {
                 return NotFound();
             }
 

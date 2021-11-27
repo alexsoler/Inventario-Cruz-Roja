@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using InventarioCruzRoja.Data;
+﻿using AutoMapper;
+using InventarioCruzRoja.Dtos;
+using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
 using Microsoft.AspNetCore.Authorization;
-using InventarioCruzRoja.Interfaces;
-using InventarioCruzRoja.Dtos;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace InventarioCruzRoja.Controllers
 {
@@ -45,7 +38,7 @@ namespace InventarioCruzRoja.Controllers
 
             if (response.Data == null)
                 return NotFound(response.Message);
-            
+
 
             if (!response.Success)
                 return Conflict(response.Message);

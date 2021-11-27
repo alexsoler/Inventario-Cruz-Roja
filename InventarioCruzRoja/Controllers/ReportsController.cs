@@ -1,19 +1,6 @@
-﻿using AutoMapper;
-using FastReport;
-using FastReport.Export.Html;
-using FastReport.Export.Image;
-using FastReport.Export.PdfSimple;
-using FastReport.Utils;
-using InventarioCruzRoja.Dtos;
+﻿using InventarioCruzRoja.Dtos;
 using InventarioCruzRoja.Interfaces;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Controllers
 {

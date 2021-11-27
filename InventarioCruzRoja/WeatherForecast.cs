@@ -1,5 +1,3 @@
-using System;
-
 namespace InventarioCruzRoja
 {
     public class WeatherForecast

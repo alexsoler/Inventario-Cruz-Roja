@@ -3,12 +3,7 @@ using InventarioCruzRoja.Dtos;
 using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Controllers
 {
@@ -36,11 +31,12 @@ namespace InventarioCruzRoja.Controllers
             if (string.IsNullOrEmpty(filter))
             {
                 response = await _repository.GetAll("Contactos");
-            } else
+            }
+            else
             {
                 response = await _repository.GetSearch(filter);
             }
-                
+
             return Ok(_mapper.Map<IEnumerable<ProveedorDto>>(response.Data));
         }
 

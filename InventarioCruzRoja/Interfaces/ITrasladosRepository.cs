@@ -1,6 +1,5 @@
 ﻿using InventarioCruzRoja.Dtos;
 using InventarioCruzRoja.Models;
-using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Interfaces
 {

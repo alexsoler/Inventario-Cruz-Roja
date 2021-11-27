@@ -2,10 +2,6 @@
 using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace InventarioCruzRoja.Repositories
 {
@@ -19,8 +15,8 @@ namespace InventarioCruzRoja.Repositories
         {
             entity.Fecha = DateTime.Now;
 
-            var inventario = await  _context.Productos.Include(x => x.Ingresos).Include(x => x.Egresos)
-                .Where(x => x.Id == entity.ProductoId).Select(x => new 
+            var inventario = await _context.Productos.Include(x => x.Ingresos).Include(x => x.Egresos)
+                .Where(x => x.Id == entity.ProductoId).Select(x => new
                 {
                     Ingresos = x.Ingresos.Where(i => i.SedeId == entity.SedeId && !i.Anulado).Sum(i => i.Cantidad),
                     Egresos = x.Egresos.Where(e => e.SedeId == entity.SedeId && !e.Anulado).Sum(e => e.Cantidad)

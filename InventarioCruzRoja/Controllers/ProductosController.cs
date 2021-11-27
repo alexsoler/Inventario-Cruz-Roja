@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using InventarioCruzRoja.Dtos;
 using InventarioCruzRoja.Interfaces;
@@ -52,7 +48,7 @@ namespace InventarioCruzRoja.Controllers
 
             if (response.Data == null)
                 return NotFound(response.Message);
-            
+
 
             if (!response.Success)
                 return Conflict(response.Message);
@@ -64,7 +60,7 @@ namespace InventarioCruzRoja.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<ActionResult<int>> PutProducto(int id, [FromForm]ProductoDto producto)
+        public async Task<ActionResult<int>> PutProducto(int id, [FromForm] ProductoDto producto)
         {
             if (id != producto.Id)
             {
@@ -82,7 +78,7 @@ namespace InventarioCruzRoja.Controllers
             }
 
             producto.UsuarioModifica = User.Identity.Name;
-            
+
             var response = await _repository.Update(_mapper.Map<Producto>(producto));
 
             if (!response.Success)
@@ -95,7 +91,7 @@ namespace InventarioCruzRoja.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<ProductoDto>> PostProducto([FromForm]ProductoDto producto)
+        public async Task<ActionResult<ProductoDto>> PostProducto([FromForm] ProductoDto producto)
         {
             if (Request.Form.Files.Count > 0)
             {

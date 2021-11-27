@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using InventarioCruzRoja.Dtos;
 using InventarioCruzRoja.Interfaces;
@@ -42,7 +38,7 @@ namespace InventarioCruzRoja.Controllers
 
             if (response.Data == null)
                 return NotFound(response.Message);
-            
+
 
             if (!response.Success)
                 return Conflict(response.Message);
@@ -60,7 +56,7 @@ namespace InventarioCruzRoja.Controllers
             {
                 return BadRequest();
             }
-            
+
             var response = await _repository.Update(_mapper.Map<Sede>(sede));
 
             if (!response.Success)
