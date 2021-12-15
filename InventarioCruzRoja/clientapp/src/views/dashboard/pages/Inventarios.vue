@@ -24,15 +24,32 @@
                 inset
                 vertical
               />
+              <v-col cols="4">
+                <v-select
+                  v-model="sedeSeleccionada"
+                  :items="sedesGetter"
+                  item-text="nombre"
+                  item-value="id"
+                  menu-props="auto"
+                  label="Seleccionar Sede"
+                  hide-details
+                  prepend-icon="mdi-home-plus"
+                  single-line
+                  clearable
+                  @change="sedeChanged"
+                />
+              </v-col>
               <v-spacer />
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Search"
-                single-line
-                hide-details
-              />
-              <v-spacer />
+              <v-col cols="4">
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                />
+                <v-spacer />
+              </v-col>
             </v-toolbar>
           </template>
           <template v-slot:item.imagenUrl="{ item }">
@@ -78,6 +95,7 @@
 
 <script>
   import InventariosService from '@/services/inventarios.service'
+  import { mapGetters } from 'vuex'
 
   export default {
     data: () => ({
@@ -100,13 +118,28 @@
       inventarios: [],
       defaultImage: require('@/assets/box.jpg'),
       isAjaxPetitionInProgress: false,
+      sedeSeleccionada: 0,
     }),
     created () {
       this.initialize()
     },
+    computed: {
+      ...mapGetters(['sedesGetter']),
+    },
     methods: {
       async initialize () {
         const response = await InventariosService.getAll()
+        if (response.status >= 200 && response.status <= 299) {
+          this.inventarios = response.data
+        }
+      },
+      async sedeChanged () {
+        if (!this.sedeSeleccionada) {
+          await this.initialize()
+          return
+        }
+
+        const response = await InventariosService.getAll(this.sedeSeleccionada)
         if (response.status >= 200 && response.status <= 299) {
           this.inventarios = response.data
         }
