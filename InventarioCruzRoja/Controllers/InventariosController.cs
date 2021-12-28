@@ -18,9 +18,9 @@ namespace InventarioCruzRoja.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InventarioDto>>> Get([FromQuery] int? sedeId)
+        public async Task<ActionResult<IEnumerable<InventarioDto>>> Get([FromQuery] int? sedeId, [FromQuery] DateTime? fechaDesde, [FromQuery] DateTime? fechaHasta)
         {
-            var response = await _inventariosRepository.GetInventario(sedeId);
+            var response = await _inventariosRepository.GetInventario(sedeId, fechaDesde, fechaHasta);
 
             if (!response.Success)
                 return Conflict(response.Message);

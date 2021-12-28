@@ -24,7 +24,7 @@
                 inset
                 vertical
               />
-              <v-col cols="4">
+              <v-col cols="3">
                 <v-select
                   v-model="sedeSeleccionada"
                   :items="sedesGetter"
@@ -36,11 +36,58 @@
                   prepend-icon="mdi-home-plus"
                   single-line
                   clearable
-                  @change="sedeChanged"
+                  @change="filterChanged"
                 />
               </v-col>
-              <v-spacer />
-              <v-col cols="4">
+              <v-col cols="3">
+                <v-menu
+                  ref="menu"
+                  v-model="menuFecha"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="dateRangeText"
+                      label="Rango de Fechas"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      style="margin-top: 22px"
+                      clearable
+                      v-bind="attrs"
+                      v-on="on"
+                      @click:clear="clearDate"
+                    />
+                  </template>
+                  <v-date-picker
+                    v-model="rangoFechas"
+                    range
+                    no-title
+                    scrollable
+                    @change="filterChanged"
+                  >
+                    <v-spacer />
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="menuFecha = false"
+                    >
+                      Cancelar
+                    </v-btn>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="$refs.menu.save(rangoFechas)"
+                    >
+                      OK
+                    </v-btn>
+                  </v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="3">
                 <v-text-field
                   v-model="search"
                   append-icon="mdi-magnify"
@@ -96,6 +143,7 @@
 <script>
   import InventariosService from '@/services/inventarios.service'
   import { mapGetters } from 'vuex'
+  import moment from 'moment'
 
   export default {
     data: () => ({
@@ -118,13 +166,23 @@
       inventarios: [],
       defaultImage: require('@/assets/box.jpg'),
       isAjaxPetitionInProgress: false,
-      sedeSeleccionada: 0,
+      sedeSeleccionada: null,
+      menuFecha: false,
+      rangoFechas: [],
     }),
     created () {
       this.initialize()
     },
     computed: {
       ...mapGetters(['sedesGetter']),
+      dateRangeText: {
+        get () {
+          return this.rangoFechas.join(' ~ ')
+        },
+        set (newValue) {
+          return newValue
+        },
+      },
     },
     methods: {
       async initialize () {
@@ -133,16 +191,30 @@
           this.inventarios = response.data
         }
       },
-      async sedeChanged () {
-        if (!this.sedeSeleccionada) {
-          await this.initialize()
-          return
+      async filterChanged () {
+        let fecha1 = null
+        let fecha2 = null
+
+        if (this.rangoFechas.length === 1) {
+          fecha1 = moment(this.rangoFechas[0], 'YYYY-MM-DD').toDate()
+        } else if (this.rangoFechas.length === 2) {
+          fecha1 = moment(this.rangoFechas[0], 'YYYY-MM-DD').toDate()
+          fecha2 = moment(this.rangoFechas[1], 'YYYY-MM-DD').toDate()
+
+          if (fecha1 > fecha2) {
+            fecha1 = moment(this.rangoFechas[1], 'YYYY-MM-DD').toDate()
+            fecha2 = moment(this.rangoFechas[0], 'YYYY-MM-DD').toDate()
+          }
         }
 
-        const response = await InventariosService.getAll(this.sedeSeleccionada)
+        const response = await InventariosService.getAll(this.sedeSeleccionada, fecha1, fecha2)
         if (response.status >= 200 && response.status <= 299) {
           this.inventarios = response.data
         }
+      },
+      async clearDate () {
+        this.rangoFechas = []
+        await this.filterChanged()
       },
       getColorEstado (estado) {
         if (estado === 'Activo') return 'green'

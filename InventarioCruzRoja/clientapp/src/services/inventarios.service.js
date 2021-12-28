@@ -1,9 +1,9 @@
 import axios from '../plugins/http'
 
 class InventariosService {
-    async getAll (sedeId) {
+    async getAll (sedeId, fechaDesde, fechaHasta) {
       try {
-        const response = await axios.get('/api/inventarios', { params: { sedeId } })
+        const response = await axios.get('/api/inventarios', { params: { sedeId, fechaDesde, fechaHasta } })
 
         return response
       } catch (error) {

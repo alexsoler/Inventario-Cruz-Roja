@@ -5,6 +5,6 @@ namespace InventarioCruzRoja.Interfaces
 {
     public interface IInventariosRepository
     {
-        Task<ServiceResponse<IEnumerable<InventarioDto>>> GetInventario(int? sedeId);
+        Task<ServiceResponse<IEnumerable<InventarioDto>>> GetInventario(int? sedeId, DateTime? fechaDesde, DateTime? fechaHasta);
     }
 }

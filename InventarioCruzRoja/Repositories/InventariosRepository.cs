@@ -17,7 +17,7 @@ namespace InventarioCruzRoja.Repositories
             _context = context;
             _logger = logger;
         }
-        public async Task<ServiceResponse<IEnumerable<InventarioDto>>> GetInventario(int? sedeId)
+        public async Task<ServiceResponse<IEnumerable<InventarioDto>>> GetInventario(int? sedeId, DateTime? fechaDesde, DateTime? fechaHasta)
         {
             try
             {
@@ -36,7 +36,12 @@ namespace InventarioCruzRoja.Repositories
                             Sede = "Todas",
                             ImagenUrl = p.ImagenUrl,
                             Precio = p.Costo,
-                            Stock = p.Ingresos.Where(i => !i.Anulado).Sum(x => x.Cantidad) - p.Egresos.Where(e => !e.Anulado).Sum(x => x.Cantidad)
+                            Stock = p.Ingresos.Where(i => !i.Anulado && 
+                                        (!fechaDesde.HasValue || i.Fecha >= fechaDesde.Value) && 
+                                        (!fechaHasta.HasValue || i.Fecha <= fechaHasta.Value)).Sum(x => x.Cantidad) - 
+                                    p.Egresos.Where(e => !e.Anulado && 
+                                        (!fechaDesde.HasValue || e.Fecha >= fechaDesde.Value) && 
+                                        (!fechaHasta.HasValue || e.Fecha <= fechaHasta.Value)).Sum(x => x.Cantidad)
                         }).ToListAsync();
                 }
                 else
@@ -54,7 +59,12 @@ namespace InventarioCruzRoja.Repositories
                             Sede = x.Nombre,
                             ImagenUrl = p.ImagenUrl,
                             Precio = p.Costo,
-                            Stock = p.Ingresos.Where(i => i.SedeId == sedeId.Value && !i.Anulado).Sum(x => x.Cantidad) - p.Egresos.Where(e => e.SedeId == sedeId.Value && !e.Anulado).Sum(x => x.Cantidad)
+                            Stock = p.Ingresos.Where(i => i.SedeId == sedeId.Value && !i.Anulado && 
+                                        (!fechaDesde.HasValue || i.Fecha >= fechaDesde.Value) && 
+                                        (!fechaHasta.HasValue || i.Fecha <= fechaHasta.Value)).Sum(x => x.Cantidad) - 
+                                    p.Egresos.Where(e => e.SedeId == sedeId.Value && !e.Anulado && 
+                                        (!fechaDesde.HasValue || e.Fecha >= fechaDesde.Value) && 
+                                        (!fechaHasta.HasValue || e.Fecha <= fechaHasta.Value)).Sum(x => x.Cantidad)
                         }).ToListAsync();
                 }
 
