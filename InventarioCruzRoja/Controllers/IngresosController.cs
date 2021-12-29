@@ -13,12 +13,15 @@ namespace InventarioCruzRoja.Controllers
     public class IngresosController : ControllerBase
     {
         private readonly IIngresosRepository _repository;
+        private readonly IEventosProductosRepository _eventosProductosRepository;
         private readonly IMapper _mapper;
 
         public IngresosController(IIngresosRepository repository,
+            IEventosProductosRepository eventosProductosRepository,
             IMapper mapper)
         {
             _repository = repository;
+            _eventosProductosRepository = eventosProductosRepository;
             _mapper = mapper;
         }
 
@@ -62,6 +65,9 @@ namespace InventarioCruzRoja.Controllers
             if (!response.Success)
                 return Conflict(response.Message);
 
+            if (response.Data.Anulado)
+                await _eventosProductosRepository.EventoAnulacionIngreso(response.Data.ProductoId, response.Data.Cantidad, User.Identity.Name);
+
             return response.Data.Id;
         }
 
@@ -75,6 +81,8 @@ namespace InventarioCruzRoja.Controllers
 
             if (!response.Success)
                 return Conflict(response.Message);
+
+            await _eventosProductosRepository.EventoIngresoDeProducto(response.Data.ProductoId, response.Data.Cantidad, User.Identity.Name);
 
             return CreatedAtAction("GetIngreso", new { id = ingreso.Id }, response.Data);
         }

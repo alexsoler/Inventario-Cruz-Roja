@@ -22,6 +22,7 @@ namespace InventarioCruzRoja.Models
         public Categoria Categoria { get; set; }
         public ICollection<Ingreso> Ingresos { get; set; }
         public ICollection<Egreso> Egresos { get; set; }
+        public ICollection<EventoProducto> Eventos { get; set; }
 
     }
 }

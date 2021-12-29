@@ -13,12 +13,15 @@ namespace InventarioCruzRoja.Controllers
     public class EgresosController : ControllerBase
     {
         private readonly IEgresosRepository _repository;
+        private readonly IEventosProductosRepository _eventosProductosRepository;
         private readonly IMapper _mapper;
 
         public EgresosController(IEgresosRepository repository,
+            IEventosProductosRepository eventosProductosRepository,
             IMapper mapper)
         {
             _repository = repository;
+            _eventosProductosRepository = eventosProductosRepository;
             _mapper = mapper;
         }
 
@@ -62,6 +65,9 @@ namespace InventarioCruzRoja.Controllers
             if (!response.Success)
                 return Conflict(response.Message);
 
+            if (response.Data.Anulado)
+                await _eventosProductosRepository.EventoAnulacionEgreso(response.Data.ProductoId, response.Data.Cantidad, User.Identity.Name);
+
             return response.Data.Id;
         }
 
@@ -75,6 +81,8 @@ namespace InventarioCruzRoja.Controllers
 
             if (!response.Success)
                 return Conflict(response.Message);
+
+            await _eventosProductosRepository.EventoEgresoDeProducto(response.Data.ProductoId, response.Data.Cantidad, User.Identity.Name);
 
             return CreatedAtAction("GetEgreso", new { id = egreso.Id }, response.Data);
         }

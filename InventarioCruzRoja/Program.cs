@@ -71,6 +71,7 @@ builder.Services.AddScoped<IReportesService, ReportesService>();
 builder.Services.AddScoped<IEgresosRepository, EgresosRepository>();
 builder.Services.AddScoped<ITrasladosRepository, TrasladosRepository>();
 builder.Services.AddScoped<IInventariosRepository, InventariosRepository>();
+builder.Services.AddScoped<IEventosProductosRepository, EventosProductosRepository>();
 
 builder.Services.AddSpaStaticFiles(configuration =>
 {

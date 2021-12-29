@@ -10,16 +10,16 @@ namespace InventarioCruzRoja.Repositories
         {
         }
 
-        public override Task<ServiceResponse<Ingreso>> Add(Ingreso entity)
+        public async override Task<ServiceResponse<Ingreso>> Add(Ingreso entity)
         {
             entity.Fecha = DateTime.Now;
-            return base.Add(entity);
+            return await base.Add(entity);
         }
 
-        public override Task<ServiceResponse<Ingreso>> Update(Ingreso entidad)
+        public async override Task<ServiceResponse<Ingreso>> Update(Ingreso entidad)
         {
             entidad.FechaAnula = DateTime.Now;
-            return base.Update(entidad);
+            return await base.Update(entidad);
         }
     }
 }
