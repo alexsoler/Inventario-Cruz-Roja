@@ -29,6 +29,7 @@ namespace InventarioCruzRoja.Repositories
                         .Include(x => x.Ingresos.Where(i => !i.Anulado))
                         .Select(p => new InventarioDto
                         {
+                            ProductoId = p.Id,
                             Codigo = p.Codigo,
                             Producto = p.Nombre,
                             Presentacion = p.Presentacion,
@@ -52,6 +53,7 @@ namespace InventarioCruzRoja.Repositories
                         .Include(x => x.Productos).ThenInclude(x => x.Ingresos).Where(x => x.Id == sedeId.Value)
                         .SelectMany(x => x.Productos, (x, p) => new InventarioDto
                         {
+                            ProductoId = p.Id,
                             Codigo = p.Codigo,
                             Producto = p.Nombre,
                             Presentacion = p.Presentacion,

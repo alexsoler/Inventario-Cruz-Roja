@@ -126,6 +126,20 @@
               {{ item.estado }}
             </v-chip>
           </template>
+          <template v-slot:item.actions="{ item }">
+            <v-btn
+              class="mx-2"
+              fab
+              dark
+              x-small
+              color="indigo"
+              @click="mostrarTimeline(item)"
+            >
+              <v-icon>
+                mdi-timeline-clock
+              </v-icon>
+            </v-btn>
+          </template>
           <template v-slot:no-data>
             <v-btn
               color="primary"
@@ -137,17 +151,32 @@
         </v-data-table>
       </v-col>
     </v-row>
+    <v-dialog
+      v-model="dialogTimeline"
+      scrollable
+      max-width="700px"
+    >
+      <timeline-eventos
+        :eventos="eventosProducto"
+        @close="dialogTimeline = false"
+      />
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
   import InventariosService from '@/services/inventarios.service'
+  import EventosService from '@/services/eventos.service'
   import { mapGetters } from 'vuex'
   import moment from 'moment'
+  import TimelineEventos from '../component/TimelineEventos.vue'
 
   export default {
+    components: {
+      TimelineEventos,
+    },
     data: () => ({
-      dialog: false,
+      dialogTimeline: false,
       headers: [
         {
           text: 'Codigo',
@@ -161,6 +190,7 @@
         { text: 'Presentación', value: 'presentacion' },
         { text: 'Sede', value: 'sede' },
         { text: 'Estado', value: 'estado' },
+        { text: 'Acción', value: 'actions', sortable: false },
       ],
       search: '',
       inventarios: [],
@@ -169,10 +199,8 @@
       sedeSeleccionada: null,
       menuFecha: false,
       rangoFechas: [],
+      eventosProducto: [],
     }),
-    created () {
-      this.initialize()
-    },
     computed: {
       ...mapGetters(['sedesGetter']),
       dateRangeText: {
@@ -183,6 +211,9 @@
           return newValue
         },
       },
+    },
+    created () {
+      this.initialize()
     },
     methods: {
       async initialize () {
@@ -225,6 +256,13 @@
         if (stock < 1) return 'red'
         else if (stock > 10) return 'blue'
         else return 'orange'
+      },
+      async mostrarTimeline (item) {
+        const response = await EventosService.getProductEvents(item.productoId)
+        if (response.status >= 200 && response.status <= 299) {
+          this.eventosProducto = response.data
+        }
+        this.dialogTimeline = true
       },
     },
   }

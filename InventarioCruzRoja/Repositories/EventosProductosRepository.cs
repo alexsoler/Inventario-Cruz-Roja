@@ -1,6 +1,7 @@
 ﻿using InventarioCruzRoja.Data;
 using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventarioCruzRoja.Repositories
 {
@@ -56,6 +57,51 @@ namespace InventarioCruzRoja.Repositories
             };
 
             await Add(evento);
+        }
+
+        public async Task EventoAgregarProducto(int productoId, string autor)
+        {
+            var evento = new EventoProducto
+            {
+                ProductoId = productoId,
+                Descripcion = $"{autor} agrego el producto.",
+                Fecha = DateTime.Now
+            };
+
+            await Add(evento);
+        }
+
+        public async Task EventoEditarProducto(int productoId, string autor)
+        {
+            var evento = new EventoProducto
+            {
+                ProductoId = productoId,
+                Descripcion = $"{autor} edito el producto.",
+                Fecha = DateTime.Now
+            };
+
+            await Add(evento);
+        }
+
+        public async Task<ServiceResponse<IEnumerable<EventoProducto>>> ObtenerEventosPorProducto(int productoId)
+        {
+            var response = new ServiceResponse<IEnumerable<EventoProducto>>();
+
+            try
+            {
+                response.Data = await _context.EventosProductos.Where(x => x.ProductoId == productoId).ToListAsync();
+                response.Success = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Ocurrio un error al momento de obtener los eventos", ex);
+                response.Success = false;
+                response.Message = "Ocurrio un error al momento de obtener los eventos";
+
+                return response;
+            }
         }
     }
 }

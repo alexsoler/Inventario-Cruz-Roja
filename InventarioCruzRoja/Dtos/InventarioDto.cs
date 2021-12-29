@@ -2,6 +2,7 @@
 {
     public class InventarioDto
     {
+        public int ProductoId { get; set; }
         public string Codigo { get; set; }
         public string Producto { get; set; }
         public string ImagenUrl { get; set; }
