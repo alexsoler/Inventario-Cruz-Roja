@@ -113,7 +113,7 @@ namespace InventarioCruzRoja.Repositories
 
             try
             {
-                response.Data = await _context.EventosProductos.Where(x => x.ProductoId == productoId).ToListAsync();
+                response.Data = await _context.EventosProductos.Where(x => x.ProductoId == productoId).OrderByDescending(x => x.Id).ToListAsync();
                 response.Success = true;
 
                 return response;
