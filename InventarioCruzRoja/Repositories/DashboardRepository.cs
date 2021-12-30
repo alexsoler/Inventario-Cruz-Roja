@@ -23,7 +23,7 @@ namespace InventarioCruzRoja.Repositories
             try
             {
                 var fechaRestar = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-                var fechas = Enumerable.Range(0, 6).Select(x => fechaRestar.AddMonths(-x)).ToList();
+                var fechas = Enumerable.Range(0, 6).Select(x => fechaRestar.AddMonths(-x)).OrderBy(f => f).ToList();
                 var fechaDesde = fechas.LastOrDefault();
 
                 var datos = await _context.Productos.Where(x => x.FechaCreacion >= fechaDesde && x.EstadoId == 1)
@@ -35,12 +35,12 @@ namespace InventarioCruzRoja.Repositories
                         Cantidad = x.Count()
                     }).ToListAsync();
 
-                response.Data = fechas.GroupJoin(datos, f => new { f.Month, f.Year }, p => new { p.Month, p.Year }, (p, p_f) => new { p, p_f })
+                response.Data = fechas.GroupJoin(datos, f => new { f.Month, f.Year }, p => new { p.Month, p.Year }, (f, p_f) => new { f, p_f })
                     .SelectMany(t => t.p_f.DefaultIfEmpty(), (t, x)  => new ResumenProductosDto
                     {
                         Cantidad = x == null ? 0 : x.Cantidad,
-                        Anio = t.p.Year,
-                        Mes = t.p.Month
+                        Anio = t.f.Year,
+                        Mes = t.f.Month
                     }).ToList();
 
                 response.Success = true;

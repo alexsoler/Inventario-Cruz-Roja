@@ -19,6 +19,7 @@ export default new Vuex.Store({
     fabricantes: [],
     sedes: [],
     categorias: [],
+    meses: ['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
   },
   getters: {
     estadosGetter (state) {
@@ -32,6 +33,9 @@ export default new Vuex.Store({
     },
     categoriasGetter (state) {
       return state.categorias
+    },
+    mesesGetter (state) {
+      return state.meses
     },
   },
   mutations: {
