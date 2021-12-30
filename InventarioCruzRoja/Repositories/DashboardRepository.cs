@@ -22,15 +22,27 @@ namespace InventarioCruzRoja.Repositories
             var response = new ServiceResponse<IEnumerable<ResumenProductosDto>>();
             try
             {
-                var fechaDesde = DateTime.Now.AddMonths(-7);
-                response.Data = await _context.Productos.Where(x => x.FechaCreacion >= fechaDesde.Date && x.EstadoId == 1)
+                var fechaRestar = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var fechas = Enumerable.Range(0, 6).Select(x => fechaRestar.AddMonths(-x)).ToList();
+                var fechaDesde = fechas.LastOrDefault();
+
+                var datos = await _context.Productos.Where(x => x.FechaCreacion >= fechaDesde && x.EstadoId == 1)
                     .GroupBy(x => new { x.FechaCreacion.Month, x.FechaCreacion.Year })
-                    .Select(x => new ResumenProductosDto
+                    .Select(x => new
                     {
-                        Cantidad = x.Count(),
-                        Anio = x.Key.Year,
-                        Mes = x.Key.Month
+                        x.Key.Month,
+                        x.Key.Year,
+                        Cantidad = x.Count()
                     }).ToListAsync();
+
+                response.Data = fechas.GroupJoin(datos, f => new { f.Month, f.Year }, p => new { p.Month, p.Year }, (p, p_f) => new { p, p_f })
+                    .SelectMany(t => t.p_f.DefaultIfEmpty(), (t, x)  => new ResumenProductosDto
+                    {
+                        Cantidad = x == null ? 0 : x.Cantidad,
+                        Anio = t.p.Year,
+                        Mes = t.p.Month
+                    }).ToList();
+
                 response.Success = true;
 
                 return response;
