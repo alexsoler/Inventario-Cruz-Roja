@@ -90,6 +90,8 @@
           return 'mdi-clipboard-arrow-up'
         } else if (text.includes('edito')) {
           return 'mdi-clipboard-edit'
+        } else if (text.includes('traslado')) {
+          return 'mdi-clipboard-flow'
         }
 
         return 'mdi-clipboard'
@@ -105,6 +107,8 @@
           return 'yellow'
         } else if (text.includes('edito')) {
           return 'purple'
+        } else if (text.includes('traslado')) {
+          return 'teal lighten-3'
         }
 
         return 'blue-grey'

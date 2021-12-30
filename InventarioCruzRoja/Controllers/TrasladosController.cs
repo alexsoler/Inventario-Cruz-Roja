@@ -13,12 +13,15 @@ namespace InventarioCruzRoja.Controllers
     public class TrasladosController : ControllerBase
     {
         private readonly ITrasladosRepository _repository;
+        private readonly IEventosProductosRepository _eventosRepository;
         private readonly IMapper _mapper;
 
         public TrasladosController(ITrasladosRepository repository,
+            IEventosProductosRepository eventosRepository,
             IMapper mapper)
         {
             _repository = repository;
+            _eventosRepository = eventosRepository;
             _mapper = mapper;
         }
 
@@ -62,6 +65,9 @@ namespace InventarioCruzRoja.Controllers
             if (!response.Success)
                 return Conflict(response.Message);
 
+            if (response.Data.Anulado)
+                await _eventosRepository.EventoAnulacionTraslado(response.Data.ProductoId, User.Identity.Name);
+
             return response.Data.Id;
         }
 
@@ -75,6 +81,8 @@ namespace InventarioCruzRoja.Controllers
 
             if (!response.Success)
                 return Conflict(response.Message);
+
+            await _eventosRepository.EventoTrasladoProducto(response.Data.ProductoId, User.Identity.Name);
 
             return CreatedAtAction("GetTraslado", new { id = traslado.Id }, _mapper.Map<TrasladoDto>(response.Data));
         }

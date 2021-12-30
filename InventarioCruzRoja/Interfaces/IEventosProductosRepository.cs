@@ -10,6 +10,8 @@ namespace InventarioCruzRoja.Interfaces
         Task EventoAnulacionEgreso(int productoId, int cantidad, string autor);
         Task EventoAgregarProducto(int productoId, string autor);
         Task EventoEditarProducto(int productoId, string autor);
+        Task EventoTrasladoProducto(int productoId, string autor);
+        Task EventoAnulacionTraslado(int productoId, string autor);
         Task<ServiceResponse<IEnumerable<EventoProducto>>> ObtenerEventosPorProducto(int productoId);
     }
 }

@@ -83,6 +83,30 @@ namespace InventarioCruzRoja.Repositories
             await Add(evento);
         }
 
+        public async Task EventoTrasladoProducto(int productoId, string autor)
+        {
+            var evento = new EventoProducto
+            {
+                ProductoId = productoId,
+                Descripcion = $"{autor} traslado producto a otra sede.",
+                Fecha = DateTime.Now
+            };
+
+            await Add(evento);
+        }
+
+        public async Task EventoAnulacionTraslado(int productoId, string autor)
+        {
+            var evento = new EventoProducto
+            {
+                ProductoId = productoId,
+                Descripcion = $"{autor} anulo un traslado de producto",
+                Fecha = DateTime.Now
+            };
+
+            await Add(evento);
+        }
+
         public async Task<ServiceResponse<IEnumerable<EventoProducto>>> ObtenerEventosPorProducto(int productoId)
         {
             var response = new ServiceResponse<IEnumerable<EventoProducto>>();
