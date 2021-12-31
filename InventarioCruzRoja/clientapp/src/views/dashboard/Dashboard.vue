@@ -96,18 +96,22 @@
         >
           <template v-slot:heading>
             <div class="text-h3 font-weight-light">
-              Employees Stats
+              Eventos
             </div>
 
             <div class="text-subtitle-1 font-weight-light">
-              New employees on 15th September, 2016
+              Ultimos eventos respecto al inventario
             </div>
           </template>
           <v-card-text>
             <v-data-table
               :headers="headers"
-              :items="items"
-            />
+              :items="ultimosEventos"
+            >
+              <template v-slot:item.fecha="{ item }">
+                <span>{{ new Date(item.fecha).toLocaleString() }}</span>
+              </template>
+            </v-data-table>
           </v-card-text>
         </base-material-card>
       </v-col>
@@ -222,34 +226,17 @@
         sedes: 0,
         productos: 0,
         proveedores: 0,
+        ultimosEventos: [],
         headers: [
           {
             sortable: false,
-            text: 'ID',
-            value: 'id',
+            text: 'Descripcion',
+            value: 'descripcion',
           },
           {
             sortable: false,
-            text: 'Name',
-            value: 'name',
-          },
-          {
-            sortable: false,
-            text: 'Salary',
-            value: 'salary',
-            align: 'right',
-          },
-          {
-            sortable: false,
-            text: 'Country',
-            value: 'country',
-            align: 'right',
-          },
-          {
-            sortable: false,
-            text: 'City',
-            value: 'city',
-            align: 'right',
+            text: 'Fecha',
+            value: 'fecha',
           },
         ],
         items: [
@@ -346,6 +333,7 @@
       this.obtenerCantidadDeSedes()
       this.obtenerCantidadDeProductos()
       this.obtenerCantidadDeProveedores()
+      this.obtenerUltimosEventos()
     },
     methods: {
       complete (index) {
@@ -373,6 +361,12 @@
         const response = await DashboardService.getCantidadDeProveedores()
         if (response.status >= 200 && response.status <= 299) {
           this.proveedores = response.data
+        }
+      },
+      async obtenerUltimosEventos () {
+        const response = await DashboardService.getUltimosEventos()
+        if (response.status >= 200 && response.status <= 299) {
+          this.ultimosEventos = response.data
         }
       },
     },

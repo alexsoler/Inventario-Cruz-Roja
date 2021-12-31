@@ -70,6 +70,16 @@ class DashboardService {
       return error
     }
   }
+
+  async getUltimosEventos () {
+    try {
+      const response = await axios.get('/api/dashboard/UltimosEventos')
+
+      return response
+    } catch (error) {
+      return error
+    }
+  }
 }
 
 export default new DashboardService()

@@ -1,4 +1,5 @@
-﻿
+﻿using AutoMapper;
+using InventarioCruzRoja.Dtos;
 using InventarioCruzRoja.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,13 @@ namespace InventarioCruzRoja.Controllers
     public class DashboardController : ControllerBase
     {
         private readonly IDashboardRepository _dashboardRepository;
+        private readonly IMapper _mapper;
 
-        public DashboardController(IDashboardRepository dashboardRepository)
+        public DashboardController(IDashboardRepository dashboardRepository,
+            IMapper mapper)
         {
             _dashboardRepository = dashboardRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -98,6 +102,18 @@ namespace InventarioCruzRoja.Controllers
                 return Conflict(response.Message);
 
             return Ok(response.Data);
+        }
+
+        [HttpGet]
+        [Route("UltimosEventos")]
+        public async Task<IActionResult> UltimosEventos()
+        {
+            var response = await _dashboardRepository.ObtenerUltimosEventos();
+
+            if (!response.Success)
+                return Conflict(response.Message);
+
+            return Ok(_mapper.Map<IEnumerable<EventoDto>>(response.Data));
         }
     }
 }

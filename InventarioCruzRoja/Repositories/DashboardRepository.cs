@@ -105,7 +105,7 @@ namespace InventarioCruzRoja.Repositories
             {
                 var fechaRestar = DateTime.Now.Date;
                 var fechas = Enumerable.Range(0, 7).Select(x => fechaRestar.AddDays(-x)).OrderBy(f => f).ToList();
-                var fechaDesde = fechas.LastOrDefault();
+                var fechaDesde = fechas.FirstOrDefault();
 
                 var datos = await _context.Egresos.Where(x => x.Fecha >= fechaDesde && !x.Anulado)
                     .GroupBy(x => x.Fecha.Date)
@@ -143,7 +143,7 @@ namespace InventarioCruzRoja.Repositories
             {
                 var fechaRestar = DateTime.Now.Date;
                 var fechas = Enumerable.Range(0, 7).Select(x => fechaRestar.AddDays(-x)).OrderBy(f => f).ToList();
-                var fechaDesde = fechas.LastOrDefault();
+                var fechaDesde = fechas.FirstOrDefault();
 
                 var datos = await _context.Ingresos.Where(x => x.Fecha >= fechaDesde && !x.Anulado)
                     .GroupBy(x => x.Fecha.Date)
@@ -181,7 +181,7 @@ namespace InventarioCruzRoja.Repositories
             {
                 var fechaRestar = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                 var fechas = Enumerable.Range(0, 7).Select(x => fechaRestar.AddMonths(-x)).OrderBy(f => f).ToList();
-                var fechaDesde = fechas.LastOrDefault();
+                var fechaDesde = fechas.FirstOrDefault();
 
                 var datos = await _context.Productos.Where(x => x.FechaCreacion >= fechaDesde && x.EstadoId == 1)
                     .GroupBy(x => new { x.FechaCreacion.Month, x.FechaCreacion.Year })
@@ -209,6 +209,32 @@ namespace InventarioCruzRoja.Repositories
                 _logger.LogError("Ocurrio un error al momento de obtener el resumen de productos", ex);
                 response.Success = false;
                 response.Message = "Ocurrio un error al momento de obtener el resumen de productos";
+
+                return response;
+            }
+        }
+
+        public async Task<ServiceResponse<IEnumerable<EventoProducto>>> ObtenerUltimosEventos()
+        {
+            var response = new ServiceResponse<IEnumerable<EventoProducto>>();
+            try
+            {
+                response.Data = await _context.EventosProductos.Include(x => x.Producto).OrderByDescending(x => x.Id).Take(50)
+                    .Select(x => new EventoProducto
+                    {
+                        Descripcion = $"{x.Producto.Nombre}: {x.Descripcion}",
+                        Fecha = x.Fecha
+                    }).ToListAsync();
+
+                response.Success = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Ocurrio un error al momento de obtener los ultimos eventos", ex);
+                response.Success = false;
+                response.Message = "Ocurrio un error al momento de obtener los ultimos eventos";
 
                 return response;
             }

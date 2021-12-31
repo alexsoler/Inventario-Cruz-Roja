@@ -12,5 +12,6 @@ namespace InventarioCruzRoja.Interfaces
         Task<ServiceResponse<int>> ObtenerCantidadDeProveedores();
         Task<ServiceResponse<int>> ObtenerCantidadDeSedes();
         Task<ServiceResponse<int>> ObtenerCantidadDeProductos();
+        Task<ServiceResponse<IEnumerable<EventoProducto>>> ObtenerUltimosEventos();
     }
 }
