@@ -27,5 +27,17 @@ namespace InventarioCruzRoja.Controllers
 
             return Ok(response.Data);
         }
+
+        [HttpGet]
+        [Route("ResumenDeIngresos")]
+        public async Task<IActionResult> ResumenDeIngresos()
+        {
+            var response = await _dashboardRepository.ObtenerResumenDeIngresos();
+
+            if (!response.Success)
+                return Conflict(response.Message);
+
+            return Ok(response.Data);
+        }
     }
 }

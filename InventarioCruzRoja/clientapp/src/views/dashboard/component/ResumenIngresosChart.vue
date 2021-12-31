@@ -1,11 +1,10 @@
 <template>
   <base-material-chart-card
-    :data="productosSubscriptionChart.data"
-    :options="productosSubscriptionChart.options"
-    :responsive-options="productosSubscriptionChart.responsiveOptions"
-    color="#E91E63"
+    :data="ingresosChart.data"
+    :options="ingresosChart.options"
+    color="success"
     hover-reveal
-    type="Bar"
+    type="Line"
   >
     <template v-slot:reveal-actions>
       <v-tooltip bottom>
@@ -41,15 +40,18 @@
       </v-tooltip>
     </template>
 
-    <h4
-      class="card-title font-weight-light mt-2 ml-2"
-      @click="obtenerResumenDeProductos"
-    >
-      Productos
+    <h4 class="card-title font-weight-light mt-2 ml-2">
+      Ingresos
     </h4>
 
     <p class="d-inline-flex font-weight-light ml-2 mt-1">
-      Nuevos Productos Agregados
+      <v-icon
+        color="green"
+        small
+      >
+        mdi-arrow-down
+      </v-icon>
+      Ingresos de inventario
     </p>
 
     <template v-slot:actions>
@@ -61,33 +63,33 @@
       </v-icon>
       <span
         class="text-caption grey--text font-weight-light"
-      >actualizado hace {{ minutos }} minutos</span>
+      >actualizado hace {{minutos}} minutos</span>
     </template>
   </base-material-chart-card>
 </template>
 
 <script>
   import DashboardService from '@/services/dashboard.service'
-  import { mapGetters } from 'vuex'
+  import moment from 'moment'
+  import chartist from 'chartist'
 
   export default {
     data: () => ({
       minutos: 0,
       intervalMinutos: null,
-      productosSubscriptionChart: {
+      ingresosChart: {
         data: {
-          labels: [],
+          labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
           series: [
-            [],
-
+            [12, 17, 7, 17, 23, 18, 38],
           ],
         },
         options: {
-          axisX: {
-            showGrid: false,
-          },
+          lineSmooth: chartist.Interpolation.cardinal({
+            tension: 0,
+          }),
           low: 0,
-          high: 10,
+          high: 50,
           chartPadding: {
             top: 0,
             right: 0,
@@ -95,23 +97,11 @@
             left: 0,
           },
         },
-        responsiveOptions: [
-          ['screen and (max-width: 640px)', {
-            seriesBarDistance: 5,
-            axisX: {
-              labelInterpolationFnc: function (value) {
-                return value[0]
-              },
-            },
-          }],
-        ],
       },
     }),
-    computed: {
-      ...mapGetters(['mesesGetter']),
-    },
     created () {
-      this.obtenerResumenDeProductos()
+      moment.locale('es')
+      this.obtenerResumenDeIngresos()
     },
     beforeDestroy () {
       if (this.intervalMinutos) {
@@ -119,14 +109,14 @@
       }
     },
     methods: {
-      async obtenerResumenDeProductos () {
-        const response = await DashboardService.getResumenProductos()
+      async obtenerResumenDeIngresos () {
+        const response = await DashboardService.getResumenIngresos()
 
         if (response.status >= 200 && response.status <= 299) {
-          this.productosSubscriptionChart.options.high = Math.ceil(Math.max(...response.data.map(x => x.cantidad)) / 10) * 10
+          this.ingresosChart.options.high = Math.ceil(Math.max(...response.data.map(x => x.cantidad)) / 10) * 10
 
-          this.productosSubscriptionChart.data.labels = response.data.map(x => this.mesesGetter[x.mes - 1])
-          this.productosSubscriptionChart.data.series = [response.data.map(x => x.cantidad)]
+          this.ingresosChart.data.labels = response.data.map(x => moment(x.fecha, 'YYYY-MM-DD').format('dddd').toUpperCase()[0])
+          this.ingresosChart.data.series = [response.data.map(x => x.cantidad)]
 
           this.minutos = 0
           if (this.intervalMinutos) {
@@ -138,7 +128,7 @@
           }, 60000)
         }
 
-        setTimeout(async () => await this.obtenerResumenDeProductos(), 300000)
+        setTimeout(async () => await this.obtenerResumenDeIngresos(), 300000)
       },
     },
   }

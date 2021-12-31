@@ -10,6 +10,16 @@ class DashboardService {
       return error
     }
   }
+
+  async getResumenIngresos () {
+    try {
+      const response = await axios.get('/api/dashboard/ResumenDeIngresos')
+
+      return response
+    } catch (error) {
+      return error
+    }
+  }
 }
 
 export default new DashboardService()

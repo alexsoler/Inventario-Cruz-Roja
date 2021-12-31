@@ -6,5 +6,6 @@ namespace InventarioCruzRoja.Interfaces
     public interface IDashboardRepository
     {
         Task<ServiceResponse<IEnumerable<ResumenProductosDto>>> ObtenerResumenDeProductos();
+        Task<ServiceResponse<IEnumerable<ResumenIngresosDto>>> ObtenerResumenDeIngresos();
     }
 }

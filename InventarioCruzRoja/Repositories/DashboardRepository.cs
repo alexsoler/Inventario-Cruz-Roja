@@ -17,13 +17,52 @@ namespace InventarioCruzRoja.Repositories
             _context = context;
             _logger = logger;
         }
+
+        public async Task<ServiceResponse<IEnumerable<ResumenIngresosDto>>> ObtenerResumenDeIngresos()
+        {
+            var response = new ServiceResponse<IEnumerable<ResumenIngresosDto>>();
+            try
+            {
+                var fechaRestar = DateTime.Now.Date;
+                var fechas = Enumerable.Range(0, 7).Select(x => fechaRestar.AddDays(-x)).OrderBy(f => f).ToList();
+                var fechaDesde = fechas.LastOrDefault();
+
+                var datos = await _context.Ingresos.Where(x => x.Fecha >= fechaDesde && !x.Anulado)
+                    .GroupBy(x => x.Fecha.Date)
+                    .Select(x => new ResumenIngresosDto
+                    {
+                        Cantidad = x.Count(),
+                        Fecha = x.Key
+                    }).ToListAsync();
+
+                response.Data = fechas.GroupJoin(datos, f => f, i => i.Fecha, (f, i_f) => new { f, i_f })
+                    .SelectMany(t => t.i_f.DefaultIfEmpty(), (t, x) => new ResumenIngresosDto
+                    {
+                        Cantidad = x == null ? 0 : x.Cantidad,
+                        Fecha = t.f
+                    }).ToList();
+
+                response.Success = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Ocurrio un error al momento de obtener el resumen de ingresos", ex);
+                response.Success = false;
+                response.Message = "Ocurrio un error al momento de obtener el resumen de ingresos";
+
+                return response;
+            }
+        }
+
         public async Task<ServiceResponse<IEnumerable<ResumenProductosDto>>> ObtenerResumenDeProductos()
         {
             var response = new ServiceResponse<IEnumerable<ResumenProductosDto>>();
             try
             {
                 var fechaRestar = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-                var fechas = Enumerable.Range(0, 6).Select(x => fechaRestar.AddMonths(-x)).OrderBy(f => f).ToList();
+                var fechas = Enumerable.Range(0, 7).Select(x => fechaRestar.AddMonths(-x)).OrderBy(f => f).ToList();
                 var fechaDesde = fechas.LastOrDefault();
 
                 var datos = await _context.Productos.Where(x => x.FechaCreacion >= fechaDesde && x.EstadoId == 1)
