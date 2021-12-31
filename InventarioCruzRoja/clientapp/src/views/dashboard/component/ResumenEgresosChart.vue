@@ -63,7 +63,7 @@
       </v-icon>
       <span
         class="text-caption grey--text font-weight-light"
-      >actualizado hace {{minutos}} minutos</span>
+      >actualizado hace {{ minutos }} minutos</span>
     </template>
   </base-material-chart-card>
 </template>

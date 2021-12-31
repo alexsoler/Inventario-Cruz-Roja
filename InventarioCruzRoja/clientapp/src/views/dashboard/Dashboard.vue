@@ -33,11 +33,11 @@
       >
         <base-material-stats-card
           color="info"
-          icon="mdi-twitter"
-          title="Followers"
-          value="+245"
+          icon="mdi-account"
+          title="Usuarios"
+          :value="usuarios"
           sub-icon="mdi-clock"
-          sub-text="Just Updated"
+          sub-text="Recién actualizado"
         />
       </v-col>
 
@@ -48,11 +48,11 @@
       >
         <base-material-stats-card
           color="primary"
-          icon="mdi-poll"
-          title="Website Visits"
-          value="75.521"
-          sub-icon="mdi-tag"
-          sub-text="Tracked from Google Analytics"
+          icon="mdi-package-variant"
+          title="Productos"
+          :value="productos"
+          sub-icon="mdi-clock"
+          sub-text="Recién actualizado"
         />
       </v-col>
 
@@ -62,12 +62,12 @@
         lg="3"
       >
         <base-material-stats-card
-          color="success"
-          icon="mdi-store"
-          title="Revenue"
-          value="$ 34,245"
-          sub-icon="mdi-calendar"
-          sub-text="Last 24 Hours"
+          color="indigo"
+          icon="mdi-home-plus"
+          title="Sedes"
+          :value="sedes"
+          sub-icon="mdi-clock"
+          sub-text="Recién actualizado"
         />
       </v-col>
 
@@ -78,12 +78,11 @@
       >
         <base-material-stats-card
           color="orange"
-          icon="mdi-sofa"
-          title="Bookings"
-          value="184"
-          sub-icon="mdi-alert"
-          sub-icon-color="red"
-          sub-text="Get More Space..."
+          icon="mdi-truck"
+          title="Proveedores"
+          :value="proveedores"
+          sub-icon="mdi-clock"
+          sub-text="Recién actualizado"
         />
       </v-col>
 
@@ -208,6 +207,7 @@
   import ResumenProductosChart from '../dashboard/component/ResumenProductosChart.vue'
   import ResumenIngresosChart from '../dashboard/component/ResumenIngresosChart.vue'
   import ResumenEgresosChart from '../dashboard/component/ResumenEgresosChart.vue'
+  import DashboardService from '@/services/dashboard.service'
 
   export default {
     name: 'DashboardDashboard',
@@ -218,6 +218,10 @@
     },
     data () {
       return {
+        usuarios: 0,
+        sedes: 0,
+        productos: 0,
+        proveedores: 0,
         headers: [
           {
             sortable: false,
@@ -337,10 +341,39 @@
         },
       }
     },
-
+    created () {
+      this.obtenerCantidadDeUsuarios()
+      this.obtenerCantidadDeSedes()
+      this.obtenerCantidadDeProductos()
+      this.obtenerCantidadDeProveedores()
+    },
     methods: {
       complete (index) {
         this.list[index] = !this.list[index]
+      },
+      async obtenerCantidadDeUsuarios () {
+        const response = await DashboardService.getCantidadDeUsuarios()
+        if (response.status >= 200 && response.status <= 299) {
+          this.usuarios = response.data
+        }
+      },
+      async obtenerCantidadDeSedes () {
+        const response = await DashboardService.getCantidadDeSedes()
+        if (response.status >= 200 && response.status <= 299) {
+          this.sedes = response.data
+        }
+      },
+      async obtenerCantidadDeProductos () {
+        const response = await DashboardService.getCantidadDeProductos()
+        if (response.status >= 200 && response.status <= 299) {
+          this.productos = response.data
+        }
+      },
+      async obtenerCantidadDeProveedores () {
+        const response = await DashboardService.getCantidadDeProveedores()
+        if (response.status >= 200 && response.status <= 299) {
+          this.proveedores = response.data
+        }
       },
     },
   }

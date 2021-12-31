@@ -30,6 +30,46 @@ class DashboardService {
       return error
     }
   }
+
+  async getCantidadDeUsuarios () {
+    try {
+      const response = await axios.get('/api/dashboard/CantidadDeUsuarios')
+
+      return response
+    } catch (error) {
+      return error
+    }
+  }
+
+  async getCantidadDeProductos () {
+    try {
+      const response = await axios.get('/api/dashboard/CantidadDeProductos')
+
+      return response
+    } catch (error) {
+      return error
+    }
+  }
+
+  async getCantidadDeSedes () {
+    try {
+      const response = await axios.get('/api/dashboard/CantidadDeSedes')
+
+      return response
+    } catch (error) {
+      return error
+    }
+  }
+
+  async getCantidadDeProveedores () {
+    try {
+      const response = await axios.get('/api/dashboard/CantidadDeProveedores')
+
+      return response
+    } catch (error) {
+      return error
+    }
+  }
 }
 
 export default new DashboardService()

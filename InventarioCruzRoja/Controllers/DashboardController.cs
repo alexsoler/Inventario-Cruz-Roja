@@ -51,5 +51,53 @@ namespace InventarioCruzRoja.Controllers
 
             return Ok(response.Data);
         }
+
+        [HttpGet]
+        [Route("CantidadDeUsuarios")]
+        public async Task<IActionResult> CantidadDeUsuarios()
+        {
+            var response = await _dashboardRepository.ObtenerCantidadDeUsuarios();
+
+            if (!response.Success)
+                return Conflict(response.Message);
+
+            return Ok(response.Data);
+        }
+
+        [HttpGet]
+        [Route("CantidadDeSedes")]
+        public async Task<IActionResult> CantidadDeSedes()
+        {
+            var response = await _dashboardRepository.ObtenerCantidadDeSedes();
+
+            if (!response.Success)
+                return Conflict(response.Message);
+
+            return Ok(response.Data);
+        }
+
+        [HttpGet]
+        [Route("CantidadDeProductos")]
+        public async Task<IActionResult> CantidadDeProductos()
+        {
+            var response = await _dashboardRepository.ObtenerCantidadDeProductos();
+
+            if (!response.Success)
+                return Conflict(response.Message);
+
+            return Ok(response.Data);
+        }
+
+        [HttpGet]
+        [Route("CantidadDeProveedores")]
+        public async Task<IActionResult> CantidadDeProveedores()
+        {
+            var response = await _dashboardRepository.ObtenerCantidadDeProveedores();
+
+            if (!response.Success)
+                return Conflict(response.Message);
+
+            return Ok(response.Data);
+        }
     }
 }

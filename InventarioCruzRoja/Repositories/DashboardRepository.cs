@@ -18,6 +18,86 @@ namespace InventarioCruzRoja.Repositories
             _logger = logger;
         }
 
+        public async Task<ServiceResponse<int>> ObtenerCantidadDeProductos()
+        {
+            var response = new ServiceResponse<int>();
+            try
+            {
+                response.Data = await _context.Productos.Where(x => x.EstadoId == 1).CountAsync();
+                response.Success = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Ocurrio un error al momento de obtener la cantidad de productos", ex);
+                response.Success = false;
+                response.Message = "Ocurrio un error al momento de obtener la cantidad de productos";
+
+                return response;
+            }
+        }
+
+        public async Task<ServiceResponse<int>> ObtenerCantidadDeProveedores()
+        {
+            var response = new ServiceResponse<int>();
+            try
+            {
+                response.Data = await _context.Proveedores.Where(x => x.EstadoId == 1).CountAsync();
+                response.Success = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Ocurrio un error al momento de obtener la cantidad de proveedores", ex);
+                response.Success = false;
+                response.Message = "Ocurrio un error al momento de obtener la cantidad de proveedores";
+
+                return response;
+            }
+        }
+
+        public async Task<ServiceResponse<int>> ObtenerCantidadDeSedes()
+        {
+            var response = new ServiceResponse<int>();
+            try
+            {
+                response.Data = await _context.Sedes.Where(x => x.EstadoId == 1).CountAsync();
+                response.Success = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Ocurrio un error al momento de obtener la cantidad de sedes", ex);
+                response.Success = false;
+                response.Message = "Ocurrio un error al momento de obtener la cantidad de sedes";
+
+                return response;
+            }
+        }
+
+        public async Task<ServiceResponse<int>> ObtenerCantidadDeUsuarios()
+        {
+            var response = new ServiceResponse<int>();
+            try
+            {
+                response.Data = await _context.Users.CountAsync();
+                response.Success = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Ocurrio un error al momento de obtener la cantidad de Usuarios", ex);
+                response.Success = false;
+                response.Message = "Ocurrio un error al momento de obtener la cantidad de Usuarios";
+
+                return response;
+            }
+        }
+
         public async Task<ServiceResponse<IEnumerable<ResumenEgresosDto>>> ObtenerResumenDeEgresos()
         {
             var response = new ServiceResponse<IEnumerable<ResumenEgresosDto>>();
