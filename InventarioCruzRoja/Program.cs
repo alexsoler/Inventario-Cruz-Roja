@@ -1,4 +1,5 @@
 using InventarioCruzRoja.Data;
+using InventarioCruzRoja.Hubs;
 using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Repositories;
 using InventarioCruzRoja.Services;
@@ -15,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddNewtonsoftJson(x =>
                 x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+builder.Services.AddSignalR();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -73,6 +75,7 @@ builder.Services.AddScoped<ITrasladosRepository, TrasladosRepository>();
 builder.Services.AddScoped<IInventariosRepository, InventariosRepository>();
 builder.Services.AddScoped<IEventosProductosRepository, EventosProductosRepository>();
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
 
 builder.Services.AddSpaStaticFiles(configuration =>
 {
@@ -135,5 +138,7 @@ app.UseEndpoints(endpoints =>
             );
     }
 });
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

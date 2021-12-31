@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using InventarioCruzRoja.Dtos;
 using InventarioCruzRoja.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventarioCruzRoja.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class DashboardController : ControllerBase
     {
