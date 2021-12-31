@@ -39,5 +39,17 @@ namespace InventarioCruzRoja.Controllers
 
             return Ok(response.Data);
         }
+
+        [HttpGet]
+        [Route("ResumenDeEgresos")]
+        public async Task<IActionResult> ResumenDeEgresos()
+        {
+            var response = await _dashboardRepository.ObtenerResumenDeEgresos();
+
+            if (!response.Success)
+                return Conflict(response.Message);
+
+            return Ok(response.Data);
+        }
     }
 }

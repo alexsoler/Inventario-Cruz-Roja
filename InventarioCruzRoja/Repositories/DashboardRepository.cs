@@ -18,6 +18,44 @@ namespace InventarioCruzRoja.Repositories
             _logger = logger;
         }
 
+        public async Task<ServiceResponse<IEnumerable<ResumenEgresosDto>>> ObtenerResumenDeEgresos()
+        {
+            var response = new ServiceResponse<IEnumerable<ResumenEgresosDto>>();
+            try
+            {
+                var fechaRestar = DateTime.Now.Date;
+                var fechas = Enumerable.Range(0, 7).Select(x => fechaRestar.AddDays(-x)).OrderBy(f => f).ToList();
+                var fechaDesde = fechas.LastOrDefault();
+
+                var datos = await _context.Egresos.Where(x => x.Fecha >= fechaDesde && !x.Anulado)
+                    .GroupBy(x => x.Fecha.Date)
+                    .Select(x => new ResumenEgresosDto
+                    {
+                        Cantidad = x.Sum(e => e.Cantidad),
+                        Fecha = x.Key
+                    }).ToListAsync();
+
+                response.Data = fechas.GroupJoin(datos, f => f, e => e.Fecha, (f, e_f) => new { f, e_f })
+                    .SelectMany(t => t.e_f.DefaultIfEmpty(), (t, x) => new ResumenEgresosDto
+                    {
+                        Cantidad = x == null ? 0 : x.Cantidad,
+                        Fecha = t.f
+                    }).ToList();
+
+                response.Success = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Ocurrio un error al momento de obtener el resumen de egresos", ex);
+                response.Success = false;
+                response.Message = "Ocurrio un error al momento de obtener el resumen de egresos";
+
+                return response;
+            }
+        }
+
         public async Task<ServiceResponse<IEnumerable<ResumenIngresosDto>>> ObtenerResumenDeIngresos()
         {
             var response = new ServiceResponse<IEnumerable<ResumenIngresosDto>>();
@@ -31,7 +69,7 @@ namespace InventarioCruzRoja.Repositories
                     .GroupBy(x => x.Fecha.Date)
                     .Select(x => new ResumenIngresosDto
                     {
-                        Cantidad = x.Count(),
+                        Cantidad = x.Sum(i => i.Cantidad),
                         Fecha = x.Key
                     }).ToListAsync();
 
