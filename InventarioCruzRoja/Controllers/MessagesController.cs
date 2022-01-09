@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using InventarioCruzRoja.Dtos;
+using InventarioCruzRoja.Hubs;
 using InventarioCruzRoja.Interfaces;
 using InventarioCruzRoja.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace InventarioCruzRoja.Controllers
 {
@@ -14,6 +16,7 @@ namespace InventarioCruzRoja.Controllers
     public class MessagesController : ControllerBase
     {
         private readonly IMessagesRepository _repository;
+        private readonly IHubContext<ChatHub> _messageClient;
         private readonly IMapper _mapper;
 
         public MessagesController(IMessagesRepository repository,
@@ -42,7 +45,9 @@ namespace InventarioCruzRoja.Controllers
             if (!response.Success)
                 return Conflict(response.Message);
 
-            return CreatedAtAction("GetMessage", new { id = message.Id }, response.Data);
+            await _messageClient.Clients.All.SendAsync("ReceiveMessage", response.Data);
+
+            return CreatedAtAction("GetMessage", new { id = message.Id }, _mapper.Map<MessageDto>(response.Data));
         }
 
     }
