@@ -18,6 +18,7 @@ import store from './store'
 import './plugins/base'
 import './plugins/chartist'
 import './plugins/vee-validate'
+import ChatHub from './plugins/chat-hub'
 import vuetify from './plugins/vuetify'
 import i18n from './i18n'
 import VueTelInputVuetify from 'vue-tel-input-vuetify/lib'
@@ -26,6 +27,7 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import './assets/css/main.css'
 
 Vue.use(VueSweetalert2)
+Vue.use(ChatHub)
 Vue.use(VueTelInputVuetify, {
   vuetify,
 })
