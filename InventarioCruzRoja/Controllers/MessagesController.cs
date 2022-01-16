@@ -20,9 +20,11 @@ namespace InventarioCruzRoja.Controllers
         private readonly IMapper _mapper;
 
         public MessagesController(IMessagesRepository repository,
+            IHubContext<ChatHub> messageHub,
             IMapper mapper)
         {
             _repository = repository;
+            _messageClient = messageHub;
             _mapper = mapper;
         }
 
@@ -45,7 +47,7 @@ namespace InventarioCruzRoja.Controllers
             if (!response.Success)
                 return Conflict(response.Message);
 
-            await _messageClient.Clients.All.SendAsync("ReceiveMessage", response.Data);
+            await _messageClient.Clients.All.SendAsync("receiveMessage", response.Data);
 
             return CreatedAtAction("GetMessage", new { id = message.Id }, _mapper.Map<MessageDto>(response.Data));
         }
