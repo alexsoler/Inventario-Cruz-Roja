@@ -81,6 +81,7 @@ namespace InventarioCruzRoja.Controllers
             }
 
             producto.UsuarioModifica = User.Identity.Name;
+            producto.FechaModificacion = DateTime.Now;
 
             var response = await _repository.Update(_mapper.Map<Producto>(producto));
 

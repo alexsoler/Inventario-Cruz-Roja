@@ -36,6 +36,7 @@ namespace InventarioCruzRoja.Repositories
             var producto = await _context.Productos.Include(x => x.Sedes).FirstOrDefaultAsync(x => x.Id == entidad.Id);
             var urlImagenPrevia = producto.ImagenUrl;
             _context.Entry(producto).CurrentValues.SetValues(entidad);
+            _context.Entry(producto).Property(x => x.FechaCreacion).IsModified = false;
 
             var sedesToDelete = producto.Sedes.Where(s => !entidad.Sedes.Any(x => x.Id == s.Id)).ToList();
             sedesToDelete.ForEach(x => producto.Sedes.Remove(x));
