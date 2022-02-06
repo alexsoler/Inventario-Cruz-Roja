@@ -145,9 +145,9 @@
       },
       getMessageItemColor (userId) {
         if (userId === this.userGetter.id) {
-          return 'indigo lighten-4'
+          return this.$vuetify.theme.dark ? 'indigo darken-1' : 'indigo lighten-4'
         } else {
-          return 'red lighten-5'
+          return this.$vuetify.theme.dark ? 'red darken-1' : 'red lighten-5'
         }
       },
       goTheEndScroll () {
