@@ -15,6 +15,10 @@ export default {
       chatHub.$emit('user-added-event', { userId, userName })
     })
 
+    connection.on('receiveMessage', messageData => {
+      chatHub.$emit('receiveMessage', messageData)
+    })
+
     let startedPromise = null
     function start () {
       startedPromise = connection.start().catch(err => {

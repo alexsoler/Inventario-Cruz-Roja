@@ -25,11 +25,18 @@ import VueTelInputVuetify from 'vue-tel-input-vuetify/lib'
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import './assets/css/main.css'
+import moment from 'moment'
 
 Vue.use(VueSweetalert2)
 Vue.use(ChatHub)
 Vue.use(VueTelInputVuetify, {
   vuetify,
+})
+
+Vue.filter('formatDate', function (value) {
+  if (value) {
+      return moment(String(value)).format('DD/MM/YYYY hh:mm')
+  }
 })
 
 Vue.config.productionTip = false
