@@ -14,13 +14,22 @@ namespace InventarioCruzRoja.Services
     public class ReportesService : IReportesService
     {
         private readonly IIngresosRepository _ingresosRepository;
+        private readonly IEgresosRepository _egresosRepository;
+        private readonly ITrasladosRepository _trasladosRepository;
+        private readonly IInventariosRepository _inventariosRepository;
         private readonly IWebHostEnvironment _environment;
         private readonly IMapper _mapper;
-        public ReportesService(IIngresosRepository ingresoRepository,
+        public ReportesService(IIngresosRepository ingresosRepository,
+            IEgresosRepository egresosRepository,
+            ITrasladosRepository trasladosRepository,
+            IInventariosRepository inventariosRepository,
             IWebHostEnvironment environment,
             IMapper mapper)
         {
-            _ingresosRepository = ingresoRepository;
+            _ingresosRepository = ingresosRepository;
+            _egresosRepository = egresosRepository;
+            _trasladosRepository = trasladosRepository;
+            _inventariosRepository = inventariosRepository;
             _environment = environment;
             _mapper = mapper;
         }
@@ -28,7 +37,7 @@ namespace InventarioCruzRoja.Services
         public async Task<ServiceResponse<byte[]>> ObtenerReporteIngreso(int id, ReportQuery reportQuery)
         {
             var response = new ServiceResponse<byte[]>();
-            var ingresoResponse = await _ingresosRepository.Get(id, "Proveedor", "Sede", "Producto", "User");
+            var ingresoResponse = await _ingresosRepository.Get(id, "Proveedor", "Sede", "Producto", "User", "UserAnula");
 
             if (ingresoResponse.Data == null || !ingresoResponse.Success)
             {
@@ -42,6 +51,88 @@ namespace InventarioCruzRoja.Services
             try
             {
                 response.Data = GenerarReporte(new List<IngresoDto> { ingreso }, "Ingreso", "Ingreso", reportQuery);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return response;
+            }
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<byte[]>> ObtenerReporteEgreso(int id, ReportQuery reportQuery)
+        {
+            var response = new ServiceResponse<byte[]>();
+            var egresoResponse = await _egresosRepository.Get(id, "Sede", "Producto", "User", "UserAnula");
+
+            if (egresoResponse.Data == null || !egresoResponse.Success)
+            {
+                response.Success = false;
+                response.Message = egresoResponse.Message;
+                return response;
+            }
+
+            var egreso = _mapper.Map<EgresoDto>(egresoResponse.Data);
+
+            try
+            {
+                response.Data = GenerarReporte(new List<EgresoDto> { egreso }, "Egreso", "Egreso", reportQuery);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return response;
+            }
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<byte[]>> ObtenerReporteTraslado(int id, ReportQuery reportQuery)
+        {
+            var response = new ServiceResponse<byte[]>();
+            var trasladoResponse = await _trasladosRepository.Get(id, "IngresoDestino", "EgresoOrigen", "Producto", "User", "UserAnula");
+
+            if (trasladoResponse.Data == null || !trasladoResponse.Success)
+            {
+                response.Success = false;
+                response.Message = trasladoResponse.Message;
+                return response;
+            }
+
+            var traslado = _mapper.Map<TrasladoDto>(trasladoResponse.Data);
+
+            try
+            {
+                response.Data = GenerarReporte(new List<TrasladoDto> { traslado }, "Traslado", "Traslado", reportQuery);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return response;
+            }
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<byte[]>> ObtenerReporteInventario(int? sedeId, DateTime? fechaDesde, DateTime? fechaHasta, ReportQuery reportQuery)
+        {
+            var response = new ServiceResponse<byte[]>();
+            var trasladoResponse = await _inventariosRepository.GetInventario(sedeId, fechaDesde, fechaHasta);
+
+            if (trasladoResponse.Data == null || !trasladoResponse.Success)
+            {
+                response.Success = false;
+                response.Message = trasladoResponse.Message;
+                return response;
+            }
+
+            try
+            {
+                response.Data = GenerarReporte(trasladoResponse.Data, "Inventario", "Inventario", reportQuery);
             }
             catch (Exception ex)
             {

@@ -10,10 +10,10 @@
           :headers="headers"
           :items="traslados"
           :search="search"
-          sort-by="Id"
+          sort-by="id"
           :expanded.sync="expanded"
           :single-expand="true"
-          item-key="Id"
+          item-key="id"
           show-expand
           class="elevation-1"
         >
@@ -130,7 +130,7 @@
                 <v-card>
                   <v-card-text>
                     <iframe
-                      :src="'/api/reports/traslados/'+editedItem.id+'?format=pdf'"
+                      :src="editedItem.id ? '/api/reports/traslados/'+editedItem.id+'?format=pdf' : ''"
                       style="width: 100%;height: 500px;border: none;"
                     />
                   </v-card-text>
@@ -148,6 +148,14 @@
                 </v-card>
               </v-dialog>
             </v-toolbar>
+          </template>
+          <template v-slot:item.cantidad="{ item }">
+            <v-chip
+              color="blue-grey"
+              dark
+            >
+              {{ item.cantidad }}
+            </v-chip>
           </template>
           <template v-slot:item.anulado="{ item }">
             <v-simple-checkbox

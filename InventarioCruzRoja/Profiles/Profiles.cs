@@ -53,7 +53,7 @@ namespace InventarioCruzRoja.Profiles
                 .ForMember(dest =>
                     dest.Usuario, opt => opt.MapFrom(x => x.User.Username))
                 .ForMember(dest =>
-                    dest.UsuarioAnula, opt => opt.MapFrom(x => x.User.Username)); ;
+                    dest.UsuarioAnula, opt => opt.MapFrom(x => x.UserAnula.Username));
             CreateMap<IngresoDto, Ingreso>()
                 .ForMember(dest =>
                     dest.Proveedor, opt => opt.Ignore())
@@ -73,7 +73,7 @@ namespace InventarioCruzRoja.Profiles
                 .ForMember(dest =>
                     dest.Usuario, opt => opt.MapFrom(x => x.User.Username))
                 .ForMember(dest =>
-                    dest.UsuarioAnula, opt => opt.MapFrom(x => x.User.Username));
+                    dest.UsuarioAnula, opt => opt.MapFrom(x => x.UserAnula.Username));
             CreateMap<EgresoDto, Egreso>()
                 .ForMember(dest =>
                     dest.Sede, opt => opt.Ignore())
@@ -93,7 +93,7 @@ namespace InventarioCruzRoja.Profiles
                 .ForMember(dest =>
                     dest.Usuario, opt => opt.MapFrom(x => x.User.Username))
                 .ForMember(dest =>
-                    dest.UsuarioAnula, opt => opt.MapFrom(x => x.User.Username));
+                    dest.UsuarioAnula, opt => opt.MapFrom(x => x.UserAnula.Username));
             CreateMap<TrasladoDto, Traslado>()
                 .ForMember(dest =>
                     dest.IngresoDestino, opt => opt.Ignore())

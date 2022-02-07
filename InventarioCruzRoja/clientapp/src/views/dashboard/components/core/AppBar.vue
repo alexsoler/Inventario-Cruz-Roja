@@ -32,6 +32,7 @@
 
     <v-text-field
       :label="$t('search')"
+      v-if="false"
       color="secondary"
       hide-details
       style="max-width: 165px;"
@@ -63,6 +64,7 @@
     </v-btn>
 
     <v-menu
+      v-if="false"
       bottom
       left
       offset-y
