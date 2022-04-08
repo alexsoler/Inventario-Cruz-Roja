@@ -13,7 +13,7 @@ namespace InventarioCruzRoja.Data
 
             if (!await _db.Roles.AnyAsync())
                 _db.Roles.AddRange(
-                    new Role { Name = "admin" },
+                    new Role { Name = "Administrador" },
                     new Role { Name = "employee" }
                 );
 
@@ -76,7 +76,7 @@ namespace InventarioCruzRoja.Data
 
             if (resultCreateUser1.Success)
             {
-                await _authRepository.AddRoleToUser(resultCreateUser1.Data, "admin");
+                await _authRepository.AddRoleToUser(resultCreateUser1.Data, "Administrador");
             }
 
 

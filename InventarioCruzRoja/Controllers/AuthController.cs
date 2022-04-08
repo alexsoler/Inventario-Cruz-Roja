@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace InventarioCruzRoja.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "Administrador")]
     [ApiController]
     public class AuthController : ControllerBase
     {

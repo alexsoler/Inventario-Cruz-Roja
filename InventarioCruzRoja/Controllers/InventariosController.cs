@@ -7,7 +7,7 @@ namespace InventarioCruzRoja.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "Administrador")]
     public class InventariosController : ControllerBase
     {
         private readonly IInventariosRepository _inventariosRepository;

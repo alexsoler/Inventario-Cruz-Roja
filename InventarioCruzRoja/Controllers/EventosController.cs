@@ -9,7 +9,7 @@ namespace InventarioCruzRoja.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "Administrador")]
     public class EventosController : ControllerBase
     {
         private readonly IEventosProductosRepository _eventosProductosRepository;
